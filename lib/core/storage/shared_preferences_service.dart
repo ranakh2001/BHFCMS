@@ -14,7 +14,7 @@ class SharedPreferencesService {
   Future<void> setLanguage(String langCode) async => await _prefs.setString(_keyLanguage, langCode);
 
   // Theme Mode (light, dark, system)
-  String get themeMode => _prefs.getString(_keyThemeMode) ?? 'system';
+  String get themeMode => _prefs.getString(_keyThemeMode) ?? 'light';
   Future<void> setThemeMode(String mode) async => await _prefs.setString(_keyThemeMode, mode);
 
   // First Launch / Onboarding

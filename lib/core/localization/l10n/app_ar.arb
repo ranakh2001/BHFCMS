@@ -7,5 +7,19 @@
   "welcomeMessage": "مرحباً بعودتك!",
   "settings": "الإعدادات",
   "language": "اللغة",
-  "theme": "المظهر"
+  "theme": "المظهر",
+  "centerName": "مركز الأفق المشرق",
+  "splashSubtitle": "رعاية متميزة، رؤى ذكية",
+  "loginTitle": "تسجيل الدخول",
+  "welcomeSubtitle": "أهلاً وسهلاً بك",
+  "loginStepByStep": "معًا لمتابعة وتطوير الحالات خطوة بخطوة",
+  "emailLabel": "البريد الإلكتروني",
+  "emailHint": "name@example.com",
+  "passwordLabel": "كلمة المرور",
+  "passwordHint": "**********",
+  "loginButton": "دخول",
+  "adminAccountNote": "يتم إنشاء الحسابات من قبل إدارة المركز فقط",
+  "validationRequired": "هذا الحقل مطلوب",
+  "validationEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "validationPasswordLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
 }
