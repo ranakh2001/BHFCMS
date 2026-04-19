@@ -52,7 +52,7 @@ class MainApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      initialRoute: AppRoutes.login, // Start at login for now
+      initialRoute: AppRoutes.initial, // Start at login for now
       routes: AppRoutes.getRoutes(),
     );
   }

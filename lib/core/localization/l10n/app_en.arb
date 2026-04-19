@@ -10,5 +10,19 @@
   "welcomeMessage": "Welcome back!",
   "settings": "Settings",
   "language": "Language",
-  "theme": "Theme"
+  "theme": "Theme",
+  "centerName": "Bright Horizon Center",
+  "splashSubtitle": "Premium care, smart insights",
+  "loginTitle": "Login",
+  "welcomeSubtitle": "Welcome",
+  "loginStepByStep": "Together to monitor and develop cases step by step",
+  "emailLabel": "Email",
+  "emailHint": "name@example.com",
+  "passwordLabel": "Password",
+  "passwordHint": "**********",
+  "loginButton": "Login",
+  "adminAccountNote": "Accounts are created by center administration only",
+  "validationRequired": "This field is required",
+  "validationEmail": "Please enter a valid email address",
+  "validationPasswordLength": "Password must be at least 6 characters"
 }

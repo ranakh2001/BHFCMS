@@ -145,6 +145,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get theme;
+
+  /// No description provided for @centerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bright Horizon Center'**
+  String get centerName;
+
+  /// No description provided for @splashSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium care, smart insights'**
+  String get splashSubtitle;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginTitle;
+
+  /// No description provided for @welcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcomeSubtitle;
+
+  /// No description provided for @loginStepByStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Together to monitor and develop cases step by step'**
+  String get loginStepByStep;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name@example.com'**
+  String get emailHint;
+
+  /// No description provided for @passwordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'**********'**
+  String get passwordHint;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginButton;
+
+  /// No description provided for @adminAccountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts are created by center administration only'**
+  String get adminAccountNote;
+
+  /// No description provided for @validationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get validationRequired;
+
+  /// No description provided for @validationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get validationEmail;
+
+  /// No description provided for @validationPasswordLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get validationPasswordLength;
 }
 
 class _AppLocalizationsDelegate
