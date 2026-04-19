@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+  "appTitle": "BHCFMS",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "welcomeMessage": "Welcome back!",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme"
+}

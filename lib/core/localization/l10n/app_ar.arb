@@ -1,0 +1,11 @@
+{
+  "@@locale": "ar",
+  "appTitle": "النظام",
+  "login": "تسجيل الدخول",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "welcomeMessage": "مرحباً بعودتك!",
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "theme": "المظهر"
+}
