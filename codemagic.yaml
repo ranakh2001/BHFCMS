@@ -1,18 +1,31 @@
 workflows:
-  ios-workflow:
-    name: iOS Workflow
+  ios-release:
+    name: iOS Release Build
+    integrations:
+      app_store_connect: ammar.alsamin@gmail.com
     environment:
+      ios_signing:
+        distribution_type: app_store   # or: ad_hoc
+        bundle_identifier: sa.alufuqalmushriq.bhcfms
+      vars:
+        # APP_STORE_APPLE_ID: 1234567890   # only needed if publishing to App Store
       flutter: stable
       xcode: latest
-      vars:
-        BUNDLE_ID: "com.example.app" 
     scripts:
       - name: Get Flutter packages
         script: flutter pub get
-
-      - name: Build iOS (no code signing)
+      - name: Install pods
+        script: find . -name "Podfile" -execdir pod install \;
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Flutter build ipa
         script: |
-          flutter build ios --release --no-codesign
-
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
     artifacts:
-      - build/ios/iphoneos/*.app
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true   # auto-upload to TestFlight
