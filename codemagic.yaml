@@ -6,7 +6,7 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store   # or: ad_hoc
-        bundle_identifier: sa.alufuqalmushriq.bhcfms
+        bundle_identifier: sa.brighthorizon.bhcfms
       # vars:
         # APP_STORE_APPLE_ID: 1234567890   # only needed if publishing to App Store
       flutter: stable
