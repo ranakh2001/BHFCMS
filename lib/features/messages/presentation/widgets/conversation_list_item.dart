@@ -8,11 +8,13 @@ import 'guardian_avatar.dart';
 class ConversationListItem extends StatelessWidget {
   final Conversation conversation;
   final VoidCallback onTap;
+  final bool showTherapistLabel;
 
   const ConversationListItem({
     super.key,
     required this.conversation,
     required this.onTap,
+    this.showTherapistLabel = false,
   });
 
   @override
@@ -54,7 +56,9 @@ class ConversationListItem extends StatelessWidget {
                       ),
                       SizedBox(width: res.scaleSpacing(4)),
                       Text(
-                        '(${l10n.guardianOf(conversation.childName)})',
+                        showTherapistLabel
+                            ? '(${l10n.therapistOf(conversation.childName)})'
+                            : '(${l10n.guardianOf(conversation.childName)})',
                         style: TextStyle(
                           fontSize: res.scaleText(12),
                           color: isDark

@@ -1,5 +1,9 @@
+import 'package:bhcfms_app/features/auth/domain/entities/user_role.dart';
+import 'package:bhcfms_app/features/home/presentation/widgets/child_card.dart';
+import 'package:bhcfms_app/features/home/presentation/widgets/child_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/permissions/user_role_policy.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -22,10 +26,12 @@ class HomeScreen extends ConsumerWidget {
     // role-based sections without duplicating this screen.
     final user = ref.watch(currentUserProvider);
     final userName = user?.name ?? '';
+    final policy = ref.watch(currentPolicyProvider);
 
     return Scaffold(
-      backgroundColor:
-          isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: isDark
+          ? AppColors.backgroundDark
+          : AppColors.backgroundLight,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -35,11 +41,15 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(height: res.scaleHeight(16)),
               WelcomeHeader(userName: userName),
               SizedBox(height: res.scaleHeight(24)),
-              const DateSelector(),
+              if (user?.role == UserRole.therapist) const DateSelector(),
+              if (user?.role == UserRole.parent) const ChildCard(),
               SizedBox(height: res.scaleHeight(32)),
-              const UpcomingSessionsSection(),
-              SizedBox(height: res.scaleHeight(32)),
-              const DailyGoalsSection(),
+              const ChildProgress(),
+              if (user?.role == UserRole.therapist)
+                const UpcomingSessionsSection(),
+              if (user?.role == UserRole.parent)
+                SizedBox(height: res.scaleHeight(32)),
+              DailyGoalsSection(canEdit: policy?.canManageSessions ?? false),
               SizedBox(height: res.scaleHeight(48)),
             ],
           ),

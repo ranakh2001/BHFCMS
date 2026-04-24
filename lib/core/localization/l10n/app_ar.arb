@@ -434,5 +434,12 @@
   "csS13WearsShoesAlone": "هل يلبس حذائه و يربطه وحده؟",
   "csS13WashesFaceOnWaking": "هل يغسل وجهه عند الاستيقاظ من نومه؟",
   "csS13WashesHandsBeforeAfterEating": "هل يغسل يديه قبل الأكل و بعده؟",
-  "csS13WashesFeetAfterPlay": "هل يغسل قدميه بعد العودة من المركز او اللعب؟"
+  "csS13WashesFeetAfterPlay": "هل يغسل قدميه بعد العودة من المركز او اللعب؟",
+
+  "parentRole": "ولي أمر",
+  "receptionistRole": "موظف استقبال",
+
+  "searchTherapist": "البحث عن معالج...",
+  "therapistOf": "معالج {name}",
+  "parentsWelocome":"تابع جلسات طفلك، المهام، والتحديثات الجديدة..."
 }

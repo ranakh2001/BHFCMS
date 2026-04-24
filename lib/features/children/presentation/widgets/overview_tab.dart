@@ -9,8 +9,14 @@ import '../../../../core/utils/responsive_helper.dart';
 class OverviewTab extends StatelessWidget {
   final bool isDark;
   final ResponsiveHelper res;
+  final bool canViewAiSuggestions;
 
-  const OverviewTab({super.key, required this.isDark, required this.res});
+  const OverviewTab({
+    super.key,
+    required this.isDark,
+    required this.res,
+    this.canViewAiSuggestions = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +37,10 @@ class OverviewTab extends StatelessWidget {
           _buildProgressCard(context, l10n),
           SizedBox(height: res.scaleHeight(AppSpacing.p16)),
           _buildStatsRow(context, l10n),
-          SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-          buildAiBanner(context, l10n, res),
+          if (canViewAiSuggestions) ...[
+            SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+            buildAiBanner(context, l10n, res),
+          ],
         ],
       ),
     );

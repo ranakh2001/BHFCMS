@@ -1,3 +1,5 @@
+import 'package:bhcfms_app/features/auth/domain/entities/user_role.dart';
+import 'package:bhcfms_app/features/children/presentation/screens/child_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/routes.dart';
@@ -45,13 +47,6 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
   // Fixed destinations — same order and screens for every role.
   // To show/hide a tab per role later, add an `if (user.can(...))` guard
   // here and rebuild the list inside `build()` instead of keeping it static.
-  static const List<NavDestination> _destinations = [
-    NavDestination(iconPath: AppIcons.home, screen: HomeScreen()),
-    NavDestination(iconPath: AppIcons.children, screen: ChildrenScreen()),
-    NavDestination(iconPath: AppIcons.schedule, screen: ScheduleScreen()),
-    NavDestination(iconPath: AppIcons.chat, screen: MessagesScreen()),
-    NavDestination(iconPath: AppIcons.profile, screen: ProfileScreen()),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +60,22 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
       });
       return const SizedBox.shrink();
     }
-
+    final user = ref.watch(currentUserProvider);
+    final List<NavDestination> _destinations = [
+      const NavDestination(iconPath: AppIcons.home, screen: HomeScreen()),
+      NavDestination(
+        iconPath: AppIcons.children,
+        screen: user?.role == UserRole.parent
+            ? const ChildDetailsScreen()
+            : const ChildrenScreen(),
+      ),
+      const NavDestination(
+        iconPath: AppIcons.schedule,
+        screen: ScheduleScreen(),
+      ),
+      const NavDestination(iconPath: AppIcons.chat, screen: MessagesScreen()),
+      const NavDestination(iconPath: AppIcons.profile, screen: ProfileScreen()),
+    ];
     return Scaffold(
       extendBody: true,
       body: IndexedStack(

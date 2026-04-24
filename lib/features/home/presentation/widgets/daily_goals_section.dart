@@ -7,7 +7,9 @@ import '../providers/home_provider.dart';
 import 'goal_card.dart';
 
 class DailyGoalsSection extends ConsumerWidget {
-  const DailyGoalsSection({super.key});
+  const DailyGoalsSection({super.key, required this.canEdit});
+
+  final bool canEdit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +50,9 @@ class DailyGoalsSection extends ConsumerWidget {
             title: goalTitles[index],
             subtitle: goalSubtitle,
             isCompleted: completions[index],
-            onToggle: () => ref.read(goalsProvider.notifier).toggle(index),
+            onToggle: canEdit
+                ? () => ref.read(goalsProvider.notifier).toggle(index)
+                : null,
           ),
         ),
       ],

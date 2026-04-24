@@ -34,6 +34,7 @@
     }
   },
   "todayTasks": "Here are your most important tasks and recommendations for today...",
+  "parentsWelocome":"Follow your child's sessions, tasks, and latest updates…",
   "viewAll": "View All",
   "upcomingSessions": "Upcoming Sessions",
   "todayGoals": "Today's Goals",
@@ -460,5 +461,18 @@
   "csS13WearsShoesAlone": "Does the child put on and tie their shoes alone?",
   "csS13WashesFaceOnWaking": "Does the child wash their face upon waking?",
   "csS13WashesHandsBeforeAfterEating": "Does the child wash their hands before and after eating?",
-  "csS13WashesFeetAfterPlay": "Does the child wash their feet after returning from the center or playing?"
+  "csS13WashesFeetAfterPlay": "Does the child wash their feet after returning from the center or playing?",
+
+  "parentRole": "Parent / Guardian",
+  "receptionistRole": "Receptionist",
+
+  "searchTherapist": "Search for a therapist...",
+  "therapistOf": "Therapist of {name}",
+  "@therapistOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

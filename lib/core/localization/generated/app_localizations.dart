@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Here are your most important tasks and recommendations for today...'**
   String get todayTasks;
 
+  /// No description provided for @parentsWelocome.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow your child\'s sessions, tasks, and latest updates…'**
+  String get parentsWelocome;
+
   /// No description provided for @viewAll.
   ///
   /// In en, this message translates to:
@@ -2701,6 +2707,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Does the child wash their feet after returning from the center or playing?'**
   String get csS13WashesFeetAfterPlay;
+
+  /// No description provided for @parentRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent / Guardian'**
+  String get parentRole;
+
+  /// No description provided for @receptionistRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Receptionist'**
+  String get receptionistRole;
+
+  /// No description provided for @searchTherapist.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a therapist...'**
+  String get searchTherapist;
+
+  /// No description provided for @therapistOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Therapist of {name}'**
+  String therapistOf(String name);
 }
 
 class _AppLocalizationsDelegate

@@ -8,8 +8,14 @@ import '../../../../core/utils/responsive_helper.dart';
 class SessionTab extends StatefulWidget {
   final bool isDark;
   final ResponsiveHelper res;
+  final bool canManageSessions;
 
-  const SessionTab({super.key, required this.isDark, required this.res});
+  const SessionTab({
+    super.key,
+    required this.isDark,
+    required this.res,
+    this.canManageSessions = true,
+  });
 
   @override
   State<SessionTab> createState() => _SessionTabState();
@@ -25,6 +31,7 @@ class _SessionTabState extends State<SessionTab> {
     final l10n = AppLocalizations.of(context)!;
     final res = widget.res;
     final isDark = widget.isDark;
+    final canManageSessions = widget.canManageSessions;
 
     final tests = [
       l10n.visualCommunicationTest,
@@ -42,146 +49,148 @@ class _SessionTabState extends State<SessionTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Upload Video
-          _buildUploadCard(
-            context: context,
-            label: l10n.uploadSessionVideo,
-            icon: Icons.videocam_outlined,
-            res: res,
-            isDark: isDark,
-            onTap: () {},
-          ),
-          SizedBox(height: res.scaleHeight(AppSpacing.p12)),
-          // Upload Audio
-          _buildUploadCard(
-            context: context,
-            label: l10n.uploadSessionAudio,
-            icon: Icons.graphic_eq_rounded,
-            res: res,
-            isDark: isDark,
-            onTap: () {},
-          ),
-          SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-          // Assessments section
-          _buildSectionHeader(
-            context: context,
-            title: l10n.assessmentsSection,
-            expanded: _assessmentsExpanded,
-            onTap: () => setState(() => _assessmentsExpanded = !_assessmentsExpanded),
-            res: res,
-            isDark: isDark,
-          ),
-          if (_assessmentsExpanded) ...[
-            SizedBox(height: res.scaleHeight(AppSpacing.p8)),
-            ...List.generate(tests.length, (i) {
-              final selected = _selectedTest == i;
-              return GestureDetector(
-                onTap: () => setState(() => _selectedTest = i),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  margin: EdgeInsets.only(bottom: res.scaleHeight(8)),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: res.scaleSpacing(AppSpacing.p16),
-                    vertical: res.scaleHeight(AppSpacing.p12),
-                  ),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? AppColors.primary
-                        : (isDark ? AppColors.surfaceDark : Colors.white),
-                    borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
-                    border: Border.all(
+          if (canManageSessions) ...[
+            // Upload Video
+            _buildUploadCard(
+              context: context,
+              label: l10n.uploadSessionVideo,
+              icon: Icons.videocam_outlined,
+              res: res,
+              isDark: isDark,
+              onTap: () {},
+            ),
+            SizedBox(height: res.scaleHeight(AppSpacing.p12)),
+            // Upload Audio
+            _buildUploadCard(
+              context: context,
+              label: l10n.uploadSessionAudio,
+              icon: Icons.graphic_eq_rounded,
+              res: res,
+              isDark: isDark,
+              onTap: () {},
+            ),
+            SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+            // Assessments section
+            _buildSectionHeader(
+              context: context,
+              title: l10n.assessmentsSection,
+              expanded: _assessmentsExpanded,
+              onTap: () => setState(() => _assessmentsExpanded = !_assessmentsExpanded),
+              res: res,
+              isDark: isDark,
+            ),
+            if (_assessmentsExpanded) ...[
+              SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+              ...List.generate(tests.length, (i) {
+                final selected = _selectedTest == i;
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedTest = i),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: EdgeInsets.only(bottom: res.scaleHeight(8)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: res.scaleSpacing(AppSpacing.p16),
+                      vertical: res.scaleHeight(AppSpacing.p12),
+                    ),
+                    decoration: BoxDecoration(
                       color: selected
                           ? AppColors.primary
-                          : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
+                          : (isDark ? AppColors.surfaceDark : Colors.white),
+                      borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
+                      border: Border.all(
+                        color: selected
+                            ? AppColors.primary
+                            : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
+                      ),
+                      boxShadow: selected
+                          ? [
+                              BoxShadow(
+                                color: AppColors.primary.withValues(alpha: 0.25),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ]
+                          : [],
                     ),
-                    boxShadow: selected
-                        ? [
-                            BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.25),
-                              blurRadius: 8,
-                              offset: const Offset(0, 3),
-                            ),
-                          ]
-                        : [],
+                    child: Text(
+                      tests[i],
+                      style: TextStyle(
+                        fontSize: res.scaleText(14),
+                        fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                        color: selected
+                            ? Colors.white
+                            : (isDark ? Colors.white : AppColors.textPrimary),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }),
+              SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+              // Parent task checkbox
+              GestureDetector(
+                onTap: () => setState(() => _addParentTask = !_addParentTask),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: res.scaleWidth(24),
+                      height: res.scaleHeight(24),
+                      child: Checkbox(
+                        value: _addParentTask,
+                        onChanged: (v) => setState(() => _addParentTask = v ?? false),
+                        activeColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(res.scaleRadius(4)),
+                        ),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                    SizedBox(width: res.scaleWidth(8)),
+                    Expanded(
+                      child: Text(
+                        l10n.addParentTask,
+                        style: TextStyle(
+                          fontSize: res.scaleText(13),
+                          color: isDark ? Colors.white70 : AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: res.scaleHeight(AppSpacing.p20)),
+              // Start button
+              SizedBox(
+                height: res.scaleHeight(50),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.assessment,
+                      arguments: {
+                        'testName': tests[_selectedTest],
+                        'testIndex': _selectedTest,
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
+                    ),
+                    elevation: 0,
                   ),
                   child: Text(
-                    tests[i],
+                    l10n.startButton,
                     style: TextStyle(
-                      fontSize: res.scaleText(14),
-                      fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
-                      color: selected
-                          ? Colors.white
-                          : (isDark ? Colors.white : AppColors.textPrimary),
+                      fontSize: res.scaleText(16),
+                      fontWeight: FontWeight.bold,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }),
-            SizedBox(height: res.scaleHeight(AppSpacing.p8)),
-            // Parent task checkbox
-            GestureDetector(
-              onTap: () => setState(() => _addParentTask = !_addParentTask),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: res.scaleWidth(24),
-                    height: res.scaleHeight(24),
-                    child: Checkbox(
-                      value: _addParentTask,
-                      onChanged: (v) => setState(() => _addParentTask = v ?? false),
-                      activeColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(res.scaleRadius(4)),
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                  ),
-                  SizedBox(width: res.scaleWidth(8)),
-                  Expanded(
-                    child: Text(
-                      l10n.addParentTask,
-                      style: TextStyle(
-                        fontSize: res.scaleText(13),
-                        color: isDark ? Colors.white70 : AppColors.textSecondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: res.scaleHeight(AppSpacing.p20)),
-            // Start button
-            SizedBox(
-              height: res.scaleHeight(50),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.assessment,
-                    arguments: {
-                      'testName': tests[_selectedTest],
-                      'testIndex': _selectedTest,
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  l10n.startButton,
-                  style: TextStyle(
-                    fontSize: res.scaleText(16),
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
+            ],
           ],
         ],
       ),

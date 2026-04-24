@@ -87,6 +87,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Here are your most important tasks and recommendations for today...';
 
   @override
+  String get parentsWelocome =>
+      'Follow your child\'s sessions, tasks, and latest updates…';
+
+  @override
   String get viewAll => 'View All';
 
   @override
@@ -1397,4 +1401,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get csS13WashesFeetAfterPlay =>
       'Does the child wash their feet after returning from the center or playing?';
+
+  @override
+  String get parentRole => 'Parent / Guardian';
+
+  @override
+  String get receptionistRole => 'Receptionist';
+
+  @override
+  String get searchTherapist => 'Search for a therapist...';
+
+  @override
+  String therapistOf(String name) {
+    return 'Therapist of $name';
+  }
 }
