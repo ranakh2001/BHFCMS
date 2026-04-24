@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
               if (user?.role == UserRole.therapist) const DateSelector(),
               if (user?.role == UserRole.parent) const ChildCard(),
               SizedBox(height: res.scaleHeight(32)),
-              const ChildProgress(),
+              if (user?.role == UserRole.parent) const ChildProgress(),
               if (user?.role == UserRole.therapist)
                 const UpcomingSessionsSection(),
               if (user?.role == UserRole.parent)
