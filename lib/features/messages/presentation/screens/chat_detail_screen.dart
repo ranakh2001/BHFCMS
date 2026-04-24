@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
+import '../../../../core/permissions/user_role_policy.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../providers/messages_provider.dart';
@@ -53,6 +54,8 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final state = ref.watch(messagesProvider);
+    final policy = ref.watch(currentPolicyProvider);
+    final isParent = !(policy?.canManageSessions ?? true);
     final conversation = state.conversations.firstWhere(
       (c) => c.id == widget.conversationId,
     );
@@ -65,7 +68,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
         child: Column(
           children: [
             _buildAppBar(context, res, l10n, isDark, conversation.guardianName,
-                conversation.childName),
+                conversation.childName, isParent),
             Divider(
               height: 1,
               color: isDark
@@ -106,6 +109,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     bool isDark,
     String name,
     String childName,
+    bool isParent,
   ) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -128,7 +132,9 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                 ),
               ),
               Text(
-                '(${l10n.guardianOf(childName)})',
+                isParent
+                    ? '(${l10n.therapistOf(childName)})'
+                    : '(${l10n.guardianOf(childName)})',
                 style: TextStyle(
                   fontSize: res.scaleText(12),
                   color: AppColors.textSecondary,

@@ -24,8 +24,14 @@ class _PlanGoal {
 class TreatmentPlanTab extends StatefulWidget {
   final bool isDark;
   final ResponsiveHelper res;
+  final bool canEdit;
 
-  const TreatmentPlanTab({super.key, required this.isDark, required this.res});
+  const TreatmentPlanTab({
+    super.key,
+    required this.isDark,
+    required this.res,
+    this.canEdit = true,
+  });
 
   @override
   State<TreatmentPlanTab> createState() => _TreatmentPlanTabState();
@@ -88,7 +94,7 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p12)),
           // Goals list
-          ...List.generate(_goals.length, (i) => _buildGoalItem(i, res, isDark, l10n)),
+          ...List.generate(_goals.length, (i) => _buildGoalItem(i, res, isDark, l10n, widget.canEdit)),
         ],
       ),
     );
@@ -210,6 +216,7 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
     ResponsiveHelper res,
     bool isDark,
     AppLocalizations l10n,
+    bool canEdit,
   ) {
     final goal = _goals[index];
     final (statusLabel, statusColor) = _getStatusInfo(goal.status, l10n);
@@ -281,7 +288,9 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
             Divider(height: 1, color: isDark ? Colors.grey[700] : Colors.grey[200]),
             ...List.generate(goal.subGoals.length, (si) {
               return GestureDetector(
-                onTap: () => setState(() => goal.subChecked[si] = !goal.subChecked[si]),
+                onTap: canEdit
+                    ? () => setState(() => goal.subChecked[si] = !goal.subChecked[si])
+                    : null,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: res.scaleSpacing(AppSpacing.p16),
@@ -294,7 +303,9 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
                         height: res.scaleHeight(22),
                         child: Checkbox(
                           value: goal.subChecked[si],
-                          onChanged: (v) => setState(() => goal.subChecked[si] = v ?? false),
+                          onChanged: canEdit
+                              ? (v) => setState(() => goal.subChecked[si] = v ?? false)
+                              : null,
                           activeColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(res.scaleRadius(4)),

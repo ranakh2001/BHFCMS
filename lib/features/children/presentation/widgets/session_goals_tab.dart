@@ -9,8 +9,14 @@ import '../../../../core/utils/responsive_helper.dart';
 class SessionGoalsTab extends StatefulWidget {
   final bool isDark;
   final ResponsiveHelper res;
+  final bool canEdit;
 
-  const SessionGoalsTab({super.key, required this.isDark, required this.res});
+  const SessionGoalsTab({
+    super.key,
+    required this.isDark,
+    required this.res,
+    this.canEdit = true,
+  });
 
   @override
   State<SessionGoalsTab> createState() => _SessionGoalsTabState();
@@ -42,6 +48,7 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
     final l10n = AppLocalizations.of(context)!;
     final res = widget.res;
     final isDark = widget.isDark;
+    final canEdit = widget.canEdit;
 
     return Column(
       children: [
@@ -57,7 +64,7 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Main goal dropdown
-                _buildDropdown(context, l10n, res, isDark),
+                _buildDropdown(context, l10n, res, isDark, canEdit),
                 SizedBox(height: res.scaleHeight(AppSpacing.p20)),
                 // Goals section
                 Text(
@@ -71,48 +78,49 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
                 ),
                 SizedBox(height: res.scaleHeight(AppSpacing.p12)),
                 ...List.generate(_sessionGoals.length, (i) {
-                  return _buildGoalItem(context, i, res, isDark);
+                  return _buildGoalItem(context, i, res, isDark, canEdit);
                 }),
-                SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-                // AI suggestions banner
-                buildAiBanner(context, l10n, res),
+                if (canEdit) ...[
+                  SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+                  buildAiBanner(context, l10n, res),
+                ],
               ],
             ),
           ),
         ),
-        // End session button
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            res.scaleSpacing(AppSpacing.p16),
-            0,
-            res.scaleSpacing(AppSpacing.p16),
-            res.scaleHeight(AppSpacing.p16),
-          ),
-          child: SizedBox(
-            height: res.scaleHeight(50),
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () => SessionNotesBottomSheet.show(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    res.scaleRadius(AppSpacing.radiusMd),
+        if (canEdit)
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              res.scaleSpacing(AppSpacing.p16),
+              0,
+              res.scaleSpacing(AppSpacing.p16),
+              res.scaleHeight(AppSpacing.p16),
+            ),
+            child: SizedBox(
+              height: res.scaleHeight(50),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => SessionNotesBottomSheet.show(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      res.scaleRadius(AppSpacing.radiusMd),
+                    ),
                   ),
+                  elevation: 0,
                 ),
-                elevation: 0,
-              ),
-              child: Text(
-                l10n.endSession,
-                style: TextStyle(
-                  fontSize: res.scaleText(16),
-                  fontWeight: FontWeight.bold,
+                child: Text(
+                  l10n.endSession,
+                  style: TextStyle(
+                    fontSize: res.scaleText(16),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -122,6 +130,7 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
     AppLocalizations l10n,
     ResponsiveHelper res,
     bool isDark,
+    bool canEdit,
   ) {
     return Container(
       height: res.scaleHeight(50),
@@ -166,7 +175,7 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
             items: _mainGoals
                 .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                 .toList(),
-            onChanged: (v) => setState(() => _selectedMainGoal = v),
+            onChanged: canEdit ? (v) => setState(() => _selectedMainGoal = v) : null,
           ),
         ),
       ),
@@ -178,9 +187,12 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
     int index,
     ResponsiveHelper res,
     bool isDark,
+    bool canEdit,
   ) {
     return GestureDetector(
-      onTap: () => setState(() => _goalChecked[index] = !_goalChecked[index]),
+      onTap: canEdit
+          ? () => setState(() => _goalChecked[index] = !_goalChecked[index])
+          : null,
       child: Container(
         margin: EdgeInsets.only(bottom: res.scaleHeight(8)),
         padding: EdgeInsets.symmetric(
@@ -216,8 +228,9 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
               height: res.scaleHeight(24),
               child: Checkbox(
                 value: _goalChecked[index],
-                onChanged: (v) =>
-                    setState(() => _goalChecked[index] = v ?? false),
+                onChanged: canEdit
+                    ? (v) => setState(() => _goalChecked[index] = v ?? false)
+                    : null,
                 activeColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(res.scaleRadius(4)),

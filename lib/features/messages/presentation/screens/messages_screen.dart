@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
+import '../../../../core/permissions/user_role_policy.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../providers/messages_provider.dart';
@@ -30,6 +31,8 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final state = ref.watch(messagesProvider);
     final conversations = state.filteredConversations;
+    final policy = ref.watch(currentPolicyProvider);
+    final isParent = !(policy?.canManageSessions ?? true);
 
     return Scaffold(
       backgroundColor:
@@ -39,7 +42,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
           children: [
             _buildAppBar(context, res, l10n, isDark),
             SizedBox(height: res.scaleHeight(12)),
-            _buildSearchBar(context, res, l10n, isDark),
+            _buildSearchBar(context, res, l10n, isDark, isParent),
             SizedBox(height: res.scaleHeight(8)),
             Expanded(
               child: conversations.isEmpty
@@ -58,6 +61,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                         final conv = conversations[index];
                         return ConversationListItem(
                           conversation: conv,
+                          showTherapistLabel: isParent,
                           onTap: () {
                             ref
                                 .read(messagesProvider.notifier)
@@ -118,6 +122,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
     ResponsiveHelper res,
     AppLocalizations l10n,
     bool isDark,
+    bool isParent,
   ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(16)),
@@ -145,7 +150,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
             color: isDark ? Colors.white : AppColors.textPrimary,
           ),
           decoration: InputDecoration(
-            hintText: l10n.searchGuardian,
+            hintText: isParent ? l10n.searchTherapist : l10n.searchGuardian,
             hintStyle: TextStyle(
               fontSize: res.scaleText(13),
               color: AppColors.textSecondary,

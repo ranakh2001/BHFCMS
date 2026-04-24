@@ -2,19 +2,34 @@ import 'package:flutter/material.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../auth/domain/entities/user.dart';
+import '../../../auth/domain/entities/user_role.dart';
 import 'therapist_avatar.dart';
 
 class ProfileCard extends StatelessWidget {
   final ResponsiveHelper res;
   final AppLocalizations l10n;
   final bool isDark;
+  final User user;
 
   const ProfileCard({
     super.key,
     required this.res,
     required this.l10n,
     required this.isDark,
+    required this.user,
   });
+
+  String _roleLabel() {
+    switch (user.role) {
+      case UserRole.therapist:
+        return l10n.speechTherapist;
+      case UserRole.parent:
+        return l10n.parentRole;
+      case UserRole.receptionist:
+        return l10n.receptionistRole;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +47,7 @@ class ProfileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // ── Accent bar ──────────────────────────────────────────
           Container(
             width: res.scaleWidth(5),
             height: res.scaleHeight(110),
@@ -44,7 +60,7 @@ class ProfileCard extends StatelessWidget {
             ),
           ),
 
-          // Avatar
+          // ── Avatar ──────────────────────────────────────────────
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: res.scaleSpacing(14),
@@ -53,51 +69,53 @@ class ProfileCard extends StatelessWidget {
             child: TherapistAvatar(res: res),
           ),
 
-          // Name / role / center
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: res.scaleSpacing(16)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'محمد سمير',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    fontSize: res.scaleText(16),
-                    fontWeight: FontWeight.w800,
-                    color: isDark ? Colors.white : AppColors.textPrimary,
+          // ── Name / role / center ─────────────────────────────────
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: res.scaleSpacing(16)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.name,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: res.scaleText(16),
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? Colors.white : AppColors.textPrimary,
+                    ),
                   ),
-                ),
-                SizedBox(height: res.scaleHeight(4)),
-                Text(
-                  l10n.speechTherapist,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    fontSize: res.scaleText(12),
-                    color: AppColors.textSecondary,
+                  SizedBox(height: res.scaleHeight(4)),
+                  Text(
+                    _roleLabel(),
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: res.scaleText(12),
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-                SizedBox(height: res.scaleHeight(8)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      l10n.centerName,
-                      style: TextStyle(
-                        fontSize: res.scaleText(11),
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
+                  SizedBox(height: res.scaleHeight(8)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        l10n.centerName,
+                        style: TextStyle(
+                          fontSize: res.scaleText(11),
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: res.scaleSpacing(4)),
-                    Icon(
-                      Icons.business_rounded,
-                      size: res.scaleWidth(14),
-                      color: AppColors.primary,
-                    ),
-                  ],
-                ),
-              ],
+                      SizedBox(width: res.scaleSpacing(4)),
+                      Icon(
+                        Icons.business_rounded,
+                        size: res.scaleWidth(14),
+                        color: AppColors.primary,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(width: res.scaleSpacing(4)),

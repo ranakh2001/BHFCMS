@@ -21,6 +21,10 @@ class ProfileScreen extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final profileState = ref.watch(profileProvider);
     final currentLocale = ref.watch(localeProvider);
+    final user = ref.watch(currentUserProvider);
+
+    // Guard: should never be null on this screen, but be safe.
+    if (user == null) return const SizedBox.shrink();
 
     return Scaffold(
       backgroundColor: isDark
@@ -39,7 +43,12 @@ class ProfileScreen extends ConsumerWidget {
               // ── Profile Card ───────────────────────────────────────
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(16)),
-                child: ProfileCard(res: res, l10n: l10n, isDark: isDark),
+                child: ProfileCard(
+                  res: res,
+                  l10n: l10n,
+                  isDark: isDark,
+                  user: user,
+                ),
               ),
               SizedBox(height: res.scaleHeight(28)),
 

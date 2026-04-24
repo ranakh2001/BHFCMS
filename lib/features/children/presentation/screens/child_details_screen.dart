@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
+import '../../../../core/permissions/user_role_policy.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
@@ -10,14 +12,14 @@ import '../widgets/treatment_plan_tab.dart';
 import '../widgets/overview_tab.dart';
 import '../widgets/session_notes_bottom_sheet.dart';
 
-class ChildDetailsScreen extends StatefulWidget {
+class ChildDetailsScreen extends ConsumerStatefulWidget {
   const ChildDetailsScreen({super.key});
 
   @override
-  State<ChildDetailsScreen> createState() => _ChildDetailsScreenState();
+  ConsumerState<ChildDetailsScreen> createState() => _ChildDetailsScreenState();
 }
 
-class _ChildDetailsScreenState extends State<ChildDetailsScreen>
+class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -56,6 +58,9 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen>
     final l10n = AppLocalizations.of(context)!;
     final res = ResponsiveHelper(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final policy = ref.watch(currentPolicyProvider);
+    final canManageSessions = policy?.canManageSessions ?? false;
+    final canViewAiSuggestions = policy?.canViewAiSuggestions ?? false;
 
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
@@ -137,10 +142,10 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                OverviewTab(isDark: isDark, res: res),
-                TreatmentPlanTab(isDark: isDark, res: res),
-                SessionGoalsTab(isDark: isDark, res: res),
-                SessionTab(isDark: isDark, res: res),
+                OverviewTab(isDark: isDark, res: res, canViewAiSuggestions: canViewAiSuggestions),
+                TreatmentPlanTab(isDark: isDark, res: res, canEdit: canManageSessions),
+                SessionGoalsTab(isDark: isDark, res: res, canEdit: canManageSessions),
+                SessionTab(isDark: isDark, res: res, canManageSessions: canManageSessions),
               ],
             ),
           ),

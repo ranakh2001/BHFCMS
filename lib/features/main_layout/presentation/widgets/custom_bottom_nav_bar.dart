@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../core/constants/app_icons.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
-
-class _NavItem {
-  final String iconPath;
-
-  const _NavItem(this.iconPath);
-}
 
 class CustomBottomNavBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
+  /// Icon asset paths — one per tab. Driven by [MainLayoutScreen] so the
+  /// bar has no knowledge of roles or feature flags.
+  final List<String> iconPaths;
+
   const CustomBottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    required this.iconPaths,
   });
 
   @override
@@ -26,17 +24,7 @@ class CustomBottomNavBar extends StatefulWidget {
 
 class _CustomBottomNavBarState extends State<CustomBottomNavBar>
     with SingleTickerProviderStateMixin {
-  static const _items = [
-    _NavItem(AppIcons.home),
-    _NavItem(AppIcons.children),
-    _NavItem(AppIcons.schedule),
-    _NavItem(AppIcons.chat),
-    _NavItem(AppIcons.profile),
-  ];
-
   late AnimationController _controller;
-
-  // Animates the fractional slot index (e.g. 0.0 → 4.0)
   late Animation<double> _slotAnimation;
   int _prevIndex = 0;
 
@@ -48,8 +36,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _slotAnimation =
-        AlwaysStoppedAnimation(widget.currentIndex.toDouble());
+    _slotAnimation = AlwaysStoppedAnimation(widget.currentIndex.toDouble());
   }
 
   @override
@@ -59,9 +46,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
       _slotAnimation = Tween<double>(
         begin: _prevIndex.toDouble(),
         end: widget.currentIndex.toDouble(),
-      ).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-      );
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
       _controller.forward(from: 0);
       _prevIndex = widget.currentIndex;
     }
@@ -78,6 +63,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
     final res = ResponsiveHelper(context);
     final bottomInset = MediaQuery.of(context).padding.bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final itemCount = widget.iconPaths.length;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -108,23 +94,19 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
           child: LayoutBuilder(
             builder: (context, constraints) {
               final totalWidth = constraints.maxWidth;
-              final isRtl =
-                  Directionality.of(context) == TextDirection.rtl;
+              final isRtl = Directionality.of(context) == TextDirection.rtl;
               final indicatorWidth = res.scaleWidth(20);
               final indicatorHeight = res.scaleHeight(3);
               final bottomPad = res.scaleSpacing(5);
 
               return Stack(
                 children: [
-                  // Pixel-precise animated indicator
                   AnimatedBuilder(
                     animation: _slotAnimation,
-                    builder: (context, child) {
-                      final slotWidth = totalWidth / _items.length;
-                      // Center of the animated fractional slot
+                    builder: (context, _) {
+                      final slotWidth = totalWidth / itemCount;
                       double centerX =
                           (_slotAnimation.value + 0.5) * slotWidth;
-                      // Flip for RTL so slot 0 maps to the right side
                       if (isRtl) centerX = totalWidth - centerX;
                       final left = centerX - indicatorWidth / 2;
 
@@ -137,22 +119,20 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar>
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(
-                              res.scaleRadius(2),
-                            ),
+                                res.scaleRadius(2)),
                           ),
                         ),
                       );
                     },
                   ),
-                  // Nav items
                   Row(
                     children: List.generate(
-                      _items.length,
-                      (index) => Expanded(
+                      itemCount,
+                      (i) => Expanded(
                         child: _NavItemTile(
-                          iconPath: _items[index].iconPath,
-                          isSelected: widget.currentIndex == index,
-                          onTap: () => widget.onTap(index),
+                          iconPath: widget.iconPaths[i],
+                          isSelected: widget.currentIndex == i,
+                          onTap: () => widget.onTap(i),
                           res: res,
                         ),
                       ),
