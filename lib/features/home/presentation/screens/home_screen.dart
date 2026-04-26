@@ -10,6 +10,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../widgets/daily_goals_section.dart';
 import '../widgets/date_selector.dart';
 import '../widgets/home_app_bar.dart';
+import '../widgets/receptionist_dashboard.dart';
 import '../widgets/upcoming_sessions_section.dart';
 import '../widgets/welcome_header.dart';
 
@@ -41,16 +42,30 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(height: res.scaleHeight(16)),
               WelcomeHeader(userName: userName),
               SizedBox(height: res.scaleHeight(24)),
+              
+              // ── Receptionist Dashboard ──────────────────────────────
+              if (user?.role == UserRole.receptionist)
+                const ReceptionistDashboard(),
+
+              // ── Role Specific Content ──────────────────────────────
               if (user?.role == UserRole.therapist) const DateSelector(),
               if (user?.role == UserRole.parent) const ChildCard(),
-              SizedBox(height: res.scaleHeight(32)),
+              
+              if (user?.role != UserRole.receptionist)
+                SizedBox(height: res.scaleHeight(32)),
+                
               if (user?.role == UserRole.parent) const ChildProgress(),
               if (user?.role == UserRole.therapist)
                 const UpcomingSessionsSection(),
+              
               if (user?.role == UserRole.parent)
                 SizedBox(height: res.scaleHeight(32)),
-              DailyGoalsSection(canEdit: policy?.canManageSessions ?? false),
-              SizedBox(height: res.scaleHeight(48)),
+              
+              if (user?.role != UserRole.receptionist)
+                DailyGoalsSection(canEdit: policy?.canManageSessions ?? false),
+              
+              if (user?.role != UserRole.receptionist)
+                SizedBox(height: res.scaleHeight(48)),
             ],
           ),
         ),

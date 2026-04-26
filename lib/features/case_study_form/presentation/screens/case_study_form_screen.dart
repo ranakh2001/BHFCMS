@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/providers.dart';
 import '../../../../config/routes.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../../features/auth/presentation/widgets/language_switcher_button.dart';
 import '../../domain/entities/case_study_form_data.dart';
 import '../providers/case_study_provider.dart';
 import '../sections/section_1_child_info.dart';
@@ -17,8 +19,10 @@ import '../sections/section_8_motor_development.dart';
 import '../sections/section_9_language.dart';
 import '../sections/section_10_cognitive.dart';
 import '../sections/section_11_social.dart';
-import '../sections/section_12_educational.dart';
-import '../sections/section_13_self_care.dart';
+import '../sections/section_12_documents_consent.dart';
+import '../sections/section_13_assessment_plan.dart';
+import '../sections/section_14_daily_routine.dart';
+import '../sections/section_15_signatures.dart';
 import '../widgets/form_step_indicator.dart';
 
 /// Main wrapper that hosts all 13 sections in a non-swipeable [PageView].
@@ -111,13 +115,23 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
     _animateToStep(11);
   }
 
-  Future<void> _onSection12Next(Section12Data data) async {
-    await ref.read(caseStudyFormProvider.notifier).submitSection12(data);
+  Future<void> _onSection12Next(SectionDocumentsConsentData data) async {
+    await ref.read(caseStudyFormProvider.notifier).submitSectionDocs(data);
     _animateToStep(12);
   }
 
   Future<void> _onSection13Next(Section13Data data) async {
     await ref.read(caseStudyFormProvider.notifier).submitSection13(data);
+    _animateToStep(13);
+  }
+
+  Future<void> _onSection14Next(Section14Data data) async {
+    await ref.read(caseStudyFormProvider.notifier).submitSection14(data);
+    _animateToStep(14);
+  }
+
+  Future<void> _onSection15Next(Section15Data data) async {
+    await ref.read(caseStudyFormProvider.notifier).submitSection15(data);
     if (mounted) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.main);
     }
@@ -126,6 +140,8 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
   @override
   Widget build(BuildContext context) {
     final formState = ref.watch(caseStudyFormProvider);
+    final isArabic = ref.watch(localeProvider) == 'ar';
+    final textDir = isArabic ? TextDirection.rtl : TextDirection.ltr;
 
     // Handles two post-load scenarios detected by the isLoading transition:
     // 1. Form already completed (crash-recovery path) → navigate to Home.
@@ -144,7 +160,9 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
       }
     });
 
-    return PopScope(
+    return Directionality(
+      textDirection: textDir,
+      child: PopScope(
       canPop: formState.currentStep == 0,
       onPopInvokedWithResult: (didPop, _) async {
         if (!didPop && formState.currentStep > 0) {
@@ -161,6 +179,30 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
                   child: CircularProgressIndicator(color: AppColors.primary))
               : Column(
                   children: [
+                    // ── Header Row ───────────────────────────
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+                            onPressed: () async {
+                              if (formState.currentStep > 0) {
+                                final prev = formState.currentStep - 1;
+                                await ref.read(caseStudyFormProvider.notifier).goBack();
+                                _animateToStep(prev);
+                              } else {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                          ),
+                          const LanguageSwitcherButton(),
+                        ],
+                      ),
+                    ),
+
                     // ── Progress bar ────────────────────────────────────
                     FormStepIndicator(
                       currentStep: formState.currentStep,
@@ -261,19 +303,35 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
                               isSaving: formState.isSaving,
                             ),
                           ),
-                          // ── Section 12: Educational ───────────────────
+                          // ── Section 12: Documents & Consents ─────────
                           _SectionPage(
-                            child: Section12Educational(
-                              initialData: formState.section12,
+                            child: Section12DocumentsConsent(
+                              initialData: formState.sectionDocs,
                               onNext: _onSection12Next,
                               isSaving: formState.isSaving,
                             ),
                           ),
-                          // ── Section 13: Self-Care ─────────────────────
+                          // ── Section 13: Assessment & Follow-up Plan ───
                           _SectionPage(
-                            child: Section13SelfCare(
+                            child: Section13AssessmentPlan(
                               initialData: formState.section13,
                               onNext: _onSection13Next,
+                              isSaving: formState.isSaving,
+                            ),
+                          ),
+                          // ── Section 14: Daily Routine ─────────────────
+                          _SectionPage(
+                            child: Section14DailyRoutine(
+                              initialData: formState.section14,
+                              onNext: _onSection14Next,
+                              isSaving: formState.isSaving,
+                            ),
+                          ),
+                          // ── Section 15: Signatures ────────────────────
+                          _SectionPage(
+                            child: Section15Signatures(
+                              initialData: formState.section15,
+                              onNext: _onSection15Next,
                               isSaving: formState.isSaving,
                             ),
                           ),
@@ -284,6 +342,7 @@ class _CaseStudyFormScreenState extends ConsumerState<CaseStudyFormScreen> {
                 ),
         ),
       ),
+    ),
     );
   }
 }

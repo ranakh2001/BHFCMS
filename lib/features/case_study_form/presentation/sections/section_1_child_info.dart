@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
+import '../../../../core/utils/responsive_helper.dart';
 import '../../domain/entities/case_study_form_data.dart';
-import '../widgets/form_date_picker_field.dart';
-import '../widgets/form_dropdown_field.dart';
 import '../widgets/form_labeled_field.dart';
 import '../widgets/form_next_button.dart';
 
@@ -29,77 +28,82 @@ class Section1ChildInfo extends StatefulWidget {
 class _Section1ChildInfoState extends State<Section1ChildInfo> {
   final _formKey = GlobalKey<FormState>();
 
-  late final TextEditingController _childNameCtrl;
-  late final TextEditingController _placeOfBirthCtrl;
-  late final TextEditingController _gradeCtrl;
-  late final TextEditingController _childAgeCtrl;
-  late final TextEditingController _nationalityCtrl;
-  late final TextEditingController _familyRankCtrl;
+  late String _referralSource;
+  late final TextEditingController _referralOtherCtrl;
+  late final TextEditingController _mainReasonCtrl;
 
-  DateTime? _dateOfBirth;
-  DateTime? _centerJoinDate;
-  String? _gender;
-
-  String? _dobError;
-  String? _joinDateError;
-  String? _genderError;
+  static const _referralOptions = [
+    'self',
+    'doctor',
+    'school',
+    'other_center',
+    'other',
+  ];
 
   @override
   void initState() {
     super.initState();
     final d = widget.initialData;
-    _childNameCtrl = TextEditingController(text: d?.childName ?? '');
-    _placeOfBirthCtrl = TextEditingController(text: d?.placeOfBirth ?? '');
-    _gradeCtrl = TextEditingController(text: d?.grade ?? '');
-    _childAgeCtrl = TextEditingController(text: d?.childAge ?? '');
-    _nationalityCtrl = TextEditingController(text: d?.nationality ?? '');
-    _familyRankCtrl = TextEditingController(text: d?.familyRank ?? '');
-    _dateOfBirth = d?.dateOfBirth;
-    _centerJoinDate = d?.centerJoinDate;
-    _gender = d?.gender.isEmpty ?? true ? null : d!.gender;
+    _referralSource = (d?.referralSource.isNotEmpty ?? false)
+        ? d!.referralSource
+        : '';
+    _referralOtherCtrl = TextEditingController(
+      text: d?.referralSourceOther ?? '',
+    );
+    _mainReasonCtrl = TextEditingController(text: d?.mainServiceReason ?? '');
   }
 
   @override
   void dispose() {
-    _childNameCtrl.dispose();
-    _placeOfBirthCtrl.dispose();
-    _gradeCtrl.dispose();
-    _childAgeCtrl.dispose();
-    _nationalityCtrl.dispose();
-    _familyRankCtrl.dispose();
+    _referralOtherCtrl.dispose();
+    _mainReasonCtrl.dispose();
     super.dispose();
   }
 
-  bool _validate(AppLocalizations l10n) {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    bool extraValid = true;
-
-    setState(() {
-      _dobError = _dateOfBirth == null ? l10n.validationRequired : null;
-      _joinDateError = _centerJoinDate == null ? l10n.validationRequired : null;
-      _genderError = (_gender == null || _gender!.isEmpty) ? l10n.validationRequired : null;
-    });
-
-    if (_dobError != null || _joinDateError != null || _genderError != null) {
-      extraValid = false;
+  String _referralLabel(String value, AppLocalizations l10n) {
+    switch (value) {
+      case 'self':
+        return l10n.csReferralSelf;
+      case 'doctor':
+        return l10n.csReferralDoctor;
+      case 'school':
+        return l10n.csReferralSchool;
+      case 'other_center':
+        return l10n.csReferralOtherCenter;
+      case 'other':
+        return l10n.csReferralOther;
+      default:
+        return value;
     }
-
-    return formValid && extraValid;
   }
 
   void _submit(AppLocalizations l10n) {
-    if (!_validate(l10n)) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (_referralSource.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    final d = widget.initialData;
     widget.onNext(
       Section1Data(
-        childName: _childNameCtrl.text.trim(),
-        placeOfBirth: _placeOfBirthCtrl.text.trim(),
-        dateOfBirth: _dateOfBirth,
-        grade: _gradeCtrl.text.trim(),
-        childAge: _childAgeCtrl.text.trim(),
-        gender: _gender ?? '',
-        nationality: _nationalityCtrl.text.trim(),
-        familyRank: _familyRankCtrl.text.trim(),
-        centerJoinDate: _centerJoinDate,
+        childName: d?.childName ?? '',
+        referenceNumber: d?.referenceNumber ?? '',
+        dateOfBirth: d?.dateOfBirth,
+        childAge: d?.childAge ?? '',
+        gender: d?.gender ?? '',
+        nationality: d?.nationality ?? '',
+        primaryLanguage: d?.primaryLanguage ?? '',
+        address: d?.address ?? '',
+        caregiverName: d?.caregiverName ?? '',
+        caregiverRelationship: d?.caregiverRelationship ?? '',
+        phoneNumber: d?.phoneNumber ?? '',
+        email: d?.email ?? '',
+        referralSource: _referralSource,
+        referralSourceOther: _referralSource == 'other'
+            ? _referralOtherCtrl.text.trim()
+            : '',
+        mainServiceReason: _mainReasonCtrl.text.trim(),
       ),
     );
   }
@@ -107,132 +111,188 @@ class _Section1ChildInfoState extends State<Section1ChildInfo> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final res = ResponsiveHelper(context);
+    final d = widget.initialData;
+
+    final dateStr = d?.dateOfBirth != null
+        ? DateFormat('dd/MM/yyyy').format(d!.dateOfBirth!)
+        : '';
 
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // ── Section title ─────────────────────────────────────────────────
           Text(
             l10n.csSection1Title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.p24),
+          const SizedBox(height: AppSpacing.p20),
 
-          FormLabeledField(
-            label: l10n.csChildName,
-            hint: l10n.csChildNameHint,
-            controller: _childNameCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
-          ),
+          // ── Child data display block ──────────────────────────────────────
+          _SectionDivider(label: l10n.csChildInfoDisplaySection),
           const SizedBox(height: AppSpacing.p16),
 
-          FormLabeledField(
-            label: l10n.csPlaceOfBirth,
-            hint: l10n.csPlaceOfBirthHint,
-            controller: _placeOfBirthCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
+          _ReadOnlyField(label: l10n.csChildName, value: d?.childName ?? ''),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csReferenceNumber,
+            value: d?.referenceNumber ?? '',
           ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(label: l10n.csDateOfBirth, value: dateStr),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(label: l10n.csChildAge, value: d?.childAge ?? ''),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(label: l10n.csGender, value: d?.gender ?? ''),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csNationality,
+            value: d?.nationality ?? '',
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csPrimaryLanguage,
+            value: d?.primaryLanguage ?? '',
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csFullAddress,
+            value: d?.address ?? '',
+            maxLines: 3,
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csCaregiverName,
+            value: d?.caregiverName ?? '',
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csCaregiverRelationship,
+            value: d?.caregiverRelationship ?? '',
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(
+            label: l10n.csPhoneNumber,
+            value: d?.phoneNumber ?? '',
+          ),
+          const SizedBox(height: AppSpacing.p12),
+          _ReadOnlyField(label: l10n.csEmailAddress, value: d?.email ?? ''),
+          const SizedBox(height: AppSpacing.p20),
+
+          // ── Referral & reason block ───────────────────────────────────────
+          _SectionDivider(label: l10n.csReferralInfoSection),
           const SizedBox(height: AppSpacing.p16),
 
-          FormDatePickerField(
-            label: l10n.csDateOfBirth,
-            value: _dateOfBirth,
-            lastDate: DateTime.now(),
-            errorText: _dobError,
-            onChanged: (d) => setState(() {
-              _dateOfBirth = d;
-              _dobError = null;
-            }),
+          // Referral source label
+          Text(
+            l10n.csReferralSource,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+            textAlign: TextAlign.start,
           ),
-          const SizedBox(height: AppSpacing.p16),
+          const SizedBox(height: AppSpacing.p8),
 
-          FormLabeledField(
-            label: l10n.csGrade,
-            hint: l10n.csGradeHint,
-            controller: _gradeCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
+          // Radio buttons in a wrap (responsive)
+          Wrap(
+            spacing: res.scaleSpacing(8),
+            runSpacing: res.scaleSpacing(4),
+            children: _referralOptions.map((option) {
+              final isSelected = _referralSource == option;
+              return GestureDetector(
+                onTap: () => setState(() => _referralSource = option),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.textSecondary,
+                          width: isSelected ? 2 : 1.5,
+                        ),
+                      ),
+                      child: isSelected
+                          ? Center(
+                              child: Container(
+                                width: 10,
+                                height: 10,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            )
+                          : null,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      _referralLabel(option, l10n),
+                      style: TextStyle(
+                        fontSize: res.scaleText(13),
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.textPrimary,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          FormLabeledField(
-            label: l10n.csChildAge,
-            hint: l10n.csChildAgeHint,
-            controller: _childAgeCtrl,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          FormDropdownField<String>(
-            label: l10n.csGender,
-            hint: l10n.csGenderHint,
-            initialValue: _gender,
-            onChanged: (v) => setState(() {
-              _gender = v;
-              _genderError = null;
-            }),
-            validator: (v) =>
-                (v == null || v.isEmpty) ? l10n.validationRequired : null,
-            items: [
-              DropdownMenuItem(
-                value: 'male',
-                child: Text(l10n.csGenderMale),
-              ),
-              DropdownMenuItem(
-                value: 'female',
-                child: Text(l10n.csGenderFemale),
-              ),
-            ],
-          ),
-          if (_genderError != null) ...[
+          if (_referralSource.isEmpty) ...[
             const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                _genderError!,
-                style: const TextStyle(color: AppColors.error, fontSize: 12),
-              ),
+            Text(
+              l10n.validationRequired,
+              style: const TextStyle(color: AppColors.error, fontSize: 12),
             ),
           ],
-          const SizedBox(height: AppSpacing.p16),
+          const SizedBox(height: AppSpacing.p12),
 
+          // Conditional "other" text field
+          if (_referralSource == 'other') ...[
+            Text(
+              l10n.csReferralOtherNote,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: AppSpacing.p8),
+            FormLabeledField(
+              label: l10n.csReferralSource,
+              hint: l10n.csReferralOtherHint,
+              controller: _referralOtherCtrl,
+              validator: (v) => (v == null || v.trim().isEmpty)
+                  ? l10n.validationRequired
+                  : null,
+            ),
+            const SizedBox(height: AppSpacing.p12),
+          ],
+
+          // Main service reason
           FormLabeledField(
-            label: l10n.csNationality,
-            hint: l10n.csNationalityHint,
-            controller: _nationalityCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          FormLabeledField(
-            label: l10n.csFamilyRank,
-            hint: l10n.csFamilyRankHint,
-            controller: _familyRankCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? l10n.validationRequired : null,
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          FormDatePickerField(
-            label: l10n.csCenterJoinDate,
-            value: _centerJoinDate,
-            lastDate: DateTime.now(),
-            errorText: _joinDateError,
-            onChanged: (d) => setState(() {
-              _centerJoinDate = d;
-              _joinDateError = null;
-            }),
+            label: l10n.csMainServiceReason,
+            hint: l10n.csMainServiceReasonHint,
+            controller: _mainReasonCtrl,
+            maxLines: 4,
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? l10n.validationRequired
+                : null,
           ),
           const SizedBox(height: AppSpacing.p32),
 
@@ -243,6 +303,93 @@ class _Section1ChildInfoState extends State<Section1ChildInfo> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── Read-only display field ───────────────────────────────────────────────────
+
+class _ReadOnlyField extends StatelessWidget {
+  final String label;
+  final String value;
+  final int maxLines;
+
+  const _ReadOnlyField({
+    required this.label,
+    required this.value,
+    this.maxLines = 1,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final res = ResponsiveHelper(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          width: double.infinity,
+          constraints: BoxConstraints(minHeight: res.scaleHeight(44)),
+          padding: EdgeInsets.symmetric(
+            horizontal: res.scaleSpacing(14),
+            vertical: res.scaleSpacing(10),
+          ),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF3F4F6),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            value.isEmpty ? '—' : value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: value.isEmpty
+                  ? AppColors.textSecondary
+                  : AppColors.textPrimary,
+            ),
+            maxLines: maxLines,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Section divider with label ────────────────────────────────────────────────
+
+class _SectionDivider extends StatelessWidget {
+  final String label;
+
+  const _SectionDivider({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Expanded(
+          child: Divider(color: AppColors.primary, thickness: 0.5),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const Expanded(
+          child: Divider(color: AppColors.primary, thickness: 0.5),
+        ),
+      ],
     );
   }
 }

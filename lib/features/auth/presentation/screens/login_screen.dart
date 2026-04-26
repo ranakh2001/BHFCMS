@@ -4,7 +4,7 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../../../../config/routes.dart';
-import '../../../case_study_form/presentation/providers/case_study_provider.dart';
+
 import '../providers/auth_provider.dart';
 import '../widgets/language_switcher_button.dart';
 import '../widgets/login_form_card.dart';
@@ -42,10 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.welcomeMessage)),
       );
-      final needsForm = ref.read(parentNeedsFormProvider);
-      Navigator.of(context).pushReplacementNamed(
-        needsForm ? AppRoutes.caseStudyIntro : AppRoutes.main,
-      );
+      Navigator.of(context).pushReplacementNamed(AppRoutes.main);
     }
   }
 

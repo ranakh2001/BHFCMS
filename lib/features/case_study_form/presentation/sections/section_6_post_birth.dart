@@ -4,11 +4,11 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../domain/entities/case_study_form_data.dart';
-import '../widgets/form_disease_grid.dart';
+import '../widgets/form_checkbox_item.dart';
 import '../widgets/form_labeled_field.dart';
 import '../widgets/form_next_button.dart';
-import '../widgets/form_radio_group.dart';
-import '../widgets/form_yes_no_question.dart';
+import '../widgets/form_section_header.dart';
+import '../widgets/form_subsection_title.dart';
 
 class Section6PostBirth extends StatefulWidget {
   final Section6Data? initialData;
@@ -27,23 +27,28 @@ class Section6PostBirth extends StatefulWidget {
 }
 
 class _Section6PostBirthState extends State<Section6PostBirth> {
-  final _formKey = GlobalKey<FormState>();
+  // 1. Communication methods
+  late Set<String> _commMethods;
+  late final TextEditingController _commOtherCtrl;
 
-  late final TextEditingController _medicationTypeCtrl;
-  late final TextEditingController _chronicDiseaseCtrl;
-  late final TextEditingController _surgicalOperationsCtrl;
+  // 2. Expression & Understanding
+  String _expressesNeeds = '';
+  String _requestsPreferred = '';
+  String _understandsSimple = '';
+  String _understandsComplex = '';
 
-  String? _breastfeedingType;
-  bool? _meningitis;
-  bool? _measles;
-  bool? _chickenpox;
-  bool? _mumps;
-  bool? _tookLongTermMedication;
-  bool? _hadFallsOrAccidents;
-  bool? _hadHipDislocationExam;
-  bool? _hasChronicDiseases;
-  bool? _ateWell;
-  bool? _hospitalizedBefore;
+  // 3. Social communication traits
+  late Set<String> _socialTraits;
+
+  // 4. Notes
+  late final TextEditingController _notesCtrl;
+
+  // 5. Pragmatic skills
+  String _initiatesConversation = '';
+  String _maintainsEyeContact = '';
+  String _understandsBodyLanguage = '';
+  String _understandsJokes = '';
+  String _conversationTurnTaking = '';
 
   final Map<String, String?> _errors = {};
 
@@ -51,33 +56,26 @@ class _Section6PostBirthState extends State<Section6PostBirth> {
   void initState() {
     super.initState();
     final d = widget.initialData;
-    _medicationTypeCtrl =
-        TextEditingController(text: d?.longTermMedicationType ?? '');
-    _chronicDiseaseCtrl =
-        TextEditingController(text: d?.chronicDiseaseType ?? '');
-    _surgicalOperationsCtrl =
-        TextEditingController(text: d?.surgicalOperations ?? '');
-
-    _breastfeedingType =
-        d?.breastfeedingType.isEmpty ?? true ? null : d!.breastfeedingType;
-    final dis = d?.diseases ?? const PostBirthDiseaseFlags();
-    _meningitis = dis.meningitis;
-    _measles = dis.measles;
-    _chickenpox = dis.chickenpox;
-    _mumps = dis.mumps;
-    _tookLongTermMedication = d?.tookLongTermMedication;
-    _hadFallsOrAccidents = d?.hadFallsOrAccidents;
-    _hadHipDislocationExam = d?.hadHipDislocationExam;
-    _hasChronicDiseases = d?.hasChronicDiseases;
-    _ateWell = d?.ateWell;
-    _hospitalizedBefore = d?.hospitalizedBefore;
+    _commMethods = Set<String>.from(d?.communicationMethods ?? []);
+    _commOtherCtrl =
+        TextEditingController(text: d?.communicationMethodOther ?? '');
+    _expressesNeeds = d?.expressesNeeds ?? '';
+    _requestsPreferred = d?.requestsPreferred ?? '';
+    _understandsSimple = d?.understandsSimple ?? '';
+    _understandsComplex = d?.understandsComplex ?? '';
+    _socialTraits = Set<String>.from(d?.socialCommTraits ?? []);
+    _notesCtrl = TextEditingController(text: d?.communicationNotes ?? '');
+    _initiatesConversation = d?.initiatesConversation ?? '';
+    _maintainsEyeContact = d?.maintainsEyeContact ?? '';
+    _understandsBodyLanguage = d?.understandsBodyLanguage ?? '';
+    _understandsJokes = d?.understandsJokes ?? '';
+    _conversationTurnTaking = d?.conversationTurnTaking ?? '';
   }
 
   @override
   void dispose() {
-    _medicationTypeCtrl.dispose();
-    _chronicDiseaseCtrl.dispose();
-    _surgicalOperationsCtrl.dispose();
+    _commOtherCtrl.dispose();
+    _notesCtrl.dispose();
     super.dispose();
   }
 
@@ -85,63 +83,80 @@ class _Section6PostBirthState extends State<Section6PostBirth> {
       AppLocalizations.of(context)!.validationRequired;
 
   bool _validate(BuildContext context) {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    bool allValid = true;
-
-    void checkBool(String key, bool? v) {
-      if (v == null) {
-        _errors[key] = _req(context);
-        allValid = false;
-      } else {
-        _errors[key] = null;
-      }
-    }
-
+    bool ok = true;
     setState(() {
-      if (_breastfeedingType == null) {
-        _errors['breastfeedingType'] = _req(context);
-        allValid = false;
+      if (_commMethods.isEmpty) {
+        _errors['commMethods'] = _req(context);
+        ok = false;
       } else {
-        _errors['breastfeedingType'] = null;
+        _errors['commMethods'] = null;
       }
-      checkBool('tookLongTermMedication', _tookLongTermMedication);
-      checkBool('hadFallsOrAccidents', _hadFallsOrAccidents);
-      checkBool('hadHipDislocationExam', _hadHipDislocationExam);
-      checkBool('hasChronicDiseases', _hasChronicDiseases);
-      checkBool('ateWell', _ateWell);
-      checkBool('hospitalizedBefore', _hospitalizedBefore);
-    });
+      void checkStr(String key, String v) {
+        if (v.isEmpty) {
+          _errors[key] = _req(context);
+          ok = false;
+        } else {
+          _errors[key] = null;
+        }
+      }
 
-    return formValid && allValid;
+      checkStr('expressesNeeds', _expressesNeeds);
+      checkStr('requestsPreferred', _requestsPreferred);
+      checkStr('understandsSimple', _understandsSimple);
+      checkStr('understandsComplex', _understandsComplex);
+      checkStr('initiatesConversation', _initiatesConversation);
+      checkStr('maintainsEyeContact', _maintainsEyeContact);
+      checkStr('understandsBodyLanguage', _understandsBodyLanguage);
+      checkStr('understandsJokes', _understandsJokes);
+      checkStr('conversationTurnTaking', _conversationTurnTaking);
+    });
+    return ok;
   }
 
   void _submit(BuildContext context) {
     if (!_validate(context)) return;
     widget.onNext(
       Section6Data(
-        breastfeedingType: _breastfeedingType ?? '',
-        diseases: PostBirthDiseaseFlags(
-          meningitis: _meningitis,
-          measles: _measles,
-          chickenpox: _chickenpox,
-          mumps: _mumps,
-        ),
-        tookLongTermMedication: _tookLongTermMedication,
-        longTermMedicationType: _tookLongTermMedication == true
-            ? _medicationTypeCtrl.text.trim()
-            : '',
-        hadFallsOrAccidents: _hadFallsOrAccidents,
-        hadHipDislocationExam: _hadHipDislocationExam,
-        hasChronicDiseases: _hasChronicDiseases,
-        chronicDiseaseType: _hasChronicDiseases == true
-            ? _chronicDiseaseCtrl.text.trim()
-            : '',
-        ateWell: _ateWell,
-        hospitalizedBefore: _hospitalizedBefore,
-        surgicalOperations: _hospitalizedBefore == true
-            ? _surgicalOperationsCtrl.text.trim()
-            : '',
+        communicationMethods: _commMethods.toList(),
+        communicationMethodOther:
+            _commMethods.contains('other') ? _commOtherCtrl.text.trim() : '',
+        expressesNeeds: _expressesNeeds,
+        requestsPreferred: _requestsPreferred,
+        understandsSimple: _understandsSimple,
+        understandsComplex: _understandsComplex,
+        socialCommTraits: _socialTraits.toList(),
+        communicationNotes: _notesCtrl.text.trim(),
+        initiatesConversation: _initiatesConversation,
+        maintainsEyeContact: _maintainsEyeContact,
+        understandsBodyLanguage: _understandsBodyLanguage,
+        understandsJokes: _understandsJokes,
+        conversationTurnTaking: _conversationTurnTaking,
       ),
+    );
+  }
+
+  void _toggleComm(String key) => setState(() {
+        _commMethods.contains(key)
+            ? _commMethods.remove(key)
+            : _commMethods.add(key);
+        _errors['commMethods'] = null;
+      });
+
+  void _toggleSocial(String key) => setState(() {
+        _socialTraits.contains(key)
+            ? _socialTraits.remove(key)
+            : _socialTraits.add(key);
+      });
+
+  Widget _grid(List<Widget> items, {int cols = 2}) {
+    final width = MediaQuery.of(context).size.width;
+    const spacing = 8.0;
+    final itemWidth = (width - 32 - spacing * (cols - 1)) / cols;
+    return Wrap(
+      spacing: spacing,
+      runSpacing: 8,
+      children:
+          items.map((item) => SizedBox(width: itemWidth, child: item)).toList(),
     );
   }
 
@@ -149,225 +164,393 @@ class _Section6PostBirthState extends State<Section6PostBirth> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Header ────────────────────────────────────────────────────
-          Text(
-            l10n.csSection6Title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // ── Header ────────────────────────────────────────────────────────────
+        FormSectionHeader(title: l10n.csSection6Title),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 1. Communication Methods ──────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS6CommMethodTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _grid([
+          FormCheckboxItem(label: l10n.csS6CommMethodSingleWords, value: _commMethods.contains('single_words'), onChanged: (_) => _toggleComm('single_words')),
+          FormCheckboxItem(label: l10n.csS6CommMethodShortSentences, value: _commMethods.contains('short_sentences'), onChanged: (_) => _toggleComm('short_sentences')),
+          FormCheckboxItem(label: l10n.csS6CommMethodFullSentences, value: _commMethods.contains('full_sentences'), onChanged: (_) => _toggleComm('full_sentences')),
+          FormCheckboxItem(label: l10n.csS6CommMethodSigns, value: _commMethods.contains('signs'), onChanged: (_) => _toggleComm('signs')),
+          FormCheckboxItem(label: l10n.csS6CommMethodPecs, value: _commMethods.contains('pecs'), onChanged: (_) => _toggleComm('pecs')),
+          FormCheckboxItem(label: l10n.csS6CommMethodDevice, value: _commMethods.contains('device'), onChanged: (_) => _toggleComm('device')),
+          FormCheckboxItem(label: l10n.csS6CommMethodManualPull, value: _commMethods.contains('manual_pull'), onChanged: (_) => _toggleComm('manual_pull')),
+          FormCheckboxItem(label: l10n.csS6CommMethodCrying, value: _commMethods.contains('crying'), onChanged: (_) => _toggleComm('crying')),
+          FormCheckboxItem(label: l10n.csS6CommMethodOther, value: _commMethods.contains('other'), onChanged: (_) => _toggleComm('other')),
+        ], cols: 3),
+        if (_errors['commMethods'] != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              _errors['commMethods']!,
+              style: const TextStyle(color: AppColors.error, fontSize: 12),
+            ),
+          ),
+        if (_commMethods.contains('other')) ...[
+          const SizedBox(height: AppSpacing.p12),
+          FormLabeledField(
+            label: l10n.csS6CommMethodOtherLabel,
+            hint: l10n.csS6CommMethodOtherHint,
+            controller: _commOtherCtrl,
           ),
           const SizedBox(height: 4),
           Text(
-            '(${l10n.csSection6Subtitle})',
+            l10n.csS6CommMethodOtherNote,
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 11.5,
               color: AppColors.textSecondary,
+              fontStyle: FontStyle.italic,
             ),
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.p24),
+        ],
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q1: Breastfeeding type ────────────────────────────────────
-          FormRadioGroup<String>(
-            label: l10n.csS6BreastfeedingType,
-            options: [
-              RadioOption(label: l10n.csS6BreastfeedingNatural, value: 'natural'),
-              RadioOption(
-                  label: l10n.csS6BreastfeedingArtificial, value: 'artificial'),
-              RadioOption(label: l10n.csS6BreastfeedingBoth, value: 'both'),
+        // ── 2. Expression & Understanding ─────────────────────────────────────
+        FormSubsectionTitle(l10n.csS6ExprUnderstandTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _ExprRow(
+          label: l10n.csS6ExpressesNeeds,
+          value: _expressesNeeds,
+          errorText: _errors['expressesNeeds'],
+          onChanged: (v) => setState(() => _expressesNeeds = v ?? ''),
+          l10n: l10n,
+        ),
+        _ExprRow(
+          label: l10n.csS6RequestsPreferred,
+          value: _requestsPreferred,
+          errorText: _errors['requestsPreferred'],
+          onChanged: (v) => setState(() => _requestsPreferred = v ?? ''),
+          l10n: l10n,
+        ),
+        _ExprRow(
+          label: l10n.csS6UnderstandsSimple,
+          value: _understandsSimple,
+          errorText: _errors['understandsSimple'],
+          onChanged: (v) => setState(() => _understandsSimple = v ?? ''),
+          l10n: l10n,
+        ),
+        _ExprRow(
+          label: l10n.csS6UnderstandsComplex,
+          value: _understandsComplex,
+          errorText: _errors['understandsComplex'],
+          onChanged: (v) => setState(() => _understandsComplex = v ?? ''),
+          l10n: l10n,
+        ),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 3. Social Communication ───────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS6SocialCommTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _grid([
+          FormCheckboxItem(label: l10n.csS6InitiatesInteraction, value: _socialTraits.contains('initiates'), onChanged: (_) => _toggleSocial('initiates')),
+          FormCheckboxItem(label: l10n.csS6RespondsToOthers, value: _socialTraits.contains('responds'), onChanged: (_) => _toggleSocial('responds')),
+          FormCheckboxItem(label: l10n.csS6PrefersSoloPlay, value: _socialTraits.contains('prefers_solo'), onChanged: (_) => _toggleSocial('prefers_solo')),
+          FormCheckboxItem(label: l10n.csS6ImitatesOthers, value: _socialTraits.contains('imitates'), onChanged: (_) => _toggleSocial('imitates')),
+          FormCheckboxItem(label: l10n.csS6DifficultyPeers, value: _socialTraits.contains('difficulty_peers'), onChanged: (_) => _toggleSocial('difficulty_peers')),
+          FormCheckboxItem(label: l10n.csS6DifficultyTurns, value: _socialTraits.contains('difficulty_turns'), onChanged: (_) => _toggleSocial('difficulty_turns')),
+        ]),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 4. Additional Notes ───────────────────────────────────────────────
+        FormLabeledField(
+          label: l10n.csS6CommNotes,
+          hint: l10n.csS6CommNotesHint,
+          controller: _notesCtrl,
+          maxLines: 4,
+        ),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 5. Social & Pragmatic Skills ──────────────────────────────────────
+        FormSubsectionTitle(l10n.csS6PragmaticTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _PragRow(
+          label: l10n.csS6InitiatesConversation,
+          value: _initiatesConversation,
+          errorText: _errors['initiatesConversation'],
+          options: [
+            _PragOption(l10n.csS6OptionAlways, 'always'),
+            _PragOption(l10n.csS6OptionSometimes, 'sometimes'),
+            _PragOption(l10n.csS6OptionRarely, 'rarely'),
+          ],
+          onChanged: (v) => setState(() {
+            _initiatesConversation = v ?? '';
+            _errors['initiatesConversation'] = null;
+          }),
+        ),
+        _PragRow(
+          label: l10n.csS6MaintainsEyeContact,
+          value: _maintainsEyeContact,
+          errorText: _errors['maintainsEyeContact'],
+          options: [
+            _PragOption(l10n.csS6OptionAlways, 'always'),
+            _PragOption(l10n.csS6OptionSometimes, 'sometimes'),
+            _PragOption(l10n.csS6OptionRarely, 'rarely'),
+          ],
+          onChanged: (v) => setState(() {
+            _maintainsEyeContact = v ?? '';
+            _errors['maintainsEyeContact'] = null;
+          }),
+        ),
+        _PragRow(
+          label: l10n.csS6UnderstandsBodyLanguage,
+          value: _understandsBodyLanguage,
+          errorText: _errors['understandsBodyLanguage'],
+          options: [
+            _PragOption(l10n.csS6OptionGood, 'good'),
+            _PragOption(l10n.csS6OptionAcceptable, 'acceptable'),
+            _PragOption(l10n.csS6OptionWeak, 'weak'),
+          ],
+          onChanged: (v) => setState(() {
+            _understandsBodyLanguage = v ?? '';
+            _errors['understandsBodyLanguage'] = null;
+          }),
+        ),
+        _PragRow(
+          label: l10n.csS6UnderstandsJokes,
+          value: _understandsJokes,
+          errorText: _errors['understandsJokes'],
+          options: [
+            _PragOption(l10n.csS6OptionYes, 'yes'),
+            _PragOption(l10n.csS6OptionPartial, 'partial'),
+            _PragOption(l10n.csS6OptionNo, 'no'),
+          ],
+          onChanged: (v) => setState(() {
+            _understandsJokes = v ?? '';
+            _errors['understandsJokes'] = null;
+          }),
+        ),
+        _PragRow(
+          label: l10n.csS6ConversationTurnTaking,
+          value: _conversationTurnTaking,
+          errorText: _errors['conversationTurnTaking'],
+          options: [
+            _PragOption(l10n.csS6OptionMastered, 'mastered'),
+            _PragOption(l10n.csS6OptionInTraining, 'in_training'),
+            _PragOption(l10n.csS6OptionMissing, 'missing'),
+          ],
+          onChanged: (v) => setState(() {
+            _conversationTurnTaking = v ?? '';
+            _errors['conversationTurnTaking'] = null;
+          }),
+        ),
+        const SizedBox(height: AppSpacing.p32),
+
+        FormNextButton(
+          label: l10n.csFormNext,
+          onPressed: () => _submit(context),
+          isLoading: widget.isSaving,
+        ),
+      ],
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Private helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Expression & Understanding row: label + 3 radio options ──────────────────
+
+class _ExprRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final String? errorText;
+  final void Function(String?) onChanged;
+  final AppLocalizations l10n;
+
+  const _ExprRow({
+    required this.label,
+    required this.value,
+    required this.errorText,
+    required this.onChanged,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
+                  label,
+                  style: const TextStyle(fontSize: 13.5),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _RadioCell(
+                        label: l10n.csS6OptionYes,
+                        groupValue: value,
+                        value: 'yes',
+                        onChanged: onChanged),
+                    _RadioCell(
+                        label: l10n.csS6OptionSometimes,
+                        groupValue: value,
+                        value: 'sometimes',
+                        onChanged: onChanged),
+                    _RadioCell(
+                        label: l10n.csS6OptionNo,
+                        groupValue: value,
+                        value: 'no',
+                        onChanged: onChanged),
+                  ],
+                ),
+              ),
             ],
-            groupValue: _breastfeedingType,
-            onChanged: (v) => setState(() {
-              _breastfeedingType = v;
-              _errors['breastfeedingType'] = null;
-            }),
-            errorText: _errors['breastfeedingType'],
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q2: Diseases grid ─────────────────────────────────────────
-          FormDiseaseGrid(
-            label: l10n.csS6Diseases,
-            conditions: [
-              DiseaseCondition(
-                label: l10n.csS6Meningitis,
-                value: _meningitis,
-                onChanged: (v) => setState(() => _meningitis = v),
+          if (errorText != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                errorText!,
+                style:
+                    const TextStyle(color: AppColors.error, fontSize: 11.5),
+                textAlign: TextAlign.start,
               ),
-              DiseaseCondition(
-                label: l10n.csS6Measles,
-                value: _measles,
-                onChanged: (v) => setState(() => _measles = v),
-              ),
-              DiseaseCondition(
-                label: l10n.csS6Chickenpox,
-                value: _chickenpox,
-                onChanged: (v) => setState(() => _chickenpox = v),
-              ),
-              DiseaseCondition(
-                label: l10n.csS6Mumps,
-                value: _mumps,
-                onChanged: (v) => setState(() => _mumps = v),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q3: Long-term medication ──────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6TookLongTermMedication,
-            value: _tookLongTermMedication,
-            errorText: _errors['tookLongTermMedication'],
-            onChanged: (v) => setState(() {
-              _tookLongTermMedication = v;
-              _errors['tookLongTermMedication'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS6MedicationType,
-              hint: l10n.csS6MedicationTypeHint,
-              note: l10n.csIfPreviousYes,
-              controller: _medicationTypeCtrl,
-              isRequired: _tookLongTermMedication == true,
-              requiredMsg: _req(context),
             ),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q4: Falls or accidents ────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6HadFallsOrAccidents,
-            value: _hadFallsOrAccidents,
-            errorText: _errors['hadFallsOrAccidents'],
-            onChanged: (v) => setState(() {
-              _hadFallsOrAccidents = v;
-              _errors['hadFallsOrAccidents'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q5: Hip dislocation exam ──────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6HadHipDislocationExam,
-            value: _hadHipDislocationExam,
-            errorText: _errors['hadHipDislocationExam'],
-            onChanged: (v) => setState(() {
-              _hadHipDislocationExam = v;
-              _errors['hadHipDislocationExam'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q6: Chronic diseases ──────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6HasChronicDiseases,
-            value: _hasChronicDiseases,
-            errorText: _errors['hasChronicDiseases'],
-            onChanged: (v) => setState(() {
-              _hasChronicDiseases = v;
-              _errors['hasChronicDiseases'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS6ChronicDiseaseType,
-              hint: l10n.csS6ChronicDiseaseHint,
-              note: l10n.csIfPreviousYes,
-              controller: _chronicDiseaseCtrl,
-              isRequired: _hasChronicDiseases == true,
-              requiredMsg: _req(context),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q7: Ate well ──────────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6AteWell,
-            value: _ateWell,
-            errorText: _errors['ateWell'],
-            onChanged: (v) => setState(() {
-              _ateWell = v;
-              _errors['ateWell'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q8: Hospitalized ──────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS6HospitalizedBefore,
-            value: _hospitalizedBefore,
-            errorText: _errors['hospitalizedBefore'],
-            onChanged: (v) => setState(() {
-              _hospitalizedBefore = v;
-              _errors['hospitalizedBefore'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS6SurgicalOperations,
-              hint: l10n.csS6SurgicalOperationsHint,
-              note: l10n.csIfPreviousYes,
-              controller: _surgicalOperationsCtrl,
-              isRequired: _hospitalizedBefore == true,
-              requiredMsg: _req(context),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.p32),
-
-          FormNextButton(
-            label: l10n.csFormNext,
-            onPressed: () => _submit(context),
-            isLoading: widget.isSaving,
-          ),
         ],
       ),
     );
   }
 }
 
-class _ConditionalField extends StatelessWidget {
-  final String label;
-  final String hint;
-  final String note;
-  final TextEditingController controller;
-  final bool isRequired;
-  final String requiredMsg;
+// ── Pragmatic skill row: label + N radio options ──────────────────────────────
 
-  const _ConditionalField({
+class _PragOption {
+  final String label;
+  final String value;
+  const _PragOption(this.label, this.value);
+}
+
+class _PragRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final String? errorText;
+  final List<_PragOption> options;
+  final void Function(String?) onChanged;
+
+  const _PragRow({
     required this.label,
-    required this.hint,
-    required this.note,
-    required this.controller,
-    required this.isRequired,
-    required this.requiredMsg,
+    required this.value,
+    required this.errorText,
+    required this.options,
+    required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        FormLabeledField(
-          label: label,
-          hint: hint,
-          controller: controller,
-          validator: (v) =>
-              (isRequired && (v == null || v.trim().isEmpty))
-                  ? requiredMsg
-                  : null,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          note,
-          style: const TextStyle(
-            fontSize: 11.5,
-            color: AppColors.textSecondary,
-            fontStyle: FontStyle.italic,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 13.5),
+            textAlign: TextAlign.start,
           ),
-        ),
-      ],
+          const SizedBox(height: 6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: options.map((opt) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: _RadioCell(
+                  label: opt.label,
+                  groupValue: value,
+                  value: opt.value,
+                  onChanged: onChanged,
+                ),
+              );
+            }).toList(),
+          ),
+          if (errorText != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                errorText!,
+                style:
+                    const TextStyle(color: AppColors.error, fontSize: 11.5),
+                textAlign: TextAlign.start,
+              ),
+            ),
+          const Divider(height: 1),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Animated radio circle + label ─────────────────────────────────────────────
+
+class _RadioCell extends StatelessWidget {
+  final String label;
+  final String groupValue;
+  final String value;
+  final void Function(String?) onChanged;
+
+  const _RadioCell({
+    required this.label,
+    required this.groupValue,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final selected = groupValue == value;
+    return GestureDetector(
+      onTap: () => onChanged(value),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: selected ? AppColors.primary : Colors.transparent,
+              border: Border.all(
+                color: selected ? AppColors.primary : AppColors.textSecondary,
+                width: 2,
+              ),
+            ),
+            child: selected
+                ? Center(
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(height: 4),
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
     );
   }
 }

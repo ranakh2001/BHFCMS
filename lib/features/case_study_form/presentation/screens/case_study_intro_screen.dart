@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/routes.dart';
+import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../../features/auth/presentation/widgets/language_switcher_button.dart';
 import '../providers/case_study_provider.dart';
 
 class CaseStudyIntroScreen extends ConsumerWidget {
@@ -12,7 +14,7 @@ class CaseStudyIntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final responsive = ResponsiveHelper(context);
-    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final l10n = AppLocalizations.of(context)!;
     final formState = ref.watch(caseStudyFormProvider);
     final hasSavedProgress = !formState.isLoading && formState.currentStep > 0;
 
@@ -34,43 +36,53 @@ class CaseStudyIntroScreen extends ConsumerWidget {
               vertical: responsive.scaleSpacing(16),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // ── Header Row ───────────────────────────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    const LanguageSwitcherButton(),
+                  ],
+                ),
+                SizedBox(height: responsive.scaleHeight(16)),
+
                 const Spacer(),
 
-                // ── Illustration ──────────────────────────────────────────
+                // ── Illustration ────────────────────────────────────────────
                 SizedBox(
-                  height: responsive.scaleHeight(250),
-                  width: responsive.scaleWidth(250),
+                  height: responsive.scaleHeight(220),
+                  width: responsive.scaleWidth(220),
                   child: Image.asset('assets/logos/case_study_form.png'),
                 ),
-                SizedBox(height: responsive.scaleHeight(32)),
+                SizedBox(height: responsive.scaleHeight(28)),
 
-                // ── Title ─────────────────────────────────────────────────
+                // ── Title ───────────────────────────────────────────────────
                 Text(
-                  isAr ? 'قبل البدء' : 'Before You Start',
+                  l10n.csFormIntroTitle,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: responsive.scaleHeight(14)),
+
+                // ── Body text ───────────────────────────────────────────────
+                Text(
+                  l10n.csFormIntroBody,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.6,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: responsive.scaleHeight(16)),
 
-                // ── Body text ─────────────────────────────────────────────
-                Text(
-                  isAr
-                      ? 'حتى نقيم طفلك بشكل دقيق. و نقدم ما يمكن أفضل ما يمكن، نحتاج منك تعبئة نموذج دراسة الحالة بشكل الزامي.'
-                      : 'To accurately assess your child and provide the best possible service, you are required to fill out the case study form.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.6,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: responsive.scaleHeight(20)),
-
-                // ── Info note ─────────────────────────────────────────────
+                // ── Info note ───────────────────────────────────────────────
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -91,9 +103,7 @@ class CaseStudyIntroScreen extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          isAr
-                              ? 'النموذج عبارة عن ${CaseStudyFormState.totalSteps} قسم الرجاء تعبئة جميع الأقسام بدقة'
-                              : 'The form consists of ${CaseStudyFormState.totalSteps} sections. Please fill out all sections carefully.',
+                          l10n.csFormIntroNote(CaseStudyFormState.totalSteps),
                           style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -108,9 +118,7 @@ class CaseStudyIntroScreen extends ConsumerWidget {
                 if (hasSavedProgress) ...[
                   SizedBox(height: responsive.scaleHeight(12)),
                   Text(
-                    isAr
-                        ? '• سيتم استئناف التقدم من القسم ${formState.currentStep + 1}'
-                        : '• Progress will resume from section ${formState.currentStep + 1}',
+                    l10n.csFormResumeNote(formState.currentStep + 1),
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.primary,
@@ -122,7 +130,7 @@ class CaseStudyIntroScreen extends ConsumerWidget {
 
                 const Spacer(),
 
-                // ── Start button ──────────────────────────────────────────
+                // ── Start button ────────────────────────────────────────────
                 SizedBox(
                   width: double.infinity,
                   height: 52,
@@ -140,8 +148,8 @@ class CaseStudyIntroScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       hasSavedProgress
-                          ? (isAr ? 'متابعة' : 'Continue')
-                          : (isAr ? 'ابدأ الأن' : 'Start Now'),
+                          ? l10n.csFormContinueButton
+                          : l10n.csFormStartButton,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

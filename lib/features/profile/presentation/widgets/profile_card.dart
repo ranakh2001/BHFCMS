@@ -78,7 +78,7 @@ class ProfileCard extends StatelessWidget {
                 children: [
                   Text(
                     user.name,
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: res.scaleText(16),
                       fontWeight: FontWeight.w800,
@@ -88,7 +88,7 @@ class ProfileCard extends StatelessWidget {
                   SizedBox(height: res.scaleHeight(4)),
                   Text(
                     _roleLabel(),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: res.scaleText(12),
                       color: AppColors.textSecondary,
@@ -96,7 +96,7 @@ class ProfileCard extends StatelessWidget {
                   ),
                   SizedBox(height: res.scaleHeight(8)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         l10n.centerName,

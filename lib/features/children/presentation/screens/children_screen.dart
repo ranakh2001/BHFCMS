@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../auth/domain/entities/user_role.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../../config/routes.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../widgets/child_card.dart';
+import '../widgets/receptionist_child_row.dart';
 
 class _ChildData {
   final String name;
@@ -60,14 +64,14 @@ const List<_ChildData> _mockChildren = [
   ),
 ];
 
-class ChildrenScreen extends StatefulWidget {
+class ChildrenScreen extends ConsumerStatefulWidget {
   const ChildrenScreen({super.key});
 
   @override
-  State<ChildrenScreen> createState() => _ChildrenScreenState();
+  ConsumerState<ChildrenScreen> createState() => _ChildrenScreenState();
 }
 
-class _ChildrenScreenState extends State<ChildrenScreen> {
+class _ChildrenScreenState extends ConsumerState<ChildrenScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _showActive = true;
   String _searchQuery = '';
@@ -93,6 +97,8 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
     final res = ResponsiveHelper(context);
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final user = ref.watch(currentUserProvider);
+    final isReceptionist = user?.role == UserRole.receptionist;
 
     return Scaffold(
       backgroundColor:
@@ -219,6 +225,17 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                           SizedBox(height: res.scaleHeight(12)),
                       itemBuilder: (context, index) {
                         final child = _filteredChildren[index];
+                        if (isReceptionist) {
+                          return ReceptionistChildRow(
+                            name: child.name,
+                            isActive: child.isActive,
+                            reports: [
+                              '${l10n.report} 1',
+                              '${l10n.report} 2',
+                              '${l10n.report} 3'
+                            ],
+                          );
+                        }
                         return ChildCard(
                           name: child.name,
                           sessionType: child.sessionType,

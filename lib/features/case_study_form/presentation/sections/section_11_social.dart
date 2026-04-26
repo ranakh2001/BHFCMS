@@ -6,7 +6,9 @@ import '../../../../core/theme/spacing.dart';
 import '../../domain/entities/case_study_form_data.dart';
 import '../widgets/form_labeled_field.dart';
 import '../widgets/form_next_button.dart';
-import '../widgets/form_yes_no_question.dart';
+import '../widgets/form_notes_field.dart';
+import '../widgets/form_radio_group.dart';
+import '../widgets/form_section_header.dart';
 
 class Section11Social extends StatefulWidget {
   final Section11Data? initialData;
@@ -25,234 +27,116 @@ class Section11Social extends StatefulWidget {
 }
 
 class _Section11SocialState extends State<Section11Social> {
-  final _formKey = GlobalKey<FormState>();
-
-  late final TextEditingController _behaviorDuringVisitsCtrl;
-
-  bool? _isQuickToAnger;
-  bool? _destroysPlaythings;
-  bool? _isStubborn;
-  bool? _isAggressive;
-  bool? _canPlayCalmly;
-  bool? _attacksSiblings;
-  bool? _isPopularWithPeers;
-  bool? _socialMaturityLikeAgePeers;
-
-  final Map<String, String?> _errors = {};
+  late final TextEditingController _topConcernsCtrl;
+  late final TextEditingController _topGoalsCtrl;
+  late final TextEditingController _sessionTimePrefsCtrl;
+  late String _parentTrainingReadiness;
 
   @override
   void initState() {
     super.initState();
     final d = widget.initialData;
-    _behaviorDuringVisitsCtrl =
-        TextEditingController(text: d?.behaviorDuringVisits ?? '');
-
-    _isQuickToAnger = d?.isQuickToAnger;
-    _destroysPlaythings = d?.destroysPlaythings;
-    _isStubborn = d?.isStubborn;
-    _isAggressive = d?.isAggressive;
-    _canPlayCalmly = d?.canPlayCalmly;
-    _attacksSiblings = d?.attacksSiblings;
-    _isPopularWithPeers = d?.isPopularWithPeers;
-    _socialMaturityLikeAgePeers = d?.socialMaturityLikeAgePeers;
+    _topConcernsCtrl = TextEditingController(text: d?.topConcerns ?? '');
+    _topGoalsCtrl = TextEditingController(text: d?.topGoals ?? '');
+    _sessionTimePrefsCtrl =
+        TextEditingController(text: d?.sessionTimePreferences ?? '');
+    _parentTrainingReadiness = d?.parentTrainingReadiness ?? '';
   }
 
   @override
   void dispose() {
-    _behaviorDuringVisitsCtrl.dispose();
+    _topConcernsCtrl.dispose();
+    _topGoalsCtrl.dispose();
+    _sessionTimePrefsCtrl.dispose();
     super.dispose();
   }
 
-  String _req(BuildContext context) =>
-      AppLocalizations.of(context)!.validationRequired;
-
-  bool _validate(BuildContext context) {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    bool allValid = true;
-
-    void checkBool(String key, bool? v) {
-      if (v == null) {
-        _errors[key] = _req(context);
-        allValid = false;
-      } else {
-        _errors[key] = null;
-      }
-    }
-
-    setState(() {
-      checkBool('isQuickToAnger', _isQuickToAnger);
-      checkBool('destroysPlaythings', _destroysPlaythings);
-      checkBool('isStubborn', _isStubborn);
-      checkBool('isAggressive', _isAggressive);
-      checkBool('canPlayCalmly', _canPlayCalmly);
-      checkBool('attacksSiblings', _attacksSiblings);
-      checkBool('isPopularWithPeers', _isPopularWithPeers);
-      checkBool('socialMaturityLikeAgePeers', _socialMaturityLikeAgePeers);
-    });
-
-    return formValid && allValid;
-  }
-
   void _submit(BuildContext context) {
-    if (!_validate(context)) return;
-    widget.onNext(
-      Section11Data(
-        isQuickToAnger: _isQuickToAnger,
-        destroysPlaythings: _destroysPlaythings,
-        isStubborn: _isStubborn,
-        isAggressive: _isAggressive,
-        canPlayCalmly: _canPlayCalmly,
-        attacksSiblings: _attacksSiblings,
-        isPopularWithPeers: _isPopularWithPeers,
-        behaviorDuringVisits: _behaviorDuringVisitsCtrl.text.trim(),
-        socialMaturityLikeAgePeers: _socialMaturityLikeAgePeers,
-      ),
-    );
+    widget.onNext(Section11Data(
+      topConcerns: _topConcernsCtrl.text.trim(),
+      topGoals: _topGoalsCtrl.text.trim(),
+      sessionTimePreferences: _sessionTimePrefsCtrl.text.trim(),
+      parentTrainingReadiness: _parentTrainingReadiness,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Header ────────────────────────────────────────────────────
-          Text(
-            l10n.csSection11Title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '(${l10n.csSection11Subtitle})',
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.p24),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // ── Header ────────────────────────────────────────────────────────────
+        FormSectionHeader(title: l10n.csSection11Title),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q1: Quick to anger ────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11IsQuickToAnger,
-            value: _isQuickToAnger,
-            errorText: _errors['isQuickToAnger'],
-            onChanged: (v) => setState(() {
-              _isQuickToAnger = v;
-              _errors['isQuickToAnger'] = null;
-            }),
+        // ── Top 3 Concerns ────────────────────────────────────────────────────
+        Text(
+          l10n.csS11TopConcernsLabel,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
           ),
-          const SizedBox(height: AppSpacing.p16),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _topConcernsCtrl,
+          hint: l10n.csS11TopConcernsHint,
+          maxLines: 4,
+        ),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q2: Destroys playthings ───────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11DestroysPlaythings,
-            value: _destroysPlaythings,
-            errorText: _errors['destroysPlaythings'],
-            onChanged: (v) => setState(() {
-              _destroysPlaythings = v;
-              _errors['destroysPlaythings'] = null;
-            }),
+        // ── Top 3 Goals ───────────────────────────────────────────────────────
+        Text(
+          l10n.csS11TopGoalsLabel,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
           ),
-          const SizedBox(height: AppSpacing.p16),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _topGoalsCtrl,
+          hint: l10n.csS11TopGoalsHint,
+          maxLines: 4,
+        ),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q3: Stubborn ──────────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11IsStubborn,
-            value: _isStubborn,
-            errorText: _errors['isStubborn'],
-            onChanged: (v) => setState(() {
-              _isStubborn = v;
-              _errors['isStubborn'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
+        // ── Session Time Preferences ──────────────────────────────────────────
+        FormLabeledField(
+          label: l10n.csS11SessionTimePrefsLabel,
+          hint: l10n.csS11SessionTimePrefsHint,
+          controller: _sessionTimePrefsCtrl,
+        ),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q4: Aggressive ────────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11IsAggressive,
-            value: _isAggressive,
-            errorText: _errors['isAggressive'],
-            onChanged: (v) => setState(() {
-              _isAggressive = v;
-              _errors['isAggressive'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
+        // ── Parent Training Readiness ─────────────────────────────────────────
+        FormRadioGroup<String>(
+          label: l10n.csS11ParentTrainingReadinessLabel,
+          options: [
+            RadioOption(label: l10n.csYes, value: 'yes'),
+            RadioOption(label: l10n.csNo, value: 'no'),
+            RadioOption(label: l10n.csS11OptionMaybe, value: 'maybe'),
+          ],
+          groupValue: _parentTrainingReadiness.isEmpty
+              ? null
+              : _parentTrainingReadiness,
+          onChanged: (v) =>
+              setState(() => _parentTrainingReadiness = v ?? ''),
+        ),
+        const SizedBox(height: AppSpacing.p32),
 
-          // ── Q5: Can play calmly ───────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11CanPlayCalmly,
-            value: _canPlayCalmly,
-            errorText: _errors['canPlayCalmly'],
-            onChanged: (v) => setState(() {
-              _canPlayCalmly = v;
-              _errors['canPlayCalmly'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q6: Attacks siblings ──────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11AttacksSiblings,
-            value: _attacksSiblings,
-            errorText: _errors['attacksSiblings'],
-            onChanged: (v) => setState(() {
-              _attacksSiblings = v;
-              _errors['attacksSiblings'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q7: Popular with peers ────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11IsPopularWithPeers,
-            value: _isPopularWithPeers,
-            errorText: _errors['isPopularWithPeers'],
-            onChanged: (v) => setState(() {
-              _isPopularWithPeers = v;
-              _errors['isPopularWithPeers'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q8: Behavior during visits (text field) ───────────────────
-          FormLabeledField(
-            label: l10n.csS11BehaviorDuringVisits,
-            hint: l10n.csS11BehaviorDuringVisitsHint,
-            controller: _behaviorDuringVisitsCtrl,
-            maxLines: 3,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? _req(context) : null,
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q9: Social maturity like age peers ────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS11SocialMaturityLikeAgePeers,
-            value: _socialMaturityLikeAgePeers,
-            errorText: _errors['socialMaturityLikeAgePeers'],
-            onChanged: (v) => setState(() {
-              _socialMaturityLikeAgePeers = v;
-              _errors['socialMaturityLikeAgePeers'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p32),
-
-          FormNextButton(
-            label: l10n.csFormNext,
-            onPressed: () => _submit(context),
-            isLoading: widget.isSaving,
-          ),
-        ],
-      ),
+        FormNextButton(
+          label: l10n.csFormNext,
+          onPressed: () => _submit(context),
+          isLoading: widget.isSaving,
+        ),
+      ],
     );
   }
 }

@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
+import '../../../../core/utils/responsive_helper.dart';
 import '../../domain/entities/case_study_form_data.dart';
+import '../widgets/form_checkbox_item.dart';
 import '../widgets/form_next_button.dart';
+import '../widgets/form_notes_field.dart';
+import '../widgets/form_section_header.dart';
+import '../widgets/form_subsection_title.dart';
 
 class Section7Behavioral extends StatefulWidget {
   final Section7Data? initialData;
@@ -23,212 +28,257 @@ class Section7Behavioral extends StatefulWidget {
 }
 
 class _Section7BehavioralState extends State<Section7Behavioral> {
-  // ── Behavioral flags ───────────────────────────────────────────────────────
-  bool? _thumbSucking;
-  bool? _nailBiting;
-  bool? _bedwetting;
-  bool? _foodAversion;
-  bool? _sleepDisorder;
-  bool? _continuousCrying;
-  bool? _daydreaming;
-  bool? _angerAttacks;
-  bool? _aggression;
-  bool? _destroyingObjects;
-  bool? _epilepticSeizures;
-  bool? _speechDifficulties;
+  // ── Eating & Drinking ──────────────────────────────────────────────────────
+  late bool _usesSpoonFork;
+  late bool _selectiveEater;
+  late bool _usesHandsForEating;
+  late bool _refusesTextures;
+  late bool _drinksFromCup;
+  late bool _needsFullAssistanceEating;
+  late final TextEditingController _howRequestsFoodCtrl;
 
-  // ── Vaccine flags ──────────────────────────────────────────────────────────
-  bool? _vaccineTriple;
-  bool? _vaccinePolio;
-  bool? _vaccineTuberculosis;
-  bool? _vaccineMeasles;
-  bool? _vaccineGermanMeaslesMumps;
-  bool? _vaccineHepatitisB;
+  // ── Dressing ───────────────────────────────────────────────────────────────
+  late bool _removesShoesSocks;
+  late bool _closesZipperButtons;
+  late bool _dressesWithAssistance;
+
+  // ── Personal Hygiene ───────────────────────────────────────────────────────
+  late bool _washesHandsFace;
+  late bool _bathesAlone;
+  late bool _cleansTeetHair;
+  late bool _nailCuttingDifficulty;
+
+  // ── Bathroom & Sleep ───────────────────────────────────────────────────────
+  late String _bathroomIndependence;
+  late final TextEditingController _howRequestsSleepCtrl;
+
+  final Map<String, String?> _errors = {};
 
   @override
   void initState() {
     super.initState();
     final d = widget.initialData;
-    final b = d?.behaviors ?? const BehavioralFlags();
-    _thumbSucking = b.thumbSucking;
-    _nailBiting = b.nailBiting;
-    _bedwetting = b.bedwetting;
-    _foodAversion = b.foodAversion;
-    _sleepDisorder = b.sleepDisorder;
-    _continuousCrying = b.continuousCrying;
-    _daydreaming = b.daydreaming;
-    _angerAttacks = b.angerAttacks;
-    _aggression = b.aggression;
-    _destroyingObjects = b.destroyingObjects;
-    _epilepticSeizures = b.epilepticSeizures;
-    _speechDifficulties = b.speechDifficulties;
-
-    final v = d?.vaccines ?? const VaccineFlags();
-    _vaccineTriple = v.tripleQuadrupleQuintuple;
-    _vaccinePolio = v.polio;
-    _vaccineTuberculosis = v.tuberculosis;
-    _vaccineMeasles = v.measles;
-    _vaccineGermanMeaslesMumps = v.germanMeaslesMumps;
-    _vaccineHepatitisB = v.hepatitisB;
+    _usesSpoonFork = d?.usesSpoonFork ?? false;
+    _selectiveEater = d?.selectiveEater ?? false;
+    _usesHandsForEating = d?.usesHandsForEating ?? false;
+    _refusesTextures = d?.refusesTextures ?? false;
+    _drinksFromCup = d?.drinksFromCup ?? false;
+    _needsFullAssistanceEating = d?.needsFullAssistanceEating ?? false;
+    _howRequestsFoodCtrl =
+        TextEditingController(text: d?.howRequestsFood ?? '');
+    _removesShoesSocks = d?.removesShoesSocks ?? false;
+    _closesZipperButtons = d?.closesZipperButtons ?? false;
+    _dressesWithAssistance = d?.dressesWithAssistance ?? false;
+    _washesHandsFace = d?.washesHandsFace ?? false;
+    _bathesAlone = d?.bathesAlone ?? false;
+    _cleansTeetHair = d?.cleansTeetHair ?? false;
+    _nailCuttingDifficulty = d?.nailCuttingDifficulty ?? false;
+    _bathroomIndependence = d?.bathroomIndependence ?? '';
+    _howRequestsSleepCtrl =
+        TextEditingController(text: d?.howRequestsSleep ?? '');
   }
 
-  void _submit() {
-    widget.onNext(
-      Section7Data(
-        behaviors: BehavioralFlags(
-          thumbSucking: _thumbSucking,
-          nailBiting: _nailBiting,
-          bedwetting: _bedwetting,
-          foodAversion: _foodAversion,
-          sleepDisorder: _sleepDisorder,
-          continuousCrying: _continuousCrying,
-          daydreaming: _daydreaming,
-          angerAttacks: _angerAttacks,
-          aggression: _aggression,
-          destroyingObjects: _destroyingObjects,
-          epilepticSeizures: _epilepticSeizures,
-          speechDifficulties: _speechDifficulties,
-        ),
-        vaccines: VaccineFlags(
-          tripleQuadrupleQuintuple: _vaccineTriple,
-          polio: _vaccinePolio,
-          tuberculosis: _vaccineTuberculosis,
-          measles: _vaccineMeasles,
-          germanMeaslesMumps: _vaccineGermanMeaslesMumps,
-          hepatitisB: _vaccineHepatitisB,
-        ),
-      ),
+  @override
+  void dispose() {
+    _howRequestsFoodCtrl.dispose();
+    _howRequestsSleepCtrl.dispose();
+    super.dispose();
+  }
+
+  String _req(BuildContext context) =>
+      AppLocalizations.of(context)!.validationRequired;
+
+  bool _validate(BuildContext context) {
+    setState(() {
+      _errors['bathroomIndependence'] =
+          _bathroomIndependence.isEmpty ? _req(context) : null;
+    });
+    return _bathroomIndependence.isNotEmpty;
+  }
+
+  void _submit(BuildContext context) {
+    if (!_validate(context)) return;
+    widget.onNext(Section7Data(
+      usesSpoonFork: _usesSpoonFork,
+      selectiveEater: _selectiveEater,
+      usesHandsForEating: _usesHandsForEating,
+      refusesTextures: _refusesTextures,
+      drinksFromCup: _drinksFromCup,
+      needsFullAssistanceEating: _needsFullAssistanceEating,
+      howRequestsFood: _howRequestsFoodCtrl.text.trim(),
+      removesShoesSocks: _removesShoesSocks,
+      closesZipperButtons: _closesZipperButtons,
+      dressesWithAssistance: _dressesWithAssistance,
+      washesHandsFace: _washesHandsFace,
+      bathesAlone: _bathesAlone,
+      cleansTeetHair: _cleansTeetHair,
+      nailCuttingDifficulty: _nailCuttingDifficulty,
+      bathroomIndependence: _bathroomIndependence,
+      howRequestsSleep: _howRequestsSleepCtrl.text.trim(),
+    ));
+  }
+
+  Widget _grid(ResponsiveHelper res, List<Widget> items) {
+    final itemWidth =
+        (MediaQuery.of(context).size.width - res.scaleSpacing(48)) / 2;
+    return Wrap(
+      spacing: res.scaleSpacing(8),
+      runSpacing: res.scaleSpacing(10),
+      children:
+          items.map((item) => SizedBox(width: itemWidth, child: item)).toList(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final res = ResponsiveHelper(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // ── Header ──────────────────────────────────────────────────────
+        // ── Header ────────────────────────────────────────────────────────────
+        FormSectionHeader(title: l10n.csSection7Title),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 1. Eating & Drinking ──────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS7EatingTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _grid(res, [
+          FormCheckboxItem(
+            label: l10n.csS7UsesSpoonFork,
+            value: _usesSpoonFork,
+            onChanged: (v) => setState(() => _usesSpoonFork = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7SelectiveEater,
+            value: _selectiveEater,
+            onChanged: (v) => setState(() => _selectiveEater = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7UsesHandsForEating,
+            value: _usesHandsForEating,
+            onChanged: (v) => setState(() => _usesHandsForEating = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7RefusesTextures,
+            value: _refusesTextures,
+            onChanged: (v) => setState(() => _refusesTextures = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7DrinksFromCup,
+            value: _drinksFromCup,
+            onChanged: (v) => setState(() => _drinksFromCup = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7NeedsFullAssistance,
+            value: _needsFullAssistanceEating,
+            onChanged: (v) => setState(() => _needsFullAssistanceEating = v),
+          ),
+        ]),
+        const SizedBox(height: AppSpacing.p12),
+        FormNotesField(
+          controller: _howRequestsFoodCtrl,
+          hint: l10n.csS7HowRequestsFoodHint,
+          maxLines: 2,
+        ),
+        const SizedBox(height: AppSpacing.p8),
         Text(
-          l10n.csSection7Title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-          textAlign: TextAlign.center,
+          l10n.csS7HowRequestsFoodLabel,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+          ),
+          textAlign: TextAlign.start,
         ),
         const SizedBox(height: AppSpacing.p24),
 
-        // ── Behaviors checklist ──────────────────────────────────────────
-        _ChecklistSection(
-          label: l10n.csS7BehaviorsQuestion,
-          items: [
-            _ChecklistItem(
-              label: l10n.csS7ThumbSucking,
-              value: _thumbSucking,
-              onChanged: (v) => setState(() => _thumbSucking = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7NailBiting,
-              value: _nailBiting,
-              onChanged: (v) => setState(() => _nailBiting = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7Bedwetting,
-              value: _bedwetting,
-              onChanged: (v) => setState(() => _bedwetting = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7FoodAversion,
-              value: _foodAversion,
-              onChanged: (v) => setState(() => _foodAversion = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7SleepDisorder,
-              value: _sleepDisorder,
-              onChanged: (v) => setState(() => _sleepDisorder = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7ContinuousCrying,
-              value: _continuousCrying,
-              onChanged: (v) => setState(() => _continuousCrying = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7Daydreaming,
-              value: _daydreaming,
-              onChanged: (v) => setState(() => _daydreaming = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7AngerAttacks,
-              value: _angerAttacks,
-              onChanged: (v) => setState(() => _angerAttacks = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7Aggression,
-              value: _aggression,
-              onChanged: (v) => setState(() => _aggression = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7DestroyingObjects,
-              value: _destroyingObjects,
-              onChanged: (v) => setState(() => _destroyingObjects = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7EpilepticSeizures,
-              value: _epilepticSeizures,
-              onChanged: (v) => setState(() => _epilepticSeizures = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7SpeechDifficulties,
-              value: _speechDifficulties,
-              onChanged: (v) => setState(() => _speechDifficulties = v),
-            ),
-          ],
-        ),
+        // ── 2. Dressing ───────────────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS7DressingTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _grid(res, [
+          FormCheckboxItem(
+            label: l10n.csS7RemovesShoesSocks,
+            value: _removesShoesSocks,
+            onChanged: (v) => setState(() => _removesShoesSocks = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7ClosesZipperButtons,
+            value: _closesZipperButtons,
+            onChanged: (v) => setState(() => _closesZipperButtons = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7DressesWithAssistance,
+            value: _dressesWithAssistance,
+            onChanged: (v) => setState(() => _dressesWithAssistance = v),
+          ),
+        ]),
         const SizedBox(height: AppSpacing.p24),
 
-        // ── Vaccines checklist ───────────────────────────────────────────
-        _ChecklistSection(
-          label: l10n.csS7VaccinesQuestion,
-          items: [
-            _ChecklistItem(
-              label: l10n.csS7VaccineTriple,
-              value: _vaccineTriple,
-              onChanged: (v) => setState(() => _vaccineTriple = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7VaccinePolio,
-              value: _vaccinePolio,
-              onChanged: (v) => setState(() => _vaccinePolio = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7VaccineTuberculosis,
-              value: _vaccineTuberculosis,
-              onChanged: (v) => setState(() => _vaccineTuberculosis = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7VaccineMeasles,
-              value: _vaccineMeasles,
-              onChanged: (v) => setState(() => _vaccineMeasles = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7VaccineGermanMeaslesMumps,
-              value: _vaccineGermanMeaslesMumps,
-              onChanged: (v) =>
-                  setState(() => _vaccineGermanMeaslesMumps = v),
-            ),
-            _ChecklistItem(
-              label: l10n.csS7VaccineHepatitisB,
-              value: _vaccineHepatitisB,
-              onChanged: (v) => setState(() => _vaccineHepatitisB = v),
-            ),
+        // ── 3. Personal Hygiene ───────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS7HygieneTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _grid(res, [
+          FormCheckboxItem(
+            label: l10n.csS7WashesHandsFace,
+            value: _washesHandsFace,
+            onChanged: (v) => setState(() => _washesHandsFace = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7BathesAlone,
+            value: _bathesAlone,
+            onChanged: (v) => setState(() => _bathesAlone = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7CleansTeetHair,
+            value: _cleansTeetHair,
+            onChanged: (v) => setState(() => _cleansTeetHair = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS7NailCuttingDifficulty,
+            value: _nailCuttingDifficulty,
+            onChanged: (v) => setState(() => _nailCuttingDifficulty = v),
+          ),
+        ]),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 4. Bathroom & Sleep ───────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS7BathroomSleepTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _BathroomRadioGroup(
+          label: l10n.csS7BathroomIndependenceLabel,
+          value: _bathroomIndependence,
+          errorText: _errors['bathroomIndependence'],
+          options: [
+            _RadioOpt(l10n.csS7OptionFullyIndependent, 'independent'),
+            _RadioOpt(l10n.csS7OptionCurrentlyTraining, 'training'),
+            _RadioOpt(l10n.csS7OptionUsesDiapers, 'diapers'),
           ],
+          onChanged: (v) => setState(() {
+            _bathroomIndependence = v;
+            _errors['bathroomIndependence'] = null;
+          }),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        FormNotesField(
+          controller: _howRequestsSleepCtrl,
+          hint: l10n.csS7HowRequestsSleepHint,
+          maxLines: 2,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        Text(
+          l10n.csS7HowRequestsSleepLabel,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+          ),
+          textAlign: TextAlign.start,
         ),
         const SizedBox(height: AppSpacing.p32),
 
         FormNextButton(
           label: l10n.csFormNext,
-          onPressed: _submit,
+          onPressed: () => _submit(context),
           isLoading: widget.isSaving,
         ),
       ],
@@ -236,25 +286,30 @@ class _Section7BehavioralState extends State<Section7Behavioral> {
   }
 }
 
-// ── Private: section with a label and a list of full-width checklist rows ────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Private helpers
+// ═══════════════════════════════════════════════════════════════════════════════
 
-class _ChecklistItem {
+class _RadioOpt {
   final String label;
-  final bool? value;
-  final ValueChanged<bool?> onChanged;
-
-  const _ChecklistItem({
-    required this.label,
-    required this.value,
-    required this.onChanged,
-  });
+  final String value;
+  const _RadioOpt(this.label, this.value);
 }
 
-class _ChecklistSection extends StatelessWidget {
+class _BathroomRadioGroup extends StatelessWidget {
   final String label;
-  final List<_ChecklistItem> items;
+  final String value;
+  final String? errorText;
+  final List<_RadioOpt> options;
+  final void Function(String) onChanged;
 
-  const _ChecklistSection({required this.label, required this.items});
+  const _BathroomRadioGroup({
+    required this.label,
+    required this.value,
+    required this.errorText,
+    required this.options,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -263,121 +318,79 @@ class _ChecklistSection extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
+          style: const TextStyle(fontSize: 13.5),
+          textAlign: TextAlign.start,
         ),
         const SizedBox(height: AppSpacing.p8),
-        ...items.map(
-          (item) => Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.p8),
-            child: _ChecklistRow(item: item),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ChecklistRow extends StatelessWidget {
-  final _ChecklistItem item;
-
-  const _ChecklistRow({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            item.label,
-            style: const TextStyle(
-              fontSize: 13.5,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ),
-        const SizedBox(width: AppSpacing.p8),
-        _MiniRadio(
-          label: l10n.csYes,
-          isSelected: item.value == true,
-          onTap: () => item.onChanged(true),
-        ),
-        const SizedBox(width: AppSpacing.p8),
-        _MiniRadio(
-          label: l10n.csNo,
-          isSelected: item.value == false,
-          onTap: () => item.onChanged(false),
-        ),
-      ],
-    );
-  }
-}
-
-class _MiniRadio extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _MiniRadio({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 140),
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected
-                      ? AppColors.primary
-                      : Colors.grey.shade400,
-                  width: 1.8,
-                ),
-              ),
-              child: isSelected
-                  ? Center(
-                      child: Container(
-                        width: 9,
-                        height: 9,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primary,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: options.map((opt) {
+            final selected = value == opt.value;
+            return GestureDetector(
+              onTap: () => onChanged(opt.value),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color:
+                            selected ? AppColors.primary : Colors.transparent,
+                        border: Border.all(
+                          color: selected
+                              ? AppColors.primary
+                              : Colors.grey.shade400,
+                          width: 2,
                         ),
                       ),
-                    )
-                  : null,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.5,
-                color: isSelected
-                    ? AppColors.primary
-                    : AppColors.textSecondary,
-                fontWeight:
-                    isSelected ? FontWeight.w600 : FontWeight.normal,
+                      child: selected
+                          ? Center(
+                              child: Container(
+                                width: 8,
+                                height: 8,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : null,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      opt.label,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: selected
+                            ? AppColors.primary
+                            : AppColors.textPrimary,
+                        fontWeight: selected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            );
+          }).toList(),
         ),
-      ),
+        if (errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              errorText!,
+              style: const TextStyle(color: AppColors.error, fontSize: 12),
+              textAlign: TextAlign.start,
+            ),
+          ),
+      ],
     );
   }
 }

@@ -26,7 +26,7 @@ final caseStudyRepositoryProvider = Provider<CaseStudyRepository>((ref) {
 // ---------------------------------------------------------------------------
 
 class CaseStudyFormState {
-  static const int totalSteps = 13;
+  static const int totalSteps = 15;
 
   final int currentStep;
   final bool isLoading;
@@ -42,8 +42,10 @@ class CaseStudyFormState {
   final Section9Data? section9;
   final Section10Data? section10;
   final Section11Data? section11;
-  final Section12Data? section12;
+  final SectionDocumentsConsentData? sectionDocs;
   final Section13Data? section13;
+  final Section14Data? section14;
+  final Section15Data? section15;
   final bool isCompleted;
 
   const CaseStudyFormState({
@@ -61,8 +63,10 @@ class CaseStudyFormState {
     this.section9,
     this.section10,
     this.section11,
-    this.section12,
+    this.sectionDocs,
     this.section13,
+    this.section14,
+    this.section15,
     this.isCompleted = false,
   });
 
@@ -81,8 +85,10 @@ class CaseStudyFormState {
     Section9Data? section9,
     Section10Data? section10,
     Section11Data? section11,
-    Section12Data? section12,
+    SectionDocumentsConsentData? sectionDocs,
     Section13Data? section13,
+    Section14Data? section14,
+    Section15Data? section15,
     bool? isCompleted,
   }) =>
       CaseStudyFormState(
@@ -100,8 +106,10 @@ class CaseStudyFormState {
         section9: section9 ?? this.section9,
         section10: section10 ?? this.section10,
         section11: section11 ?? this.section11,
-        section12: section12 ?? this.section12,
+        sectionDocs: sectionDocs ?? this.sectionDocs,
         section13: section13 ?? this.section13,
+        section14: section14 ?? this.section14,
+        section15: section15 ?? this.section15,
         isCompleted: isCompleted ?? this.isCompleted,
       );
 }
@@ -153,8 +161,10 @@ class CaseStudyFormNotifier extends Notifier<CaseStudyFormState> {
       section9: saved.section9,
       section10: saved.section10,
       section11: saved.section11,
-      section12: saved.section12,
+      sectionDocs: saved.sectionDocs,
       section13: saved.section13,
+      section14: saved.section14,
+      section15: saved.section15,
       isCompleted: saved.isCompleted,
     );
   }
@@ -176,8 +186,10 @@ class CaseStudyFormNotifier extends Notifier<CaseStudyFormState> {
             section9: state.section9,
             section10: state.section10,
             section11: state.section11,
-            section12: state.section12,
+            sectionDocs: state.sectionDocs,
             section13: state.section13,
+            section14: state.section14,
+            section15: state.section15,
             isCompleted: state.isCompleted,
           ),
         );
@@ -249,14 +261,26 @@ class CaseStudyFormNotifier extends Notifier<CaseStudyFormState> {
     state = state.copyWith(isSaving: false);
   }
 
-  Future<void> submitSection12(Section12Data data) async {
-    state = state.copyWith(section12: data, currentStep: 12, isSaving: true);
+  Future<void> submitSectionDocs(SectionDocumentsConsentData data) async {
+    state = state.copyWith(sectionDocs: data, currentStep: 12, isSaving: true);
     await _persist();
     state = state.copyWith(isSaving: false);
   }
 
   Future<void> submitSection13(Section13Data data) async {
-    state = state.copyWith(section13: data, isSaving: true);
+    state = state.copyWith(section13: data, currentStep: 13, isSaving: true);
+    await _persist();
+    state = state.copyWith(isSaving: false);
+  }
+
+  Future<void> submitSection14(Section14Data data) async {
+    state = state.copyWith(section14: data, currentStep: 14, isSaving: true);
+    await _persist();
+    state = state.copyWith(isSaving: false);
+  }
+
+  Future<void> submitSection15(Section15Data data) async {
+    state = state.copyWith(section15: data, isSaving: true);
     // Clear the first-login flag BEFORE marking the form as complete in state.
     // This ensures that if the app is killed between the two writes, the flag
     // is already false on the next launch and the user goes straight to Home.
@@ -277,7 +301,7 @@ class CaseStudyFormNotifier extends Notifier<CaseStudyFormState> {
     state = state.copyWith(isSaving: false);
   }
 
-  /// Called after ALL 13 sections are completed (kept for compatibility).
+  /// Called after ALL 15 sections are completed (kept for compatibility).
   Future<void> completeForm() async {
     if (_userId.isEmpty) return;
     state = state.copyWith(isSaving: true);
@@ -301,4 +325,11 @@ final parentNeedsFormProvider = Provider<bool>((ref) {
   if (user == null || user.role != UserRole.parent) return false;
   final repo = ref.watch(caseStudyRepositoryProvider);
   return repo.isParentFirstLogin(user.id);
+});
+
+/// Access control for the case study form.
+final caseStudyAccessProvider = Provider<bool>((ref) {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return false;
+  return user.role == UserRole.therapist || user.role == UserRole.receptionist;
 });

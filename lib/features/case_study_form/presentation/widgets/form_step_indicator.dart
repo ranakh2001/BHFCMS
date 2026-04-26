@@ -62,11 +62,11 @@ class FormStepIndicator extends StatelessWidget {
                     curve: Curves.easeInOut,
                     width: fullWidth * progress,
                     height: _barHeight,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(3),
-                      ),
+                      borderRadius: Directionality.of(context) == TextDirection.rtl
+                          ? const BorderRadius.horizontal(left: Radius.circular(3))
+                          : const BorderRadius.horizontal(right: Radius.circular(3)),
                     ),
                   ),
                 ],

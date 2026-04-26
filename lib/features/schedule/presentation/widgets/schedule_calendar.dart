@@ -327,6 +327,12 @@ class _SessionDots extends StatelessWidget {
         return AppColors.primary;
       case SessionStatus.completed:
         return AppColors.secondary;
+      case SessionStatus.confirmed:
+        return AppColors.success;
+      case SessionStatus.cancelled:
+        return AppColors.error;
+      case SessionStatus.waiting:
+        return AppColors.warning;
       case SessionStatus.holiday:
         return AppColors.textSecondary.withValues(alpha: 0.5);
     }

@@ -8,6 +8,10 @@ import '../features/children/presentation/screens/assessment_screen.dart';
 import '../features/children/presentation/screens/ai_suggestions_screen.dart';
 import '../features/main_layout/presentation/screens/main_layout_screen.dart';
 import '../features/notifications/presentation/screens/notifications_screen.dart';
+import '../features/receptionist/presentation/screens/reset_password_screen.dart';
+import '../features/receptionist/presentation/screens/add_family_screen.dart';
+import '../features/receptionist/presentation/screens/add_child_screen.dart';
+import '../features/receptionist/presentation/screens/new_appointment_screen.dart';
 
 class AppRoutes {
   static const String initial = '/';
@@ -20,6 +24,10 @@ class AppRoutes {
   static const String aiSuggestions = '/ai-suggestions';
   static const String caseStudyIntro = '/case-study-intro';
   static const String caseStudyForm = '/case-study-form';
+  static const String resetPassword = '/reset-password';
+  static const String addFamily = '/add-family';
+  static const String addChild = '/add-child';
+  static const String newAppointment = '/new-appointment';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -32,6 +40,10 @@ class AppRoutes {
       aiSuggestions: (context) => const AiSuggestionsScreen(),
       caseStudyIntro: (context) => const CaseStudyIntroScreen(),
       caseStudyForm: (context) => const CaseStudyFormScreen(),
+      resetPassword: (context) => const ResetPasswordScreen(),
+      addFamily: (context) => const AddFamilyScreen(),
+      addChild: (context) => const AddChildScreen(),
+      newAppointment: (context) => const NewAppointmentScreen(),
     };
   }
 }

@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../../core/theme/colors.dart';
 
-/// A label + text input combo that matches the design's field style.
-class FormLabeledField extends StatelessWidget {
+/// Labeled single-line text input consistent with other form fields.
+class FormTextField extends StatelessWidget {
   final String label;
-  final String hint;
   final TextEditingController controller;
-  final String? Function(String?)? validator;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-  final int maxLines;
-  final bool enabled;
+  final String? hint;
+  final String? errorText;
 
-  const FormLabeledField({
+  const FormTextField({
     super.key,
     required this.label,
-    required this.hint,
     required this.controller,
-    this.validator,
-    this.keyboardType = TextInputType.text,
-    this.inputFormatters,
-    this.maxLines = 1,
-    this.enabled = true,
+    this.hint,
+    this.errorText,
   });
 
   @override
@@ -37,46 +28,44 @@ class FormLabeledField extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
               ),
+          textAlign: TextAlign.start,
         ),
         const SizedBox(height: 6),
-        TextFormField(
+        TextField(
           controller: controller,
-          validator: validator,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          maxLines: maxLines,
-          enabled: enabled,
-          textAlign: TextAlign.start,
+          style: const TextStyle(fontSize: 14),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13),
             filled: true,
             fillColor: const Color(0xFFF5F6FA),
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+              borderSide: errorText != null
+                  ? const BorderSide(color: AppColors.error, width: 1.2)
+                  : BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide:
                   const BorderSide(color: AppColors.primary, width: 1.4),
             ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.2),
-            ),
           ),
         ),
+        if (errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
+            child: Text(
+              errorText!,
+              style: const TextStyle(color: AppColors.error, fontSize: 12),
+            ),
+          ),
       ],
     );
   }

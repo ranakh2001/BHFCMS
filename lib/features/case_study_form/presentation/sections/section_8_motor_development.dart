@@ -4,9 +4,12 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../domain/entities/case_study_form_data.dart';
-import '../widgets/form_labeled_field.dart';
+import '../widgets/form_card.dart';
 import '../widgets/form_next_button.dart';
+import '../widgets/form_notes_field.dart';
 import '../widgets/form_radio_group.dart';
+import '../widgets/form_section_header.dart';
+import '../widgets/form_subsection_title.dart';
 import '../widgets/form_yes_no_question.dart';
 
 class Section8MotorDevelopment extends StatefulWidget {
@@ -27,134 +30,257 @@ class Section8MotorDevelopment extends StatefulWidget {
 }
 
 class _Section8MotorDevelopmentState extends State<Section8MotorDevelopment> {
-  final _formKey = GlobalKey<FormState>();
+  // ── Problem behaviors ──────────────────────────────────────────────────────
+  late final TextEditingController _aggressionCtrl;
+  late final TextEditingController _selfHarmCtrl;
+  late final TextEditingController _stereotypicalCtrl;
+  late final TextEditingController _resistanceCtrl;
+  late final TextEditingController _excessiveAttachmentCtrl;
 
-  late final TextEditingController _teethingAgeCtrl;
-  late final TextEditingController _visualImpairmentDegreeCtrl;
-  late final TextEditingController _eyeDiseasesCtrl;
-  late final TextEditingController _hearingImpairmentDegreeCtrl;
-  late final TextEditingController _earDiseasesCtrl;
-  late final TextEditingController _allergyTriggersCtrl;
+  // ── Behavioral patterns ────────────────────────────────────────────────────
+  final List<_PatternCtrls> _patterns = [];
 
-  bool? _satAtRightTime;
-  bool? _crawledAtRightTime;
-  bool? _walkedAtRightTime;
-  bool? _dropsThings;
-  bool? _hasMovementDifficulties;
-  bool? _isConstantlyMoving;
-  bool? _hasVisualImpairment;
-  bool? _hasEyeDiseases;
-  bool? _hasHearingImpairment;
-  bool? _hasEarDiseases;
-  bool? _hasAllergies;
-  String? _allergyType;
+  // ── Sensory integration ────────────────────────────────────────────────────
+  late String _generalAttentionState;
+  late final TextEditingController _generalStateNotesCtrl;
+  bool? _hasSensoryIssues;
+  late final TextEditingController _sensoryIssuesNotesCtrl;
+  bool? _hearingIssue;
+  late final TextEditingController _hearingNotesCtrl;
+  bool? _touchIssue;
+  late final TextEditingController _touchNotesCtrl;
+  bool? _tasteIssue;
+  late final TextEditingController _tasteNotesCtrl;
+  bool? _vestibularIssue;
+  late final TextEditingController _vestibularNotesCtrl;
+  bool? _visualSensoryIssue;
+  late final TextEditingController _visualSensoryNotesCtrl;
+  late final TextEditingController _sensoryReactionCtrl;
 
-  final Map<String, String?> _errors = {};
+  // ── Social behaviors ───────────────────────────────────────────────────────
+  bool? _makesFriendsEasily;
+  late final TextEditingController _makesFriendsNotesCtrl;
+  bool? _sharesInterests;
+  late final TextEditingController _sharesInterestsNotesCtrl;
+  late String _abuseExposure;
+  late final TextEditingController _abuseNotesCtrl;
+  bool? _hasSignificantSocialEvent;
+  late final TextEditingController _significantSocialEventNotesCtrl;
+  late final TextEditingController _reactionToNegativeBehaviorCtrl;
 
   @override
   void initState() {
     super.initState();
     final d = widget.initialData;
-    _teethingAgeCtrl = TextEditingController(text: d?.teethingAge ?? '');
-    _visualImpairmentDegreeCtrl =
-        TextEditingController(text: d?.visualImpairmentDegree ?? '');
-    _eyeDiseasesCtrl = TextEditingController(text: d?.eyeDiseasesType ?? '');
-    _hearingImpairmentDegreeCtrl =
-        TextEditingController(text: d?.hearingImpairmentDegree ?? '');
-    _earDiseasesCtrl = TextEditingController(text: d?.earDiseasesType ?? '');
-    _allergyTriggersCtrl =
-        TextEditingController(text: d?.allergyTriggers ?? '');
 
-    _satAtRightTime = d?.satAtRightTime;
-    _crawledAtRightTime = d?.crawledAtRightTime;
-    _walkedAtRightTime = d?.walkedAtRightTime;
-    _dropsThings = d?.dropsThings;
-    _hasMovementDifficulties = d?.hasMovementDifficulties;
-    _isConstantlyMoving = d?.isConstantlyMoving;
-    _hasVisualImpairment = d?.hasVisualImpairment;
-    _hasEyeDiseases = d?.hasEyeDiseases;
-    _hasHearingImpairment = d?.hasHearingImpairment;
-    _hasEarDiseases = d?.hasEarDiseases;
-    _hasAllergies = d?.hasAllergies;
-    _allergyType =
-        d?.allergyType.isEmpty ?? true ? null : d!.allergyType;
+    _aggressionCtrl =
+        TextEditingController(text: d?.aggressionDescription ?? '');
+    _selfHarmCtrl =
+        TextEditingController(text: d?.selfHarmDescription ?? '');
+    _stereotypicalCtrl =
+        TextEditingController(text: d?.stereotypicalBehaviorsDescription ?? '');
+    _resistanceCtrl =
+        TextEditingController(text: d?.resistanceToChangeDescription ?? '');
+    _excessiveAttachmentCtrl =
+        TextEditingController(text: d?.excessiveAttachmentDescription ?? '');
+
+    final patterns = d?.behavioralPatterns ?? const [];
+    if (patterns.isEmpty) {
+      _patterns.add(_PatternCtrls());
+    } else {
+      for (final bp in patterns) {
+        _patterns.add(_PatternCtrls(
+          p: bp.pattern,
+          pr: bp.practices,
+          ef: bp.expectedFunction,
+        ));
+      }
+    }
+
+    _generalAttentionState = d?.generalAttentionState ?? '';
+    _generalStateNotesCtrl =
+        TextEditingController(text: d?.generalStateNotes ?? '');
+    _hasSensoryIssues = d?.hasSensoryIssues;
+    _sensoryIssuesNotesCtrl =
+        TextEditingController(text: d?.sensoryIssuesNotes ?? '');
+    _hearingIssue = d?.hearingIssue;
+    _hearingNotesCtrl =
+        TextEditingController(text: d?.hearingNotes ?? '');
+    _touchIssue = d?.touchIssue;
+    _touchNotesCtrl =
+        TextEditingController(text: d?.touchNotes ?? '');
+    _tasteIssue = d?.tasteIssue;
+    _tasteNotesCtrl =
+        TextEditingController(text: d?.tasteNotes ?? '');
+    _vestibularIssue = d?.vestibularIssue;
+    _vestibularNotesCtrl =
+        TextEditingController(text: d?.vestibularNotes ?? '');
+    _visualSensoryIssue = d?.visualSensoryIssue;
+    _visualSensoryNotesCtrl =
+        TextEditingController(text: d?.visualSensoryNotes ?? '');
+    _sensoryReactionCtrl =
+        TextEditingController(text: d?.sensoryReactionDescription ?? '');
+
+    _makesFriendsEasily = d?.makesFriendsEasily;
+    _makesFriendsNotesCtrl =
+        TextEditingController(text: d?.makesFriendsNotes ?? '');
+    _sharesInterests = d?.sharesInterests;
+    _sharesInterestsNotesCtrl =
+        TextEditingController(text: d?.sharesInterestsNotes ?? '');
+    _abuseExposure = d?.abuseExposure ?? '';
+    _abuseNotesCtrl =
+        TextEditingController(text: d?.abuseNotes ?? '');
+    _hasSignificantSocialEvent = d?.hasSignificantSocialEvent;
+    _significantSocialEventNotesCtrl =
+        TextEditingController(text: d?.significantSocialEventNotes ?? '');
+    _reactionToNegativeBehaviorCtrl =
+        TextEditingController(text: d?.reactionToNegativeBehavior ?? '');
   }
 
   @override
   void dispose() {
-    _teethingAgeCtrl.dispose();
-    _visualImpairmentDegreeCtrl.dispose();
-    _eyeDiseasesCtrl.dispose();
-    _hearingImpairmentDegreeCtrl.dispose();
-    _earDiseasesCtrl.dispose();
-    _allergyTriggersCtrl.dispose();
+    _aggressionCtrl.dispose();
+    _selfHarmCtrl.dispose();
+    _stereotypicalCtrl.dispose();
+    _resistanceCtrl.dispose();
+    _excessiveAttachmentCtrl.dispose();
+    for (final pc in _patterns) {
+      pc.dispose();
+    }
+    _generalStateNotesCtrl.dispose();
+    _sensoryIssuesNotesCtrl.dispose();
+    _hearingNotesCtrl.dispose();
+    _touchNotesCtrl.dispose();
+    _tasteNotesCtrl.dispose();
+    _vestibularNotesCtrl.dispose();
+    _visualSensoryNotesCtrl.dispose();
+    _sensoryReactionCtrl.dispose();
+    _makesFriendsNotesCtrl.dispose();
+    _sharesInterestsNotesCtrl.dispose();
+    _abuseNotesCtrl.dispose();
+    _significantSocialEventNotesCtrl.dispose();
+    _reactionToNegativeBehaviorCtrl.dispose();
     super.dispose();
   }
 
-  String _req(BuildContext context) =>
-      AppLocalizations.of(context)!.validationRequired;
-
-  bool _validate(BuildContext context) {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    bool allValid = true;
-
-    void checkBool(String key, bool? v) {
-      if (v == null) {
-        _errors[key] = _req(context);
-        allValid = false;
-      } else {
-        _errors[key] = null;
-      }
-    }
-
-    setState(() {
-      checkBool('satAtRightTime', _satAtRightTime);
-      checkBool('crawledAtRightTime', _crawledAtRightTime);
-      checkBool('walkedAtRightTime', _walkedAtRightTime);
-      checkBool('dropsThings', _dropsThings);
-      checkBool('hasMovementDifficulties', _hasMovementDifficulties);
-      checkBool('isConstantlyMoving', _isConstantlyMoving);
-      checkBool('hasVisualImpairment', _hasVisualImpairment);
-      checkBool('hasEyeDiseases', _hasEyeDiseases);
-      checkBool('hasHearingImpairment', _hasHearingImpairment);
-      checkBool('hasEarDiseases', _hasEarDiseases);
-      checkBool('hasAllergies', _hasAllergies);
-    });
-
-    return formValid && allValid;
+  void _submit(BuildContext context) {
+    widget.onNext(Section8Data(
+      aggressionDescription: _aggressionCtrl.text.trim(),
+      selfHarmDescription: _selfHarmCtrl.text.trim(),
+      stereotypicalBehaviorsDescription: _stereotypicalCtrl.text.trim(),
+      resistanceToChangeDescription: _resistanceCtrl.text.trim(),
+      excessiveAttachmentDescription: _excessiveAttachmentCtrl.text.trim(),
+      behavioralPatterns: _patterns
+          .map((pc) => BehavioralPattern(
+                pattern: pc.pattern.text.trim(),
+                practices: pc.practices.text.trim(),
+                expectedFunction: pc.expectedFunction.text.trim(),
+              ))
+          .toList(),
+      generalAttentionState: _generalAttentionState,
+      generalStateNotes: _generalStateNotesCtrl.text.trim(),
+      hasSensoryIssues: _hasSensoryIssues,
+      sensoryIssuesNotes: _sensoryIssuesNotesCtrl.text.trim(),
+      hearingIssue: _hearingIssue,
+      hearingNotes: _hearingNotesCtrl.text.trim(),
+      touchIssue: _touchIssue,
+      touchNotes: _touchNotesCtrl.text.trim(),
+      tasteIssue: _tasteIssue,
+      tasteNotes: _tasteNotesCtrl.text.trim(),
+      vestibularIssue: _vestibularIssue,
+      vestibularNotes: _vestibularNotesCtrl.text.trim(),
+      visualSensoryIssue: _visualSensoryIssue,
+      visualSensoryNotes: _visualSensoryNotesCtrl.text.trim(),
+      sensoryReactionDescription: _sensoryReactionCtrl.text.trim(),
+      makesFriendsEasily: _makesFriendsEasily,
+      makesFriendsNotes: _makesFriendsNotesCtrl.text.trim(),
+      sharesInterests: _sharesInterests,
+      sharesInterestsNotes: _sharesInterestsNotesCtrl.text.trim(),
+      abuseExposure: _abuseExposure,
+      abuseNotes: _abuseNotesCtrl.text.trim(),
+      hasSignificantSocialEvent: _hasSignificantSocialEvent,
+      significantSocialEventNotes: _significantSocialEventNotesCtrl.text.trim(),
+      reactionToNegativeBehavior: _reactionToNegativeBehaviorCtrl.text.trim(),
+    ));
   }
 
-  void _submit(BuildContext context) {
-    if (!_validate(context)) return;
-    widget.onNext(
-      Section8Data(
-        satAtRightTime: _satAtRightTime,
-        crawledAtRightTime: _crawledAtRightTime,
-        walkedAtRightTime: _walkedAtRightTime,
-        teethingAge: _teethingAgeCtrl.text.trim(),
-        dropsThings: _dropsThings,
-        hasMovementDifficulties: _hasMovementDifficulties,
-        isConstantlyMoving: _isConstantlyMoving,
-        hasVisualImpairment: _hasVisualImpairment,
-        visualImpairmentDegree: _hasVisualImpairment == true
-            ? _visualImpairmentDegreeCtrl.text.trim()
-            : '',
-        hasEyeDiseases: _hasEyeDiseases,
-        eyeDiseasesType:
-            _hasEyeDiseases == true ? _eyeDiseasesCtrl.text.trim() : '',
-        hasHearingImpairment: _hasHearingImpairment,
-        hearingImpairmentDegree: _hasHearingImpairment == true
-            ? _hearingImpairmentDegreeCtrl.text.trim()
-            : '',
-        hasEarDiseases: _hasEarDiseases,
-        earDiseasesType:
-            _hasEarDiseases == true ? _earDiseasesCtrl.text.trim() : '',
-        hasAllergies: _hasAllergies,
-        allergyType:
-            _hasAllergies == true ? (_allergyType ?? '') : '',
-        allergyTriggers: _hasAllergies == true
-            ? _allergyTriggersCtrl.text.trim()
-            : '',
+  Widget _behaviorField(
+    String label,
+    TextEditingController ctrl,
+    String hint,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 6),
+        FormNotesField(controller: ctrl, hint: hint, maxLines: 2),
+      ],
+    );
+  }
+
+  Widget _patternCard(AppLocalizations l10n, int idx) {
+    final pc = _patterns[idx];
+    return FormCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '${l10n.csS8PatternLabel} ${idx + 1}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => setState(() {
+                  pc.dispose();
+                  _patterns.removeAt(idx);
+                }),
+                child: const Icon(
+                  Icons.close,
+                  size: 18,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.p8),
+          Text(
+            l10n.csS8PatternLabel,
+            style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: 4),
+          FormNotesField(controller: pc.pattern, hint: l10n.csS8PatternHint),
+          const SizedBox(height: AppSpacing.p8),
+          Text(
+            l10n.csS8PracticesLabel,
+            style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: 4),
+          FormNotesField(
+              controller: pc.practices, hint: l10n.csS8PracticesHint),
+          const SizedBox(height: AppSpacing.p8),
+          Text(
+            l10n.csS8ExpectedFunctionLabel,
+            style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: 4),
+          FormNotesField(
+              controller: pc.expectedFunction,
+              hint: l10n.csS8ExpectedFunctionHint),
+        ],
       ),
     );
   }
@@ -163,297 +289,260 @@ class _Section8MotorDevelopmentState extends State<Section8MotorDevelopment> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Header ────────────────────────────────────────────────────
-          Text(
-            l10n.csSection8Title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '(${l10n.csSection8Subtitle})',
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.p24),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // ── Header ────────────────────────────────────────────────────────────
+        FormSectionHeader(title: l10n.csSection8Title),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q1: Sat at right time ─────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8SatAtRightTime,
-            value: _satAtRightTime,
-            errorText: _errors['satAtRightTime'],
-            onChanged: (v) => setState(() {
-              _satAtRightTime = v;
-              _errors['satAtRightTime'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
+        // ── 1. Problem Behaviors ──────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS8ProblemBehaviorsTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _behaviorField(
+            l10n.csS8Aggression, _aggressionCtrl, l10n.csS8BehaviorDescHint),
+        const SizedBox(height: AppSpacing.p12),
+        _behaviorField(
+            l10n.csS8SelfHarm, _selfHarmCtrl, l10n.csS8BehaviorDescHint),
+        const SizedBox(height: AppSpacing.p12),
+        _behaviorField(l10n.csS8StereotypicalBehaviors, _stereotypicalCtrl,
+            l10n.csS8BehaviorDescHint),
+        const SizedBox(height: AppSpacing.p12),
+        _behaviorField(l10n.csS8ResistanceToChange, _resistanceCtrl,
+            l10n.csS8BehaviorDescHint),
+        const SizedBox(height: AppSpacing.p12),
+        _behaviorField(l10n.csS8ExcessiveAttachment, _excessiveAttachmentCtrl,
+            l10n.csS8BehaviorDescHint),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q2: Crawled at right time ─────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8CrawledAtRightTime,
-            value: _crawledAtRightTime,
-            errorText: _errors['crawledAtRightTime'],
-            onChanged: (v) => setState(() {
-              _crawledAtRightTime = v;
-              _errors['crawledAtRightTime'] = null;
-            }),
+        // ── 2. Behavioral Patterns ────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS8BehavioralPatternsTitle),
+        const SizedBox(height: AppSpacing.p12),
+        for (int i = 0; i < _patterns.length; i++) ...[
+          _patternCard(l10n, i),
+          const SizedBox(height: AppSpacing.p12),
+        ],
+        OutlinedButton.icon(
+          onPressed: () => setState(() => _patterns.add(_PatternCtrls())),
+          icon: const Icon(Icons.add, size: 18),
+          label: Text(l10n.csS8AddPattern),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.primary,
+            side: const BorderSide(color: AppColors.primary),
+            padding: const EdgeInsets.symmetric(vertical: 12),
           ),
-          const SizedBox(height: AppSpacing.p16),
+        ),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q3: Walked at right time ──────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8WalkedAtRightTime,
-            value: _walkedAtRightTime,
-            errorText: _errors['walkedAtRightTime'],
-            onChanged: (v) => setState(() {
-              _walkedAtRightTime = v;
-              _errors['walkedAtRightTime'] = null;
-            }),
+        // ── 3. Sensory Integration ────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS8SensoryTitle),
+        const SizedBox(height: AppSpacing.p12),
+        FormRadioGroup<String>(
+          label: l10n.csS8GeneralStateLabel,
+          options: [
+            RadioOption(label: l10n.csS8StateCalm, value: 'calm'),
+            RadioOption(label: l10n.csS8StateDistracted, value: 'distracted'),
+            RadioOption(label: l10n.csS8StateVeryActive, value: 'very_active'),
+            RadioOption(
+                label: l10n.csS8StateFastTransition, value: 'fast_transition'),
+            RadioOption(label: l10n.csS8StateAbnormal, value: 'abnormal'),
+          ],
+          groupValue:
+              _generalAttentionState.isEmpty ? null : _generalAttentionState,
+          onChanged: (v) =>
+              setState(() => _generalAttentionState = v ?? ''),
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _generalStateNotesCtrl,
+          hint: l10n.csS8GeneralStateNotesHint,
+          maxLines: 2,
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        FormYesNoQuestion(
+          label: l10n.csS8HasSensoryIssues,
+          value: _hasSensoryIssues,
+          onChanged: (v) => setState(() => _hasSensoryIssues = v),
+          conditionalChild: FormNotesField(
+            controller: _sensoryIssuesNotesCtrl,
+            hint: l10n.csS8SensoryIssuesNotesHint,
+            maxLines: 2,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q4: Teething age ──────────────────────────────────────────
-          FormLabeledField(
-            label: l10n.csS8TeethingAge,
-            hint: l10n.csS8TeethingAgeHint,
-            controller: _teethingAgeCtrl,
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? _req(context) : null,
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        Text(
+          l10n.csS8SensoryInterestsLabel,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q5: Drops things ──────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8DropsThings,
-            value: _dropsThings,
-            errorText: _errors['dropsThings'],
-            onChanged: (v) => setState(() {
-              _dropsThings = v;
-              _errors['dropsThings'] = null;
-            }),
+        ),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8HearingIssue,
+          value: _hearingIssue,
+          onChanged: (v) => setState(() => _hearingIssue = v),
+          conditionalChild: FormNotesField(
+            controller: _hearingNotesCtrl,
+            hint: l10n.csS8SensoryNotesHint,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q6: Movement difficulties ─────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasMovementDifficulties,
-            value: _hasMovementDifficulties,
-            errorText: _errors['hasMovementDifficulties'],
-            onChanged: (v) => setState(() {
-              _hasMovementDifficulties = v;
-              _errors['hasMovementDifficulties'] = null;
-            }),
+        ),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8TouchIssue,
+          value: _touchIssue,
+          onChanged: (v) => setState(() => _touchIssue = v),
+          conditionalChild: FormNotesField(
+            controller: _touchNotesCtrl,
+            hint: l10n.csS8SensoryNotesHint,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q7: Constantly moving ─────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8IsConstantlyMoving,
-            value: _isConstantlyMoving,
-            errorText: _errors['isConstantlyMoving'],
-            onChanged: (v) => setState(() {
-              _isConstantlyMoving = v;
-              _errors['isConstantlyMoving'] = null;
-            }),
+        ),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8TasteIssue,
+          value: _tasteIssue,
+          onChanged: (v) => setState(() => _tasteIssue = v),
+          conditionalChild: FormNotesField(
+            controller: _tasteNotesCtrl,
+            hint: l10n.csS8SensoryNotesHint,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q8: Visual impairment ─────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasVisualImpairment,
-            value: _hasVisualImpairment,
-            errorText: _errors['hasVisualImpairment'],
-            onChanged: (v) => setState(() {
-              _hasVisualImpairment = v;
-              _errors['hasVisualImpairment'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS8VisualImpairmentDegree,
-              hint: l10n.csS8VisualImpairmentHint,
-              note: l10n.csIfPreviousYes,
-              controller: _visualImpairmentDegreeCtrl,
-              isRequired: _hasVisualImpairment == true,
-              requiredMsg: _req(context),
-            ),
+        ),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8VestibularIssue,
+          value: _vestibularIssue,
+          onChanged: (v) => setState(() => _vestibularIssue = v),
+          conditionalChild: FormNotesField(
+            controller: _vestibularNotesCtrl,
+            hint: l10n.csS8SensoryNotesHint,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q9: Eye diseases ──────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasEyeDiseases,
-            value: _hasEyeDiseases,
-            errorText: _errors['hasEyeDiseases'],
-            onChanged: (v) => setState(() {
-              _hasEyeDiseases = v;
-              _errors['hasEyeDiseases'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS8EyeDiseasesType,
-              hint: l10n.csS8EyeDiseasesHint,
-              note: l10n.csIfPreviousYes,
-              controller: _eyeDiseasesCtrl,
-              isRequired: _hasEyeDiseases == true,
-              requiredMsg: _req(context),
-            ),
+        ),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8VisualSensoryIssue,
+          value: _visualSensoryIssue,
+          onChanged: (v) => setState(() => _visualSensoryIssue = v),
+          conditionalChild: FormNotesField(
+            controller: _visualSensoryNotesCtrl,
+            hint: l10n.csS8SensoryNotesHint,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q10: Hearing impairment ───────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasHearingImpairment,
-            value: _hasHearingImpairment,
-            errorText: _errors['hasHearingImpairment'],
-            onChanged: (v) => setState(() {
-              _hasHearingImpairment = v;
-              _errors['hasHearingImpairment'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS8HearingImpairmentDegree,
-              hint: l10n.csS8HearingImpairmentHint,
-              note: l10n.csIfPreviousYes,
-              controller: _hearingImpairmentDegreeCtrl,
-              isRequired: _hasHearingImpairment == true,
-              requiredMsg: _req(context),
-            ),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        Text(
+          l10n.csS8SensoryReactionLabel,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
           ),
-          const SizedBox(height: AppSpacing.p16),
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _sensoryReactionCtrl,
+          hint: l10n.csS8SensoryReactionHint,
+          maxLines: 3,
+        ),
+        const SizedBox(height: AppSpacing.p24),
 
-          // ── Q11: Ear diseases ─────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasEarDiseases,
-            value: _hasEarDiseases,
-            errorText: _errors['hasEarDiseases'],
-            onChanged: (v) => setState(() {
-              _hasEarDiseases = v;
-              _errors['hasEarDiseases'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS8EarDiseasesType,
-              hint: l10n.csS8EarDiseasesHint,
-              note: l10n.csIfPreviousYes,
-              controller: _earDiseasesCtrl,
-              isRequired: _hasEarDiseases == true,
-              requiredMsg: _req(context),
-            ),
+        // ── 4. Social Behaviors ───────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS8SocialBehaviorsTitle),
+        const SizedBox(height: AppSpacing.p12),
+        FormYesNoQuestion(
+          label: l10n.csS8MakesFriendsEasily,
+          value: _makesFriendsEasily,
+          onChanged: (v) => setState(() => _makesFriendsEasily = v),
+          conditionalChild: FormNotesField(
+            controller: _makesFriendsNotesCtrl,
+            hint: l10n.csS8MakesFriendsNotesHint,
+            maxLines: 2,
           ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q12: Allergies ────────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS8HasAllergies,
-            value: _hasAllergies,
-            errorText: _errors['hasAllergies'],
-            onChanged: (v) => setState(() {
-              _hasAllergies = v;
-              _errors['hasAllergies'] = null;
-            }),
-            conditionalChild: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Allergy type radio
-                FormRadioGroup<String>(
-                  label: l10n.csS8AllergyType,
-                  options: [
-                    RadioOption(
-                        label: l10n.csS8AllergyFood, value: 'food'),
-                    RadioOption(
-                        label: l10n.csS8AllergyEnvironmental,
-                        value: 'environmental'),
-                  ],
-                  groupValue: _allergyType,
-                  onChanged: (v) =>
-                      setState(() => _allergyType = v),
-                ),
-                const SizedBox(height: AppSpacing.p8),
-                // Allergy triggers
-                FormLabeledField(
-                  label: l10n.csS8AllergyTriggers,
-                  hint: l10n.csS8AllergyTriggersHint,
-                  controller: _allergyTriggersCtrl,
-                  validator: (v) =>
-                      (_hasAllergies == true &&
-                              (v == null || v.trim().isEmpty))
-                          ? _req(context)
-                          : null,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  l10n.csIfPreviousYes,
-                  style: const TextStyle(
-                    fontSize: 11.5,
-                    color: AppColors.textSecondary,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        FormYesNoQuestion(
+          label: l10n.csS8SharesInterests,
+          value: _sharesInterests,
+          onChanged: (v) => setState(() => _sharesInterests = v),
+          conditionalChild: FormNotesField(
+            controller: _sharesInterestsNotesCtrl,
+            hint: l10n.csS8SharesInterestsNotesHint,
+            maxLines: 2,
           ),
-          const SizedBox(height: AppSpacing.p32),
-
-          FormNextButton(
-            label: l10n.csFormNext,
-            onPressed: () => _submit(context),
-            isLoading: widget.isSaving,
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        FormRadioGroup<String>(
+          label: l10n.csS8AbuseExposure,
+          options: [
+            RadioOption(label: l10n.csYes, value: 'yes'),
+            RadioOption(label: l10n.csNo, value: 'no'),
+            RadioOption(label: l10n.csS8AbuseWitnessed, value: 'witnessed'),
+          ],
+          groupValue: _abuseExposure.isEmpty ? null : _abuseExposure,
+          onChanged: (v) => setState(() => _abuseExposure = v ?? ''),
+        ),
+        if (_abuseExposure == 'yes' || _abuseExposure == 'witnessed') ...[
+          const SizedBox(height: AppSpacing.p8),
+          FormNotesField(
+            controller: _abuseNotesCtrl,
+            hint: l10n.csS8AbuseNotesHint,
+            maxLines: 2,
           ),
         ],
-      ),
+        const SizedBox(height: AppSpacing.p16),
+        FormYesNoQuestion(
+          label: l10n.csS8HasSignificantSocialEvent,
+          value: _hasSignificantSocialEvent,
+          onChanged: (v) => setState(() => _hasSignificantSocialEvent = v),
+          conditionalChild: FormNotesField(
+            controller: _significantSocialEventNotesCtrl,
+            hint: l10n.csS8SignificantSocialEventNotesHint,
+            maxLines: 2,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        Text(
+          l10n.csS8ReactionToNegativeBehavior,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _reactionToNegativeBehaviorCtrl,
+          hint: l10n.csS8ReactionToNegativeBehaviorHint,
+          maxLines: 3,
+        ),
+        const SizedBox(height: AppSpacing.p32),
+
+        FormNextButton(
+          label: l10n.csFormNext,
+          onPressed: () => _submit(context),
+          isLoading: widget.isSaving,
+        ),
+      ],
     );
   }
 }
 
-class _ConditionalField extends StatelessWidget {
-  final String label;
-  final String hint;
-  final String note;
-  final TextEditingController controller;
-  final bool isRequired;
-  final String requiredMsg;
+// ═══════════════════════════════════════════════════════════════════════════════
+// Private helpers
+// ═══════════════════════════════════════════════════════════════════════════════
 
-  const _ConditionalField({
-    required this.label,
-    required this.hint,
-    required this.note,
-    required this.controller,
-    required this.isRequired,
-    required this.requiredMsg,
-  });
+class _PatternCtrls {
+  final TextEditingController pattern;
+  final TextEditingController practices;
+  final TextEditingController expectedFunction;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        FormLabeledField(
-          label: label,
-          hint: hint,
-          controller: controller,
-          validator: (v) =>
-              (isRequired && (v == null || v.trim().isEmpty))
-                  ? requiredMsg
-                  : null,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          note,
-          style: const TextStyle(
-            fontSize: 11.5,
-            color: AppColors.textSecondary,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
-    );
+  _PatternCtrls({String p = '', String pr = '', String ef = ''})
+      : pattern = TextEditingController(text: p),
+        practices = TextEditingController(text: pr),
+        expectedFunction = TextEditingController(text: ef);
+
+  void dispose() {
+    pattern.dispose();
+    practices.dispose();
+    expectedFunction.dispose();
   }
 }

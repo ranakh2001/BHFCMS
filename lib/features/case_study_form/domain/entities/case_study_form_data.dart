@@ -26,538 +26,1033 @@ class FamilyHealthCondition {
 }
 
 class Section1Data {
+  // Display-only fields (pre-populated from child profile)
   final String childName;
-  final String placeOfBirth;
+  final String referenceNumber;
   final DateTime? dateOfBirth;
-  final String grade;
   final String childAge;
   final String gender;
   final String nationality;
-  final String familyRank;
-  final DateTime? centerJoinDate;
+  final String primaryLanguage;
+  final String address;
+  final String caregiverName;
+  final String caregiverRelationship;
+  final String phoneNumber;
+  final String email;
+  // Therapist-filled fields
+  final String referralSource;
+  final String referralSourceOther;
+  final String mainServiceReason;
 
   const Section1Data({
     this.childName = '',
-    this.placeOfBirth = '',
+    this.referenceNumber = '',
     this.dateOfBirth,
-    this.grade = '',
     this.childAge = '',
     this.gender = '',
     this.nationality = '',
-    this.familyRank = '',
-    this.centerJoinDate,
+    this.primaryLanguage = '',
+    this.address = '',
+    this.caregiverName = '',
+    this.caregiverRelationship = '',
+    this.phoneNumber = '',
+    this.email = '',
+    this.referralSource = '',
+    this.referralSourceOther = '',
+    this.mainServiceReason = '',
   });
 
   Section1Data copyWith({
     String? childName,
-    String? placeOfBirth,
+    String? referenceNumber,
     DateTime? dateOfBirth,
     bool clearDateOfBirth = false,
-    String? grade,
     String? childAge,
     String? gender,
     String? nationality,
-    String? familyRank,
-    DateTime? centerJoinDate,
-    bool clearCenterJoinDate = false,
+    String? primaryLanguage,
+    String? address,
+    String? caregiverName,
+    String? caregiverRelationship,
+    String? phoneNumber,
+    String? email,
+    String? referralSource,
+    String? referralSourceOther,
+    String? mainServiceReason,
   }) =>
       Section1Data(
         childName: childName ?? this.childName,
-        placeOfBirth: placeOfBirth ?? this.placeOfBirth,
+        referenceNumber: referenceNumber ?? this.referenceNumber,
         dateOfBirth: clearDateOfBirth ? null : (dateOfBirth ?? this.dateOfBirth),
-        grade: grade ?? this.grade,
         childAge: childAge ?? this.childAge,
         gender: gender ?? this.gender,
         nationality: nationality ?? this.nationality,
-        familyRank: familyRank ?? this.familyRank,
-        centerJoinDate:
-            clearCenterJoinDate ? null : (centerJoinDate ?? this.centerJoinDate),
+        primaryLanguage: primaryLanguage ?? this.primaryLanguage,
+        address: address ?? this.address,
+        caregiverName: caregiverName ?? this.caregiverName,
+        caregiverRelationship: caregiverRelationship ?? this.caregiverRelationship,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        email: email ?? this.email,
+        referralSource: referralSource ?? this.referralSource,
+        referralSourceOther: referralSourceOther ?? this.referralSourceOther,
+        mainServiceReason: mainServiceReason ?? this.mainServiceReason,
       );
 
   Map<String, dynamic> toJson() => {
         'childName': childName,
-        'placeOfBirth': placeOfBirth,
+        'referenceNumber': referenceNumber,
         'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'grade': grade,
         'childAge': childAge,
         'gender': gender,
         'nationality': nationality,
-        'familyRank': familyRank,
-        'centerJoinDate': centerJoinDate?.toIso8601String(),
+        'primaryLanguage': primaryLanguage,
+        'address': address,
+        'caregiverName': caregiverName,
+        'caregiverRelationship': caregiverRelationship,
+        'phoneNumber': phoneNumber,
+        'email': email,
+        'referralSource': referralSource,
+        'referralSourceOther': referralSourceOther,
+        'mainServiceReason': mainServiceReason,
       };
 
   factory Section1Data.fromJson(Map<String, dynamic> json) => Section1Data(
         childName: json['childName'] as String? ?? '',
-        placeOfBirth: json['placeOfBirth'] as String? ?? '',
+        referenceNumber: json['referenceNumber'] as String? ?? '',
         dateOfBirth: json['dateOfBirth'] != null
             ? DateTime.tryParse(json['dateOfBirth'] as String)
             : null,
-        grade: json['grade'] as String? ?? '',
         childAge: json['childAge'] as String? ?? '',
         gender: json['gender'] as String? ?? '',
         nationality: json['nationality'] as String? ?? '',
-        familyRank: json['familyRank'] as String? ?? '',
-        centerJoinDate: json['centerJoinDate'] != null
-            ? DateTime.tryParse(json['centerJoinDate'] as String)
-            : null,
+        primaryLanguage: json['primaryLanguage'] as String? ?? '',
+        address: json['address'] as String? ?? '',
+        caregiverName: json['caregiverName'] as String? ?? '',
+        caregiverRelationship: json['caregiverRelationship'] as String? ?? '',
+        phoneNumber: json['phoneNumber'] as String? ?? '',
+        email: json['email'] as String? ?? '',
+        referralSource: json['referralSource'] as String? ?? '',
+        referralSourceOther: json['referralSourceOther'] as String? ?? '',
+        mainServiceReason: json['mainServiceReason'] as String? ?? '',
       );
 }
 
-class Section2Data {
-  final String fatherName;
-  final String fatherEducation;
-  final String motherName;
-  final String motherEducation;
-  final bool hasParentKinship;
-  final String kinshipType;
+// ---------------------------------------------------------------------------
+// Section 2 supporting models
+// ---------------------------------------------------------------------------
 
-  const Section2Data({
-    this.fatherName = '',
-    this.fatherEducation = '',
-    this.motherName = '',
-    this.motherEducation = '',
-    this.hasParentKinship = false,
-    this.kinshipType = '',
+class ResidentMember {
+  final String name;
+  final String age;
+  final String relationship;
+  final String residence; // 'home1' | 'home2' | 'does_not_reside'
+
+  const ResidentMember({
+    this.name = '',
+    this.age = '',
+    this.relationship = '',
+    this.residence = '',
   });
 
-  Section2Data copyWith({
-    String? fatherName,
-    String? fatherEducation,
-    String? motherName,
-    String? motherEducation,
-    bool? hasParentKinship,
-    String? kinshipType,
+  ResidentMember copyWith({
+    String? name,
+    String? age,
+    String? relationship,
+    String? residence,
   }) =>
-      Section2Data(
-        fatherName: fatherName ?? this.fatherName,
-        fatherEducation: fatherEducation ?? this.fatherEducation,
-        motherName: motherName ?? this.motherName,
-        motherEducation: motherEducation ?? this.motherEducation,
-        hasParentKinship: hasParentKinship ?? this.hasParentKinship,
-        kinshipType: kinshipType ?? this.kinshipType,
+      ResidentMember(
+        name: name ?? this.name,
+        age: age ?? this.age,
+        relationship: relationship ?? this.relationship,
+        residence: residence ?? this.residence,
       );
 
   Map<String, dynamic> toJson() => {
-        'fatherName': fatherName,
-        'fatherEducation': fatherEducation,
-        'motherName': motherName,
+        'name': name,
+        'age': age,
+        'relationship': relationship,
+        'residence': residence,
+      };
+
+  factory ResidentMember.fromJson(Map<String, dynamic> json) => ResidentMember(
+        name: json['name'] as String? ?? '',
+        age: json['age'] as String? ?? '',
+        relationship: json['relationship'] as String? ?? '',
+        residence: json['residence'] as String? ?? '',
+      );
+}
+
+class FamilyConditionEntry {
+  final String who; // 'father' | 'mother' | 'paternal_rel' | 'other_rel' | 'none'
+  final String relation;
+
+  const FamilyConditionEntry({this.who = 'none', this.relation = ''});
+
+  FamilyConditionEntry copyWith({String? who, String? relation}) =>
+      FamilyConditionEntry(
+        who: who ?? this.who,
+        relation: relation ?? this.relation,
+      );
+
+  Map<String, dynamic> toJson() => {'who': who, 'relation': relation};
+
+  factory FamilyConditionEntry.fromJson(Map<String, dynamic> json) =>
+      FamilyConditionEntry(
+        who: json['who'] as String? ?? 'none',
+        relation: json['relation'] as String? ?? '',
+      );
+}
+
+// ---------------------------------------------------------------------------
+
+class Section2Data {
+  final String maritalStatus; // 'married'|'separated'|'divorced'|'one_deceased'
+  final String firstHomeDesc;
+  final String firstHomeOwner;
+  final String secondHomeDesc;
+  final String secondHomeOwner;
+  final String motherOccupation;
+  final String motherEducation;
+  final String fatherOccupation;
+  final String fatherEducation;
+  final String decisionMaker; // 'father'|'mother'|'both'|'legal_guardian'
+  final String separationDecision;
+  final bool? bothParentsAware;
+  final List<ResidentMember> familyMembers;
+  final FamilyConditionEntry autismSpectrum;
+  final FamilyConditionEntry languageDelay;
+  final FamilyConditionEntry learningDifficulty;
+  final FamilyConditionEntry adhd;
+  final FamilyConditionEntry moodDisorders;
+
+  const Section2Data({
+    this.maritalStatus = '',
+    this.firstHomeDesc = '',
+    this.firstHomeOwner = '',
+    this.secondHomeDesc = '',
+    this.secondHomeOwner = '',
+    this.motherOccupation = '',
+    this.motherEducation = '',
+    this.fatherOccupation = '',
+    this.fatherEducation = '',
+    this.decisionMaker = '',
+    this.separationDecision = '',
+    this.bothParentsAware,
+    this.familyMembers = const [],
+    this.autismSpectrum = const FamilyConditionEntry(),
+    this.languageDelay = const FamilyConditionEntry(),
+    this.learningDifficulty = const FamilyConditionEntry(),
+    this.adhd = const FamilyConditionEntry(),
+    this.moodDisorders = const FamilyConditionEntry(),
+  });
+
+  Section2Data copyWith({
+    String? maritalStatus,
+    String? firstHomeDesc,
+    String? firstHomeOwner,
+    String? secondHomeDesc,
+    String? secondHomeOwner,
+    String? motherOccupation,
+    String? motherEducation,
+    String? fatherOccupation,
+    String? fatherEducation,
+    String? decisionMaker,
+    String? separationDecision,
+    bool? bothParentsAware,
+    List<ResidentMember>? familyMembers,
+    FamilyConditionEntry? autismSpectrum,
+    FamilyConditionEntry? languageDelay,
+    FamilyConditionEntry? learningDifficulty,
+    FamilyConditionEntry? adhd,
+    FamilyConditionEntry? moodDisorders,
+  }) =>
+      Section2Data(
+        maritalStatus: maritalStatus ?? this.maritalStatus,
+        firstHomeDesc: firstHomeDesc ?? this.firstHomeDesc,
+        firstHomeOwner: firstHomeOwner ?? this.firstHomeOwner,
+        secondHomeDesc: secondHomeDesc ?? this.secondHomeDesc,
+        secondHomeOwner: secondHomeOwner ?? this.secondHomeOwner,
+        motherOccupation: motherOccupation ?? this.motherOccupation,
+        motherEducation: motherEducation ?? this.motherEducation,
+        fatherOccupation: fatherOccupation ?? this.fatherOccupation,
+        fatherEducation: fatherEducation ?? this.fatherEducation,
+        decisionMaker: decisionMaker ?? this.decisionMaker,
+        separationDecision: separationDecision ?? this.separationDecision,
+        bothParentsAware: bothParentsAware ?? this.bothParentsAware,
+        familyMembers: familyMembers ?? this.familyMembers,
+        autismSpectrum: autismSpectrum ?? this.autismSpectrum,
+        languageDelay: languageDelay ?? this.languageDelay,
+        learningDifficulty: learningDifficulty ?? this.learningDifficulty,
+        adhd: adhd ?? this.adhd,
+        moodDisorders: moodDisorders ?? this.moodDisorders,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'maritalStatus': maritalStatus,
+        'firstHomeDesc': firstHomeDesc,
+        'firstHomeOwner': firstHomeOwner,
+        'secondHomeDesc': secondHomeDesc,
+        'secondHomeOwner': secondHomeOwner,
+        'motherOccupation': motherOccupation,
         'motherEducation': motherEducation,
-        'hasParentKinship': hasParentKinship,
-        'kinshipType': kinshipType,
+        'fatherOccupation': fatherOccupation,
+        'fatherEducation': fatherEducation,
+        'decisionMaker': decisionMaker,
+        'separationDecision': separationDecision,
+        'bothParentsAware': bothParentsAware,
+        'familyMembers': familyMembers.map((m) => m.toJson()).toList(),
+        'autismSpectrum': autismSpectrum.toJson(),
+        'languageDelay': languageDelay.toJson(),
+        'learningDifficulty': learningDifficulty.toJson(),
+        'adhd': adhd.toJson(),
+        'moodDisorders': moodDisorders.toJson(),
       };
 
   factory Section2Data.fromJson(Map<String, dynamic> json) => Section2Data(
-        fatherName: json['fatherName'] as String? ?? '',
-        fatherEducation: json['fatherEducation'] as String? ?? '',
-        motherName: json['motherName'] as String? ?? '',
+        maritalStatus: json['maritalStatus'] as String? ?? '',
+        firstHomeDesc: json['firstHomeDesc'] as String? ?? '',
+        firstHomeOwner: json['firstHomeOwner'] as String? ?? '',
+        secondHomeDesc: json['secondHomeDesc'] as String? ?? '',
+        secondHomeOwner: json['secondHomeOwner'] as String? ?? '',
+        motherOccupation: json['motherOccupation'] as String? ?? '',
         motherEducation: json['motherEducation'] as String? ?? '',
-        hasParentKinship: json['hasParentKinship'] as bool? ?? false,
-        kinshipType: json['kinshipType'] as String? ?? '',
+        fatherOccupation: json['fatherOccupation'] as String? ?? '',
+        fatherEducation: json['fatherEducation'] as String? ?? '',
+        decisionMaker: json['decisionMaker'] as String? ?? '',
+        separationDecision: json['separationDecision'] as String? ?? '',
+        bothParentsAware: json['bothParentsAware'] as bool?,
+        familyMembers: (json['familyMembers'] as List<dynamic>?)
+                ?.map((e) =>
+                    ResidentMember.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            [],
+        autismSpectrum: json['autismSpectrum'] != null
+            ? FamilyConditionEntry.fromJson(
+                json['autismSpectrum'] as Map<String, dynamic>)
+            : const FamilyConditionEntry(),
+        languageDelay: json['languageDelay'] != null
+            ? FamilyConditionEntry.fromJson(
+                json['languageDelay'] as Map<String, dynamic>)
+            : const FamilyConditionEntry(),
+        learningDifficulty: json['learningDifficulty'] != null
+            ? FamilyConditionEntry.fromJson(
+                json['learningDifficulty'] as Map<String, dynamic>)
+            : const FamilyConditionEntry(),
+        adhd: json['adhd'] != null
+            ? FamilyConditionEntry.fromJson(
+                json['adhd'] as Map<String, dynamic>)
+            : const FamilyConditionEntry(),
+        moodDisorders: json['moodDisorders'] != null
+            ? FamilyConditionEntry.fromJson(
+                json['moodDisorders'] as Map<String, dynamic>)
+            : const FamilyConditionEntry(),
       );
 }
 
 class Section3Data {
-  final String homeLanguage;
-  final String schoolLanguage;
-  final String maritalStatus;
-  final String childLivingWith;
-  final String childLivingWithOther;
-  final String familyRelationship;
-  final String familyProvider;
-  final String familyIncome;
-  final String familyMembersCount;
-  final bool hasFamilyHealthConditions;
-  final List<FamilyHealthCondition> healthConditions;
+  // Pregnancy basics
+  final String liveBirthCount;
+  final String stillbirthCount;
+  final String motherAgeAtBirth;
+  final String fatherAgeAtBirth;
+  final String parentKinship; // 'first' | 'second' | 'none'
+  final bool? wasPlanned;
+  final bool? usedFertilityTreatment;
+  // Medications — 'vitamins' | 'supplements' | 'antidepressants' | 'anti_seizure' | 'other' | 'unsure'
+  final String medications;
+  final String medicationsOther;
+  // Pregnancy difficulties — 'yes' | 'no' | 'unsure'
+  final String feverInfection;
+  final String bleedingMiscarriage;
+  final String highBpDiabetes;
+  final String severeStressAccidents;
+  // Labor & delivery
+  final String usedPitocin;
+  final String prematureBirth;
+  final String prematureWeeks;
+  final String deliveryComplications;
+  final String complicationsType;
+  final String nicuResuscitation;
+  final String nicuReason;
+  final String nicuDuration;
+  final String deliveryType; // 'natural' | 'cesarean'
+  final String cesareanReason;
+  // First month problems (multi-select stored as List<String>)
+  final List<String> firstMonthProblems;
 
   const Section3Data({
-    this.homeLanguage = '',
-    this.schoolLanguage = '',
-    this.maritalStatus = '',
-    this.childLivingWith = '',
-    this.childLivingWithOther = '',
-    this.familyRelationship = '',
-    this.familyProvider = '',
-    this.familyIncome = '',
-    this.familyMembersCount = '',
-    this.hasFamilyHealthConditions = false,
-    this.healthConditions = const [],
+    this.liveBirthCount = '',
+    this.stillbirthCount = '',
+    this.motherAgeAtBirth = '',
+    this.fatherAgeAtBirth = '',
+    this.parentKinship = '',
+    this.wasPlanned,
+    this.usedFertilityTreatment,
+    this.medications = '',
+    this.medicationsOther = '',
+    this.feverInfection = '',
+    this.bleedingMiscarriage = '',
+    this.highBpDiabetes = '',
+    this.severeStressAccidents = '',
+    this.usedPitocin = '',
+    this.prematureBirth = '',
+    this.prematureWeeks = '',
+    this.deliveryComplications = '',
+    this.complicationsType = '',
+    this.nicuResuscitation = '',
+    this.nicuReason = '',
+    this.nicuDuration = '',
+    this.deliveryType = '',
+    this.cesareanReason = '',
+    this.firstMonthProblems = const [],
   });
 
   Section3Data copyWith({
-    String? homeLanguage,
-    String? schoolLanguage,
-    String? maritalStatus,
-    String? childLivingWith,
-    String? childLivingWithOther,
-    String? familyRelationship,
-    String? familyProvider,
-    String? familyIncome,
-    String? familyMembersCount,
-    bool? hasFamilyHealthConditions,
-    List<FamilyHealthCondition>? healthConditions,
+    String? liveBirthCount,
+    String? stillbirthCount,
+    String? motherAgeAtBirth,
+    String? fatherAgeAtBirth,
+    String? parentKinship,
+    bool? wasPlanned,
+    bool? usedFertilityTreatment,
+    String? medications,
+    String? medicationsOther,
+    String? feverInfection,
+    String? bleedingMiscarriage,
+    String? highBpDiabetes,
+    String? severeStressAccidents,
+    String? usedPitocin,
+    String? prematureBirth,
+    String? prematureWeeks,
+    String? deliveryComplications,
+    String? complicationsType,
+    String? nicuResuscitation,
+    String? nicuReason,
+    String? nicuDuration,
+    String? deliveryType,
+    String? cesareanReason,
+    List<String>? firstMonthProblems,
   }) =>
       Section3Data(
-        homeLanguage: homeLanguage ?? this.homeLanguage,
-        schoolLanguage: schoolLanguage ?? this.schoolLanguage,
-        maritalStatus: maritalStatus ?? this.maritalStatus,
-        childLivingWith: childLivingWith ?? this.childLivingWith,
-        childLivingWithOther: childLivingWithOther ?? this.childLivingWithOther,
-        familyRelationship: familyRelationship ?? this.familyRelationship,
-        familyProvider: familyProvider ?? this.familyProvider,
-        familyIncome: familyIncome ?? this.familyIncome,
-        familyMembersCount: familyMembersCount ?? this.familyMembersCount,
-        hasFamilyHealthConditions:
-            hasFamilyHealthConditions ?? this.hasFamilyHealthConditions,
-        healthConditions: healthConditions ?? this.healthConditions,
+        liveBirthCount: liveBirthCount ?? this.liveBirthCount,
+        stillbirthCount: stillbirthCount ?? this.stillbirthCount,
+        motherAgeAtBirth: motherAgeAtBirth ?? this.motherAgeAtBirth,
+        fatherAgeAtBirth: fatherAgeAtBirth ?? this.fatherAgeAtBirth,
+        parentKinship: parentKinship ?? this.parentKinship,
+        wasPlanned: wasPlanned ?? this.wasPlanned,
+        usedFertilityTreatment:
+            usedFertilityTreatment ?? this.usedFertilityTreatment,
+        medications: medications ?? this.medications,
+        medicationsOther: medicationsOther ?? this.medicationsOther,
+        feverInfection: feverInfection ?? this.feverInfection,
+        bleedingMiscarriage: bleedingMiscarriage ?? this.bleedingMiscarriage,
+        highBpDiabetes: highBpDiabetes ?? this.highBpDiabetes,
+        severeStressAccidents:
+            severeStressAccidents ?? this.severeStressAccidents,
+        usedPitocin: usedPitocin ?? this.usedPitocin,
+        prematureBirth: prematureBirth ?? this.prematureBirth,
+        prematureWeeks: prematureWeeks ?? this.prematureWeeks,
+        deliveryComplications:
+            deliveryComplications ?? this.deliveryComplications,
+        complicationsType: complicationsType ?? this.complicationsType,
+        nicuResuscitation: nicuResuscitation ?? this.nicuResuscitation,
+        nicuReason: nicuReason ?? this.nicuReason,
+        nicuDuration: nicuDuration ?? this.nicuDuration,
+        deliveryType: deliveryType ?? this.deliveryType,
+        cesareanReason: cesareanReason ?? this.cesareanReason,
+        firstMonthProblems: firstMonthProblems ?? this.firstMonthProblems,
       );
 
   Map<String, dynamic> toJson() => {
-        'homeLanguage': homeLanguage,
-        'schoolLanguage': schoolLanguage,
-        'maritalStatus': maritalStatus,
-        'childLivingWith': childLivingWith,
-        'childLivingWithOther': childLivingWithOther,
-        'familyRelationship': familyRelationship,
-        'familyProvider': familyProvider,
-        'familyIncome': familyIncome,
-        'familyMembersCount': familyMembersCount,
-        'hasFamilyHealthConditions': hasFamilyHealthConditions,
-        'healthConditions': healthConditions.map((e) => e.toJson()).toList(),
+        'liveBirthCount': liveBirthCount,
+        'stillbirthCount': stillbirthCount,
+        'motherAgeAtBirth': motherAgeAtBirth,
+        'fatherAgeAtBirth': fatherAgeAtBirth,
+        'parentKinship': parentKinship,
+        'wasPlanned': wasPlanned,
+        'usedFertilityTreatment': usedFertilityTreatment,
+        'medications': medications,
+        'medicationsOther': medicationsOther,
+        'feverInfection': feverInfection,
+        'bleedingMiscarriage': bleedingMiscarriage,
+        'highBpDiabetes': highBpDiabetes,
+        'severeStressAccidents': severeStressAccidents,
+        'usedPitocin': usedPitocin,
+        'prematureBirth': prematureBirth,
+        'prematureWeeks': prematureWeeks,
+        'deliveryComplications': deliveryComplications,
+        'complicationsType': complicationsType,
+        'nicuResuscitation': nicuResuscitation,
+        'nicuReason': nicuReason,
+        'nicuDuration': nicuDuration,
+        'deliveryType': deliveryType,
+        'cesareanReason': cesareanReason,
+        'firstMonthProblems': firstMonthProblems,
       };
 
   factory Section3Data.fromJson(Map<String, dynamic> json) => Section3Data(
-        homeLanguage: json['homeLanguage'] as String? ?? '',
-        schoolLanguage: json['schoolLanguage'] as String? ?? '',
-        maritalStatus: json['maritalStatus'] as String? ?? '',
-        childLivingWith: json['childLivingWith'] as String? ?? '',
-        childLivingWithOther: json['childLivingWithOther'] as String? ?? '',
-        familyRelationship: json['familyRelationship'] as String? ?? '',
-        familyProvider: json['familyProvider'] as String? ?? '',
-        familyIncome: json['familyIncome'] as String? ?? '',
-        familyMembersCount: json['familyMembersCount'] as String? ?? '',
-        hasFamilyHealthConditions:
-            json['hasFamilyHealthConditions'] as bool? ?? false,
-        healthConditions: (json['healthConditions'] as List<dynamic>?)
-                ?.map((e) =>
-                    FamilyHealthCondition.fromJson(e as Map<String, dynamic>))
+        liveBirthCount: json['liveBirthCount'] as String? ?? '',
+        stillbirthCount: json['stillbirthCount'] as String? ?? '',
+        motherAgeAtBirth: json['motherAgeAtBirth'] as String? ?? '',
+        fatherAgeAtBirth: json['fatherAgeAtBirth'] as String? ?? '',
+        parentKinship: json['parentKinship'] as String? ?? '',
+        wasPlanned: json['wasPlanned'] as bool?,
+        usedFertilityTreatment: json['usedFertilityTreatment'] as bool?,
+        medications: json['medications'] as String? ?? '',
+        medicationsOther: json['medicationsOther'] as String? ?? '',
+        feverInfection: json['feverInfection'] as String? ?? '',
+        bleedingMiscarriage: json['bleedingMiscarriage'] as String? ?? '',
+        highBpDiabetes: json['highBpDiabetes'] as String? ?? '',
+        severeStressAccidents: json['severeStressAccidents'] as String? ?? '',
+        usedPitocin: json['usedPitocin'] as String? ?? '',
+        prematureBirth: json['prematureBirth'] as String? ?? '',
+        prematureWeeks: json['prematureWeeks'] as String? ?? '',
+        deliveryComplications: json['deliveryComplications'] as String? ?? '',
+        complicationsType: json['complicationsType'] as String? ?? '',
+        nicuResuscitation: json['nicuResuscitation'] as String? ?? '',
+        nicuReason: json['nicuReason'] as String? ?? '',
+        nicuDuration: json['nicuDuration'] as String? ?? '',
+        deliveryType: json['deliveryType'] as String? ?? '',
+        cesareanReason: json['cesareanReason'] as String? ?? '',
+        firstMonthProblems:
+            (json['firstMonthProblems'] as List<dynamic>?)
+                ?.map((e) => e as String)
                 .toList() ??
             const [],
       );
 }
 
 // =============================================================================
-// Section 4 — Medical Information & Birth History (Pregnancy Period)
+// Section 4 — Medical History (التاريخ الطبي)
 // =============================================================================
 
-/// Six specific diseases checked during pregnancy.
-class PregnancyDiseaseFlags {
-  final bool? diabetes;
-  final bool? bloodPressure;
-  final bool? albuminuria;
-  final bool? preeclampsia;
-  final bool? rubella;
-  final bool? bleeding;
+/// One entry in the previous-treatment history dynamic list.
+class TreatmentEntry {
+  final String treatmentType;
+  final String organization;
+  final String duration;
+  final String notes;
 
-  const PregnancyDiseaseFlags({
-    this.diabetes,
-    this.bloodPressure,
-    this.albuminuria,
-    this.preeclampsia,
-    this.rubella,
-    this.bleeding,
+  const TreatmentEntry({
+    this.treatmentType = '',
+    this.organization = '',
+    this.duration = '',
+    this.notes = '',
   });
 
-  PregnancyDiseaseFlags copyWith({
-    bool? diabetes,
-    bool? bloodPressure,
-    bool? albuminuria,
-    bool? preeclampsia,
-    bool? rubella,
-    bool? bleeding,
+  TreatmentEntry copyWith({
+    String? treatmentType,
+    String? organization,
+    String? duration,
+    String? notes,
   }) =>
-      PregnancyDiseaseFlags(
-        diabetes: diabetes ?? this.diabetes,
-        bloodPressure: bloodPressure ?? this.bloodPressure,
-        albuminuria: albuminuria ?? this.albuminuria,
-        preeclampsia: preeclampsia ?? this.preeclampsia,
-        rubella: rubella ?? this.rubella,
-        bleeding: bleeding ?? this.bleeding,
+      TreatmentEntry(
+        treatmentType: treatmentType ?? this.treatmentType,
+        organization: organization ?? this.organization,
+        duration: duration ?? this.duration,
+        notes: notes ?? this.notes,
       );
 
   Map<String, dynamic> toJson() => {
-        'diabetes': diabetes,
-        'bloodPressure': bloodPressure,
-        'albuminuria': albuminuria,
-        'preeclampsia': preeclampsia,
-        'rubella': rubella,
-        'bleeding': bleeding,
+        'treatmentType': treatmentType,
+        'organization': organization,
+        'duration': duration,
+        'notes': notes,
       };
 
-  factory PregnancyDiseaseFlags.fromJson(Map<String, dynamic> json) =>
-      PregnancyDiseaseFlags(
-        diabetes: json['diabetes'] as bool?,
-        bloodPressure: json['bloodPressure'] as bool?,
-        albuminuria: json['albuminuria'] as bool?,
-        preeclampsia: json['preeclampsia'] as bool?,
-        rubella: json['rubella'] as bool?,
-        bleeding: json['bleeding'] as bool?,
+  factory TreatmentEntry.fromJson(Map<String, dynamic> json) => TreatmentEntry(
+        treatmentType: json['treatmentType'] as String? ?? '',
+        organization: json['organization'] as String? ?? '',
+        duration: json['duration'] as String? ?? '',
+        notes: json['notes'] as String? ?? '',
+      );
+}
+
+/// One entry in the current-medications dynamic list.
+class MedicationEntry {
+  final String name;
+  final String dosageAndTiming;
+  final String duration;
+  final String notes;
+
+  const MedicationEntry({
+    this.name = '',
+    this.dosageAndTiming = '',
+    this.duration = '',
+    this.notes = '',
+  });
+
+  MedicationEntry copyWith({
+    String? name,
+    String? dosageAndTiming,
+    String? duration,
+    String? notes,
+  }) =>
+      MedicationEntry(
+        name: name ?? this.name,
+        dosageAndTiming: dosageAndTiming ?? this.dosageAndTiming,
+        duration: duration ?? this.duration,
+        notes: notes ?? this.notes,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'dosageAndTiming': dosageAndTiming,
+        'duration': duration,
+        'notes': notes,
+      };
+
+  factory MedicationEntry.fromJson(Map<String, dynamic> json) =>
+      MedicationEntry(
+        name: json['name'] as String? ?? '',
+        dosageAndTiming: json['dosageAndTiming'] as String? ?? '',
+        duration: json['duration'] as String? ?? '',
+        notes: json['notes'] as String? ?? '',
+      );
+}
+
+/// Result of a single medical assessment (normal / abnormal + free-text notes).
+class AssessmentResult {
+  final String result; // 'normal' | 'abnormal' | ''
+  final String notes;
+
+  const AssessmentResult({this.result = '', this.notes = ''});
+
+  AssessmentResult copyWith({String? result, String? notes}) =>
+      AssessmentResult(
+        result: result ?? this.result,
+        notes: notes ?? this.notes,
+      );
+
+  Map<String, dynamic> toJson() => {'result': result, 'notes': notes};
+
+  factory AssessmentResult.fromJson(Map<String, dynamic> json) =>
+      AssessmentResult(
+        result: json['result'] as String? ?? '',
+        notes: json['notes'] as String? ?? '',
       );
 }
 
 class Section4Data {
-  final bool? tookMedication;
-  final String medicationType;
-  final bool? hadDoctorFollowUp;
-  final bool? followUpWasRegular;
-  final bool? exposedToRadiation;
-  final bool? hadInjuriesOrFalls;
-  final String injuriesDescription;
-  final bool? hadPsychologicalTrauma;
-  final bool? pregnancyWasNineMonths;
-  final String pregnancyDuration;
-  final PregnancyDiseaseFlags pregnancyDiseases;
-  final bool? hadInfectiousDiseases;
-  final String infectiousDiseaseType;
-  final bool? hasChronicDiseases;
-  final String chronicDiseaseType;
-  final bool? hadLabTests;
-  final String labTestsDescription;
-  final bool? tookStabilizingMedication;
-  final String totalPregnanciesCount;
-  final bool? hadMiscarriage;
-  final bool? exposedToSmoking;
+  // 1. Comprehensive medical history (yes / no per condition)
+  final bool? hearingVisionIssues;
+  final bool? seizuresHeadInjury;
+  final bool? sleepNutritionIssues;
+  final bool? bloodAnemiaRespHeart;
+  final bool? dentalPerceptionIssues;
+  final bool? fattyFailureStunting;
+
+  // 2. Previous treatment history (dynamic list)
+  final List<TreatmentEntry> previousTreatments;
+
+  // 3. Current medications & biological interventions (dynamic list)
+  final List<MedicationEntry> currentMedications;
+
+  // 4. Diagnoses: 'diagnosed' | 'suspected' | ''
+  final String asdDiagnosis;
+  final String adhdDiagnosis;
+  final String learningDelayDiagnosis;
+  final String downSyndromeDiagnosis;
+  final String otherDiagnosis;
+
+  // 5. Medical assessments
+  final AssessmentResult auditoryVisualAssessment;
+  final AssessmentResult brainScanEEG;
+  final AssessmentResult geneticTest;
+  final AssessmentResult psychoIQTest;
+
+  // 6. Diet, allergies & alternative medicines
+  final bool? hasAllergies;
+  final String allergyType;
+  final String specialDiet; // 'gluten_free'|'casein_free'|'biometric'|'other'|''
+  final String specialDietOther;
+  final bool? hasAlternativeVaccines;
+  final String alternativeVaccinesDesc;
+  final bool? allVaccinesOnTime;
 
   const Section4Data({
-    this.tookMedication,
-    this.medicationType = '',
-    this.hadDoctorFollowUp,
-    this.followUpWasRegular,
-    this.exposedToRadiation,
-    this.hadInjuriesOrFalls,
-    this.injuriesDescription = '',
-    this.hadPsychologicalTrauma,
-    this.pregnancyWasNineMonths,
-    this.pregnancyDuration = '',
-    this.pregnancyDiseases = const PregnancyDiseaseFlags(),
-    this.hadInfectiousDiseases,
-    this.infectiousDiseaseType = '',
-    this.hasChronicDiseases,
-    this.chronicDiseaseType = '',
-    this.hadLabTests,
-    this.labTestsDescription = '',
-    this.tookStabilizingMedication,
-    this.totalPregnanciesCount = '',
-    this.hadMiscarriage,
-    this.exposedToSmoking,
+    this.hearingVisionIssues,
+    this.seizuresHeadInjury,
+    this.sleepNutritionIssues,
+    this.bloodAnemiaRespHeart,
+    this.dentalPerceptionIssues,
+    this.fattyFailureStunting,
+    this.previousTreatments = const [],
+    this.currentMedications = const [],
+    this.asdDiagnosis = '',
+    this.adhdDiagnosis = '',
+    this.learningDelayDiagnosis = '',
+    this.downSyndromeDiagnosis = '',
+    this.otherDiagnosis = '',
+    this.auditoryVisualAssessment = const AssessmentResult(),
+    this.brainScanEEG = const AssessmentResult(),
+    this.geneticTest = const AssessmentResult(),
+    this.psychoIQTest = const AssessmentResult(),
+    this.hasAllergies,
+    this.allergyType = '',
+    this.specialDiet = '',
+    this.specialDietOther = '',
+    this.hasAlternativeVaccines,
+    this.alternativeVaccinesDesc = '',
+    this.allVaccinesOnTime,
   });
 
   Section4Data copyWith({
-    bool? tookMedication,
-    String? medicationType,
-    bool? hadDoctorFollowUp,
-    bool? followUpWasRegular,
-    bool? exposedToRadiation,
-    bool? hadInjuriesOrFalls,
-    String? injuriesDescription,
-    bool? hadPsychologicalTrauma,
-    bool? pregnancyWasNineMonths,
-    String? pregnancyDuration,
-    PregnancyDiseaseFlags? pregnancyDiseases,
-    bool? hadInfectiousDiseases,
-    String? infectiousDiseaseType,
-    bool? hasChronicDiseases,
-    String? chronicDiseaseType,
-    bool? hadLabTests,
-    String? labTestsDescription,
-    bool? tookStabilizingMedication,
-    String? totalPregnanciesCount,
-    bool? hadMiscarriage,
-    bool? exposedToSmoking,
+    bool? hearingVisionIssues,
+    bool? seizuresHeadInjury,
+    bool? sleepNutritionIssues,
+    bool? bloodAnemiaRespHeart,
+    bool? dentalPerceptionIssues,
+    bool? fattyFailureStunting,
+    List<TreatmentEntry>? previousTreatments,
+    List<MedicationEntry>? currentMedications,
+    String? asdDiagnosis,
+    String? adhdDiagnosis,
+    String? learningDelayDiagnosis,
+    String? downSyndromeDiagnosis,
+    String? otherDiagnosis,
+    AssessmentResult? auditoryVisualAssessment,
+    AssessmentResult? brainScanEEG,
+    AssessmentResult? geneticTest,
+    AssessmentResult? psychoIQTest,
+    bool? hasAllergies,
+    String? allergyType,
+    String? specialDiet,
+    String? specialDietOther,
+    bool? hasAlternativeVaccines,
+    String? alternativeVaccinesDesc,
+    bool? allVaccinesOnTime,
   }) =>
       Section4Data(
-        tookMedication: tookMedication ?? this.tookMedication,
-        medicationType: medicationType ?? this.medicationType,
-        hadDoctorFollowUp: hadDoctorFollowUp ?? this.hadDoctorFollowUp,
-        followUpWasRegular: followUpWasRegular ?? this.followUpWasRegular,
-        exposedToRadiation: exposedToRadiation ?? this.exposedToRadiation,
-        hadInjuriesOrFalls: hadInjuriesOrFalls ?? this.hadInjuriesOrFalls,
-        injuriesDescription: injuriesDescription ?? this.injuriesDescription,
-        hadPsychologicalTrauma:
-            hadPsychologicalTrauma ?? this.hadPsychologicalTrauma,
-        pregnancyWasNineMonths:
-            pregnancyWasNineMonths ?? this.pregnancyWasNineMonths,
-        pregnancyDuration: pregnancyDuration ?? this.pregnancyDuration,
-        pregnancyDiseases: pregnancyDiseases ?? this.pregnancyDiseases,
-        hadInfectiousDiseases:
-            hadInfectiousDiseases ?? this.hadInfectiousDiseases,
-        infectiousDiseaseType:
-            infectiousDiseaseType ?? this.infectiousDiseaseType,
-        hasChronicDiseases: hasChronicDiseases ?? this.hasChronicDiseases,
-        chronicDiseaseType: chronicDiseaseType ?? this.chronicDiseaseType,
-        hadLabTests: hadLabTests ?? this.hadLabTests,
-        labTestsDescription: labTestsDescription ?? this.labTestsDescription,
-        tookStabilizingMedication:
-            tookStabilizingMedication ?? this.tookStabilizingMedication,
-        totalPregnanciesCount:
-            totalPregnanciesCount ?? this.totalPregnanciesCount,
-        hadMiscarriage: hadMiscarriage ?? this.hadMiscarriage,
-        exposedToSmoking: exposedToSmoking ?? this.exposedToSmoking,
+        hearingVisionIssues: hearingVisionIssues ?? this.hearingVisionIssues,
+        seizuresHeadInjury: seizuresHeadInjury ?? this.seizuresHeadInjury,
+        sleepNutritionIssues: sleepNutritionIssues ?? this.sleepNutritionIssues,
+        bloodAnemiaRespHeart: bloodAnemiaRespHeart ?? this.bloodAnemiaRespHeart,
+        dentalPerceptionIssues:
+            dentalPerceptionIssues ?? this.dentalPerceptionIssues,
+        fattyFailureStunting: fattyFailureStunting ?? this.fattyFailureStunting,
+        previousTreatments: previousTreatments ?? this.previousTreatments,
+        currentMedications: currentMedications ?? this.currentMedications,
+        asdDiagnosis: asdDiagnosis ?? this.asdDiagnosis,
+        adhdDiagnosis: adhdDiagnosis ?? this.adhdDiagnosis,
+        learningDelayDiagnosis:
+            learningDelayDiagnosis ?? this.learningDelayDiagnosis,
+        downSyndromeDiagnosis:
+            downSyndromeDiagnosis ?? this.downSyndromeDiagnosis,
+        otherDiagnosis: otherDiagnosis ?? this.otherDiagnosis,
+        auditoryVisualAssessment:
+            auditoryVisualAssessment ?? this.auditoryVisualAssessment,
+        brainScanEEG: brainScanEEG ?? this.brainScanEEG,
+        geneticTest: geneticTest ?? this.geneticTest,
+        psychoIQTest: psychoIQTest ?? this.psychoIQTest,
+        hasAllergies: hasAllergies ?? this.hasAllergies,
+        allergyType: allergyType ?? this.allergyType,
+        specialDiet: specialDiet ?? this.specialDiet,
+        specialDietOther: specialDietOther ?? this.specialDietOther,
+        hasAlternativeVaccines:
+            hasAlternativeVaccines ?? this.hasAlternativeVaccines,
+        alternativeVaccinesDesc:
+            alternativeVaccinesDesc ?? this.alternativeVaccinesDesc,
+        allVaccinesOnTime: allVaccinesOnTime ?? this.allVaccinesOnTime,
       );
 
   Map<String, dynamic> toJson() => {
-        'tookMedication': tookMedication,
-        'medicationType': medicationType,
-        'hadDoctorFollowUp': hadDoctorFollowUp,
-        'followUpWasRegular': followUpWasRegular,
-        'exposedToRadiation': exposedToRadiation,
-        'hadInjuriesOrFalls': hadInjuriesOrFalls,
-        'injuriesDescription': injuriesDescription,
-        'hadPsychologicalTrauma': hadPsychologicalTrauma,
-        'pregnancyWasNineMonths': pregnancyWasNineMonths,
-        'pregnancyDuration': pregnancyDuration,
-        'pregnancyDiseases': pregnancyDiseases.toJson(),
-        'hadInfectiousDiseases': hadInfectiousDiseases,
-        'infectiousDiseaseType': infectiousDiseaseType,
-        'hasChronicDiseases': hasChronicDiseases,
-        'chronicDiseaseType': chronicDiseaseType,
-        'hadLabTests': hadLabTests,
-        'labTestsDescription': labTestsDescription,
-        'tookStabilizingMedication': tookStabilizingMedication,
-        'totalPregnanciesCount': totalPregnanciesCount,
-        'hadMiscarriage': hadMiscarriage,
-        'exposedToSmoking': exposedToSmoking,
+        'hearingVisionIssues': hearingVisionIssues,
+        'seizuresHeadInjury': seizuresHeadInjury,
+        'sleepNutritionIssues': sleepNutritionIssues,
+        'bloodAnemiaRespHeart': bloodAnemiaRespHeart,
+        'dentalPerceptionIssues': dentalPerceptionIssues,
+        'fattyFailureStunting': fattyFailureStunting,
+        'previousTreatments':
+            previousTreatments.map((e) => e.toJson()).toList(),
+        'currentMedications':
+            currentMedications.map((e) => e.toJson()).toList(),
+        'asdDiagnosis': asdDiagnosis,
+        'adhdDiagnosis': adhdDiagnosis,
+        'learningDelayDiagnosis': learningDelayDiagnosis,
+        'downSyndromeDiagnosis': downSyndromeDiagnosis,
+        'otherDiagnosis': otherDiagnosis,
+        'auditoryVisualAssessment': auditoryVisualAssessment.toJson(),
+        'brainScanEEG': brainScanEEG.toJson(),
+        'geneticTest': geneticTest.toJson(),
+        'psychoIQTest': psychoIQTest.toJson(),
+        'hasAllergies': hasAllergies,
+        'allergyType': allergyType,
+        'specialDiet': specialDiet,
+        'specialDietOther': specialDietOther,
+        'hasAlternativeVaccines': hasAlternativeVaccines,
+        'alternativeVaccinesDesc': alternativeVaccinesDesc,
+        'allVaccinesOnTime': allVaccinesOnTime,
       };
 
   factory Section4Data.fromJson(Map<String, dynamic> json) => Section4Data(
-        tookMedication: json['tookMedication'] as bool?,
-        medicationType: json['medicationType'] as String? ?? '',
-        hadDoctorFollowUp: json['hadDoctorFollowUp'] as bool?,
-        followUpWasRegular: json['followUpWasRegular'] as bool?,
-        exposedToRadiation: json['exposedToRadiation'] as bool?,
-        hadInjuriesOrFalls: json['hadInjuriesOrFalls'] as bool?,
-        injuriesDescription: json['injuriesDescription'] as String? ?? '',
-        hadPsychologicalTrauma: json['hadPsychologicalTrauma'] as bool?,
-        pregnancyWasNineMonths: json['pregnancyWasNineMonths'] as bool?,
-        pregnancyDuration: json['pregnancyDuration'] as String? ?? '',
-        pregnancyDiseases: json['pregnancyDiseases'] != null
-            ? PregnancyDiseaseFlags.fromJson(
-                json['pregnancyDiseases'] as Map<String, dynamic>)
-            : const PregnancyDiseaseFlags(),
-        hadInfectiousDiseases: json['hadInfectiousDiseases'] as bool?,
-        infectiousDiseaseType: json['infectiousDiseaseType'] as String? ?? '',
-        hasChronicDiseases: json['hasChronicDiseases'] as bool?,
-        chronicDiseaseType: json['chronicDiseaseType'] as String? ?? '',
-        hadLabTests: json['hadLabTests'] as bool?,
-        labTestsDescription: json['labTestsDescription'] as String? ?? '',
-        tookStabilizingMedication:
-            json['tookStabilizingMedication'] as bool?,
-        totalPregnanciesCount:
-            json['totalPregnanciesCount'] as String? ?? '',
-        hadMiscarriage: json['hadMiscarriage'] as bool?,
-        exposedToSmoking: json['exposedToSmoking'] as bool?,
+        hearingVisionIssues: json['hearingVisionIssues'] as bool?,
+        seizuresHeadInjury: json['seizuresHeadInjury'] as bool?,
+        sleepNutritionIssues: json['sleepNutritionIssues'] as bool?,
+        bloodAnemiaRespHeart: json['bloodAnemiaRespHeart'] as bool?,
+        dentalPerceptionIssues: json['dentalPerceptionIssues'] as bool?,
+        fattyFailureStunting: json['fattyFailureStunting'] as bool?,
+        previousTreatments: (json['previousTreatments'] as List<dynamic>?)
+                ?.map((e) =>
+                    TreatmentEntry.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        currentMedications: (json['currentMedications'] as List<dynamic>?)
+                ?.map((e) =>
+                    MedicationEntry.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        asdDiagnosis: json['asdDiagnosis'] as String? ?? '',
+        adhdDiagnosis: json['adhdDiagnosis'] as String? ?? '',
+        learningDelayDiagnosis:
+            json['learningDelayDiagnosis'] as String? ?? '',
+        downSyndromeDiagnosis:
+            json['downSyndromeDiagnosis'] as String? ?? '',
+        otherDiagnosis: json['otherDiagnosis'] as String? ?? '',
+        auditoryVisualAssessment: json['auditoryVisualAssessment'] != null
+            ? AssessmentResult.fromJson(
+                json['auditoryVisualAssessment'] as Map<String, dynamic>)
+            : const AssessmentResult(),
+        brainScanEEG: json['brainScanEEG'] != null
+            ? AssessmentResult.fromJson(
+                json['brainScanEEG'] as Map<String, dynamic>)
+            : const AssessmentResult(),
+        geneticTest: json['geneticTest'] != null
+            ? AssessmentResult.fromJson(
+                json['geneticTest'] as Map<String, dynamic>)
+            : const AssessmentResult(),
+        psychoIQTest: json['psychoIQTest'] != null
+            ? AssessmentResult.fromJson(
+                json['psychoIQTest'] as Map<String, dynamic>)
+            : const AssessmentResult(),
+        hasAllergies: json['hasAllergies'] as bool?,
+        allergyType: json['allergyType'] as String? ?? '',
+        specialDiet: json['specialDiet'] as String? ?? '',
+        specialDietOther: json['specialDietOther'] as String? ?? '',
+        hasAlternativeVaccines: json['hasAlternativeVaccines'] as bool?,
+        alternativeVaccinesDesc:
+            json['alternativeVaccinesDesc'] as String? ?? '',
+        allVaccinesOnTime: json['allVaccinesOnTime'] as bool?,
       );
 }
 
 // =============================================================================
-// Section 5 — Medical Information & Birth History (Birth Period)
+// Section 5 — Developmental History (التاريخ النمائي)
 // =============================================================================
 
 class Section5Data {
-  final String birthType; // 'natural' | 'cesarean'
-  final String birthPlace; // 'home' | 'hospital'
-  final bool? usedBirthTools;
-  final bool? tookDeliveryMedication;
-  final bool? oxygenDeficiency;
-  final bool? umbilicalCordWrapped;
-  final bool? breechPosition;
-  final String breechDuration;
-  final bool? hadJaundice;
-  final bool? hadCongenitalDeformities;
-  final String congenitalDeformitiesType;
-  final String birthWeight;
-  final bool? hadRhTest;
+  // Social / Emotional checkboxes
+  final bool socialSmile;
+  final bool knowsFamilyMembers;
+  final bool respondsToName;
+  final bool showsAffection;
+  final bool shyOrFearful;
+
+  // Cognitive checkboxes
+  final bool imitatesAdults;
+  final bool putsObjectsInMouth;
+  final bool recognizesColors;
+  final bool imaginativePlay;
+  final bool followsInstructions;
+
+  // Language / Communication checkboxes
+  final bool cooing;
+  final bool twoWordPhrases;
+  final bool usesGestures;
+  final bool requestsByWords;
+
+  // Motor / Physical checkboxes
+  final bool sittingCrawling;
+  final bool jumpingClimbing;
+  final bool walkingWithoutHelp;
+  final bool holdingPenDrawing;
+  final bool kickingThrowing;
+
+  // Developmental milestone ages + notes
+  final String socialSmileAge;
+  final String socialSmileNotes;
+  final String independentSittingAge;
+  final String independentSittingNotes;
+  final String independentWalkingAge;
+  final String independentWalkingNotes;
+  final String firstWordAge;
+  final String firstWordNotes;
+
+  // Skill regression
+  final bool? hadSkillRegression;
+  final String regressionAge;
+  final String regressionDetails;
 
   const Section5Data({
-    this.birthType = '',
-    this.birthPlace = '',
-    this.usedBirthTools,
-    this.tookDeliveryMedication,
-    this.oxygenDeficiency,
-    this.umbilicalCordWrapped,
-    this.breechPosition,
-    this.breechDuration = '',
-    this.hadJaundice,
-    this.hadCongenitalDeformities,
-    this.congenitalDeformitiesType = '',
-    this.birthWeight = '',
-    this.hadRhTest,
+    this.socialSmile = false,
+    this.knowsFamilyMembers = false,
+    this.respondsToName = false,
+    this.showsAffection = false,
+    this.shyOrFearful = false,
+    this.imitatesAdults = false,
+    this.putsObjectsInMouth = false,
+    this.recognizesColors = false,
+    this.imaginativePlay = false,
+    this.followsInstructions = false,
+    this.cooing = false,
+    this.twoWordPhrases = false,
+    this.usesGestures = false,
+    this.requestsByWords = false,
+    this.sittingCrawling = false,
+    this.jumpingClimbing = false,
+    this.walkingWithoutHelp = false,
+    this.holdingPenDrawing = false,
+    this.kickingThrowing = false,
+    this.socialSmileAge = '',
+    this.socialSmileNotes = '',
+    this.independentSittingAge = '',
+    this.independentSittingNotes = '',
+    this.independentWalkingAge = '',
+    this.independentWalkingNotes = '',
+    this.firstWordAge = '',
+    this.firstWordNotes = '',
+    this.hadSkillRegression,
+    this.regressionAge = '',
+    this.regressionDetails = '',
   });
 
   Section5Data copyWith({
-    String? birthType,
-    String? birthPlace,
-    bool? usedBirthTools,
-    bool? tookDeliveryMedication,
-    bool? oxygenDeficiency,
-    bool? umbilicalCordWrapped,
-    bool? breechPosition,
-    String? breechDuration,
-    bool? hadJaundice,
-    bool? hadCongenitalDeformities,
-    String? congenitalDeformitiesType,
-    String? birthWeight,
-    bool? hadRhTest,
+    bool? socialSmile,
+    bool? knowsFamilyMembers,
+    bool? respondsToName,
+    bool? showsAffection,
+    bool? shyOrFearful,
+    bool? imitatesAdults,
+    bool? putsObjectsInMouth,
+    bool? recognizesColors,
+    bool? imaginativePlay,
+    bool? followsInstructions,
+    bool? cooing,
+    bool? twoWordPhrases,
+    bool? usesGestures,
+    bool? requestsByWords,
+    bool? sittingCrawling,
+    bool? jumpingClimbing,
+    bool? walkingWithoutHelp,
+    bool? holdingPenDrawing,
+    bool? kickingThrowing,
+    String? socialSmileAge,
+    String? socialSmileNotes,
+    String? independentSittingAge,
+    String? independentSittingNotes,
+    String? independentWalkingAge,
+    String? independentWalkingNotes,
+    String? firstWordAge,
+    String? firstWordNotes,
+    bool? hadSkillRegression,
+    String? regressionAge,
+    String? regressionDetails,
   }) =>
       Section5Data(
-        birthType: birthType ?? this.birthType,
-        birthPlace: birthPlace ?? this.birthPlace,
-        usedBirthTools: usedBirthTools ?? this.usedBirthTools,
-        tookDeliveryMedication:
-            tookDeliveryMedication ?? this.tookDeliveryMedication,
-        oxygenDeficiency: oxygenDeficiency ?? this.oxygenDeficiency,
-        umbilicalCordWrapped: umbilicalCordWrapped ?? this.umbilicalCordWrapped,
-        breechPosition: breechPosition ?? this.breechPosition,
-        breechDuration: breechDuration ?? this.breechDuration,
-        hadJaundice: hadJaundice ?? this.hadJaundice,
-        hadCongenitalDeformities:
-            hadCongenitalDeformities ?? this.hadCongenitalDeformities,
-        congenitalDeformitiesType:
-            congenitalDeformitiesType ?? this.congenitalDeformitiesType,
-        birthWeight: birthWeight ?? this.birthWeight,
-        hadRhTest: hadRhTest ?? this.hadRhTest,
+        socialSmile: socialSmile ?? this.socialSmile,
+        knowsFamilyMembers: knowsFamilyMembers ?? this.knowsFamilyMembers,
+        respondsToName: respondsToName ?? this.respondsToName,
+        showsAffection: showsAffection ?? this.showsAffection,
+        shyOrFearful: shyOrFearful ?? this.shyOrFearful,
+        imitatesAdults: imitatesAdults ?? this.imitatesAdults,
+        putsObjectsInMouth: putsObjectsInMouth ?? this.putsObjectsInMouth,
+        recognizesColors: recognizesColors ?? this.recognizesColors,
+        imaginativePlay: imaginativePlay ?? this.imaginativePlay,
+        followsInstructions: followsInstructions ?? this.followsInstructions,
+        cooing: cooing ?? this.cooing,
+        twoWordPhrases: twoWordPhrases ?? this.twoWordPhrases,
+        usesGestures: usesGestures ?? this.usesGestures,
+        requestsByWords: requestsByWords ?? this.requestsByWords,
+        sittingCrawling: sittingCrawling ?? this.sittingCrawling,
+        jumpingClimbing: jumpingClimbing ?? this.jumpingClimbing,
+        walkingWithoutHelp: walkingWithoutHelp ?? this.walkingWithoutHelp,
+        holdingPenDrawing: holdingPenDrawing ?? this.holdingPenDrawing,
+        kickingThrowing: kickingThrowing ?? this.kickingThrowing,
+        socialSmileAge: socialSmileAge ?? this.socialSmileAge,
+        socialSmileNotes: socialSmileNotes ?? this.socialSmileNotes,
+        independentSittingAge:
+            independentSittingAge ?? this.independentSittingAge,
+        independentSittingNotes:
+            independentSittingNotes ?? this.independentSittingNotes,
+        independentWalkingAge:
+            independentWalkingAge ?? this.independentWalkingAge,
+        independentWalkingNotes:
+            independentWalkingNotes ?? this.independentWalkingNotes,
+        firstWordAge: firstWordAge ?? this.firstWordAge,
+        firstWordNotes: firstWordNotes ?? this.firstWordNotes,
+        hadSkillRegression: hadSkillRegression ?? this.hadSkillRegression,
+        regressionAge: regressionAge ?? this.regressionAge,
+        regressionDetails: regressionDetails ?? this.regressionDetails,
       );
 
   Map<String, dynamic> toJson() => {
-        'birthType': birthType,
-        'birthPlace': birthPlace,
-        'usedBirthTools': usedBirthTools,
-        'tookDeliveryMedication': tookDeliveryMedication,
-        'oxygenDeficiency': oxygenDeficiency,
-        'umbilicalCordWrapped': umbilicalCordWrapped,
-        'breechPosition': breechPosition,
-        'breechDuration': breechDuration,
-        'hadJaundice': hadJaundice,
-        'hadCongenitalDeformities': hadCongenitalDeformities,
-        'congenitalDeformitiesType': congenitalDeformitiesType,
-        'birthWeight': birthWeight,
-        'hadRhTest': hadRhTest,
+        'socialSmile': socialSmile,
+        'knowsFamilyMembers': knowsFamilyMembers,
+        'respondsToName': respondsToName,
+        'showsAffection': showsAffection,
+        'shyOrFearful': shyOrFearful,
+        'imitatesAdults': imitatesAdults,
+        'putsObjectsInMouth': putsObjectsInMouth,
+        'recognizesColors': recognizesColors,
+        'imaginativePlay': imaginativePlay,
+        'followsInstructions': followsInstructions,
+        'cooing': cooing,
+        'twoWordPhrases': twoWordPhrases,
+        'usesGestures': usesGestures,
+        'requestsByWords': requestsByWords,
+        'sittingCrawling': sittingCrawling,
+        'jumpingClimbing': jumpingClimbing,
+        'walkingWithoutHelp': walkingWithoutHelp,
+        'holdingPenDrawing': holdingPenDrawing,
+        'kickingThrowing': kickingThrowing,
+        'socialSmileAge': socialSmileAge,
+        'socialSmileNotes': socialSmileNotes,
+        'independentSittingAge': independentSittingAge,
+        'independentSittingNotes': independentSittingNotes,
+        'independentWalkingAge': independentWalkingAge,
+        'independentWalkingNotes': independentWalkingNotes,
+        'firstWordAge': firstWordAge,
+        'firstWordNotes': firstWordNotes,
+        'hadSkillRegression': hadSkillRegression,
+        'regressionAge': regressionAge,
+        'regressionDetails': regressionDetails,
       };
 
   factory Section5Data.fromJson(Map<String, dynamic> json) => Section5Data(
-        birthType: json['birthType'] as String? ?? '',
-        birthPlace: json['birthPlace'] as String? ?? '',
-        usedBirthTools: json['usedBirthTools'] as bool?,
-        tookDeliveryMedication: json['tookDeliveryMedication'] as bool?,
-        oxygenDeficiency: json['oxygenDeficiency'] as bool?,
-        umbilicalCordWrapped: json['umbilicalCordWrapped'] as bool?,
-        breechPosition: json['breechPosition'] as bool?,
-        breechDuration: json['breechDuration'] as String? ?? '',
-        hadJaundice: json['hadJaundice'] as bool?,
-        hadCongenitalDeformities: json['hadCongenitalDeformities'] as bool?,
-        congenitalDeformitiesType:
-            json['congenitalDeformitiesType'] as String? ?? '',
-        birthWeight: json['birthWeight'] as String? ?? '',
-        hadRhTest: json['hadRhTest'] as bool?,
+        socialSmile: json['socialSmile'] as bool? ?? false,
+        knowsFamilyMembers: json['knowsFamilyMembers'] as bool? ?? false,
+        respondsToName: json['respondsToName'] as bool? ?? false,
+        showsAffection: json['showsAffection'] as bool? ?? false,
+        shyOrFearful: json['shyOrFearful'] as bool? ?? false,
+        imitatesAdults: json['imitatesAdults'] as bool? ?? false,
+        putsObjectsInMouth: json['putsObjectsInMouth'] as bool? ?? false,
+        recognizesColors: json['recognizesColors'] as bool? ?? false,
+        imaginativePlay: json['imaginativePlay'] as bool? ?? false,
+        followsInstructions: json['followsInstructions'] as bool? ?? false,
+        cooing: json['cooing'] as bool? ?? false,
+        twoWordPhrases: json['twoWordPhrases'] as bool? ?? false,
+        usesGestures: json['usesGestures'] as bool? ?? false,
+        requestsByWords: json['requestsByWords'] as bool? ?? false,
+        sittingCrawling: json['sittingCrawling'] as bool? ?? false,
+        jumpingClimbing: json['jumpingClimbing'] as bool? ?? false,
+        walkingWithoutHelp: json['walkingWithoutHelp'] as bool? ?? false,
+        holdingPenDrawing: json['holdingPenDrawing'] as bool? ?? false,
+        kickingThrowing: json['kickingThrowing'] as bool? ?? false,
+        socialSmileAge: json['socialSmileAge'] as String? ?? '',
+        socialSmileNotes: json['socialSmileNotes'] as String? ?? '',
+        independentSittingAge:
+            json['independentSittingAge'] as String? ?? '',
+        independentSittingNotes:
+            json['independentSittingNotes'] as String? ?? '',
+        independentWalkingAge:
+            json['independentWalkingAge'] as String? ?? '',
+        independentWalkingNotes:
+            json['independentWalkingNotes'] as String? ?? '',
+        firstWordAge: json['firstWordAge'] as String? ?? '',
+        firstWordNotes: json['firstWordNotes'] as String? ?? '',
+        hadSkillRegression: json['hadSkillRegression'] as bool?,
+        regressionAge: json['regressionAge'] as String? ?? '',
+        regressionDetails: json['regressionDetails'] as String? ?? '',
       );
 }
 
@@ -565,674 +1060,887 @@ class Section5Data {
 // Section 6 — Medical Information & Birth History (Post-Birth Period)
 // =============================================================================
 
-class PostBirthDiseaseFlags {
-  final bool? meningitis;
-  final bool? measles;
-  final bool? chickenpox;
-  final bool? mumps;
-
-  const PostBirthDiseaseFlags({
-    this.meningitis,
-    this.measles,
-    this.chickenpox,
-    this.mumps,
-  });
-
-  PostBirthDiseaseFlags copyWith({
-    bool? meningitis,
-    bool? measles,
-    bool? chickenpox,
-    bool? mumps,
-  }) =>
-      PostBirthDiseaseFlags(
-        meningitis: meningitis ?? this.meningitis,
-        measles: measles ?? this.measles,
-        chickenpox: chickenpox ?? this.chickenpox,
-        mumps: mumps ?? this.mumps,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'meningitis': meningitis,
-        'measles': measles,
-        'chickenpox': chickenpox,
-        'mumps': mumps,
-      };
-
-  factory PostBirthDiseaseFlags.fromJson(Map<String, dynamic> json) =>
-      PostBirthDiseaseFlags(
-        meningitis: json['meningitis'] as bool?,
-        measles: json['measles'] as bool?,
-        chickenpox: json['chickenpox'] as bool?,
-        mumps: json['mumps'] as bool?,
-      );
-}
-
 class Section6Data {
-  final String breastfeedingType; // 'natural' | 'artificial' | 'both'
-  final PostBirthDiseaseFlags diseases;
-  final bool? tookLongTermMedication;
-  final String longTermMedicationType;
-  final bool? hadFallsOrAccidents;
-  final bool? hadHipDislocationExam;
-  final bool? hasChronicDiseases;
-  final String chronicDiseaseType;
-  final bool? ateWell;
-  final bool? hospitalizedBefore;
-  final String surgicalOperations;
+  // 1. Basic communication methods (multi-select)
+  // Values: 'single_words'|'short_sentences'|'full_sentences'|'signs'|'pecs'|'device'|'manual_pull'|'crying'|'other'
+  final List<String> communicationMethods;
+  final String communicationMethodOther;
+
+  // 2. Expression & Understanding — each: 'yes'|'sometimes'|'no'
+  final String expressesNeeds;
+  final String requestsPreferred;
+  final String understandsSimple;
+  final String understandsComplex;
+
+  // 3. Social communication traits (multi-select)
+  // Values: 'initiates'|'responds'|'prefers_solo'|'imitates'|'difficulty_peers'|'difficulty_turns'
+  final List<String> socialCommTraits;
+
+  // 4. Additional notes
+  final String communicationNotes;
+
+  // 5. Social & Pragmatic skills assessment
+  final String initiatesConversation;    // 'always'|'sometimes'|'rarely'
+  final String maintainsEyeContact;      // 'always'|'sometimes'|'rarely'
+  final String understandsBodyLanguage;  // 'good'|'acceptable'|'weak'
+  final String understandsJokes;         // 'yes'|'partial'|'no'
+  final String conversationTurnTaking;   // 'mastered'|'in_training'|'missing'
 
   const Section6Data({
-    this.breastfeedingType = '',
-    this.diseases = const PostBirthDiseaseFlags(),
-    this.tookLongTermMedication,
-    this.longTermMedicationType = '',
-    this.hadFallsOrAccidents,
-    this.hadHipDislocationExam,
-    this.hasChronicDiseases,
-    this.chronicDiseaseType = '',
-    this.ateWell,
-    this.hospitalizedBefore,
-    this.surgicalOperations = '',
+    this.communicationMethods = const [],
+    this.communicationMethodOther = '',
+    this.expressesNeeds = '',
+    this.requestsPreferred = '',
+    this.understandsSimple = '',
+    this.understandsComplex = '',
+    this.socialCommTraits = const [],
+    this.communicationNotes = '',
+    this.initiatesConversation = '',
+    this.maintainsEyeContact = '',
+    this.understandsBodyLanguage = '',
+    this.understandsJokes = '',
+    this.conversationTurnTaking = '',
   });
 
   Section6Data copyWith({
-    String? breastfeedingType,
-    PostBirthDiseaseFlags? diseases,
-    bool? tookLongTermMedication,
-    String? longTermMedicationType,
-    bool? hadFallsOrAccidents,
-    bool? hadHipDislocationExam,
-    bool? hasChronicDiseases,
-    String? chronicDiseaseType,
-    bool? ateWell,
-    bool? hospitalizedBefore,
-    String? surgicalOperations,
+    List<String>? communicationMethods,
+    String? communicationMethodOther,
+    String? expressesNeeds,
+    String? requestsPreferred,
+    String? understandsSimple,
+    String? understandsComplex,
+    List<String>? socialCommTraits,
+    String? communicationNotes,
+    String? initiatesConversation,
+    String? maintainsEyeContact,
+    String? understandsBodyLanguage,
+    String? understandsJokes,
+    String? conversationTurnTaking,
   }) =>
       Section6Data(
-        breastfeedingType: breastfeedingType ?? this.breastfeedingType,
-        diseases: diseases ?? this.diseases,
-        tookLongTermMedication:
-            tookLongTermMedication ?? this.tookLongTermMedication,
-        longTermMedicationType:
-            longTermMedicationType ?? this.longTermMedicationType,
-        hadFallsOrAccidents: hadFallsOrAccidents ?? this.hadFallsOrAccidents,
-        hadHipDislocationExam:
-            hadHipDislocationExam ?? this.hadHipDislocationExam,
-        hasChronicDiseases: hasChronicDiseases ?? this.hasChronicDiseases,
-        chronicDiseaseType: chronicDiseaseType ?? this.chronicDiseaseType,
-        ateWell: ateWell ?? this.ateWell,
-        hospitalizedBefore: hospitalizedBefore ?? this.hospitalizedBefore,
-        surgicalOperations: surgicalOperations ?? this.surgicalOperations,
+        communicationMethods: communicationMethods ?? this.communicationMethods,
+        communicationMethodOther:
+            communicationMethodOther ?? this.communicationMethodOther,
+        expressesNeeds: expressesNeeds ?? this.expressesNeeds,
+        requestsPreferred: requestsPreferred ?? this.requestsPreferred,
+        understandsSimple: understandsSimple ?? this.understandsSimple,
+        understandsComplex: understandsComplex ?? this.understandsComplex,
+        socialCommTraits: socialCommTraits ?? this.socialCommTraits,
+        communicationNotes: communicationNotes ?? this.communicationNotes,
+        initiatesConversation:
+            initiatesConversation ?? this.initiatesConversation,
+        maintainsEyeContact: maintainsEyeContact ?? this.maintainsEyeContact,
+        understandsBodyLanguage:
+            understandsBodyLanguage ?? this.understandsBodyLanguage,
+        understandsJokes: understandsJokes ?? this.understandsJokes,
+        conversationTurnTaking:
+            conversationTurnTaking ?? this.conversationTurnTaking,
       );
 
   Map<String, dynamic> toJson() => {
-        'breastfeedingType': breastfeedingType,
-        'diseases': diseases.toJson(),
-        'tookLongTermMedication': tookLongTermMedication,
-        'longTermMedicationType': longTermMedicationType,
-        'hadFallsOrAccidents': hadFallsOrAccidents,
-        'hadHipDislocationExam': hadHipDislocationExam,
-        'hasChronicDiseases': hasChronicDiseases,
-        'chronicDiseaseType': chronicDiseaseType,
-        'ateWell': ateWell,
-        'hospitalizedBefore': hospitalizedBefore,
-        'surgicalOperations': surgicalOperations,
+        'communicationMethods': communicationMethods,
+        'communicationMethodOther': communicationMethodOther,
+        'expressesNeeds': expressesNeeds,
+        'requestsPreferred': requestsPreferred,
+        'understandsSimple': understandsSimple,
+        'understandsComplex': understandsComplex,
+        'socialCommTraits': socialCommTraits,
+        'communicationNotes': communicationNotes,
+        'initiatesConversation': initiatesConversation,
+        'maintainsEyeContact': maintainsEyeContact,
+        'understandsBodyLanguage': understandsBodyLanguage,
+        'understandsJokes': understandsJokes,
+        'conversationTurnTaking': conversationTurnTaking,
       };
 
   factory Section6Data.fromJson(Map<String, dynamic> json) => Section6Data(
-        breastfeedingType: json['breastfeedingType'] as String? ?? '',
-        diseases: json['diseases'] != null
-            ? PostBirthDiseaseFlags.fromJson(
-                json['diseases'] as Map<String, dynamic>)
-            : const PostBirthDiseaseFlags(),
-        tookLongTermMedication: json['tookLongTermMedication'] as bool?,
-        longTermMedicationType:
-            json['longTermMedicationType'] as String? ?? '',
-        hadFallsOrAccidents: json['hadFallsOrAccidents'] as bool?,
-        hadHipDislocationExam: json['hadHipDislocationExam'] as bool?,
-        hasChronicDiseases: json['hasChronicDiseases'] as bool?,
-        chronicDiseaseType: json['chronicDiseaseType'] as String? ?? '',
-        ateWell: json['ateWell'] as bool?,
-        hospitalizedBefore: json['hospitalizedBefore'] as bool?,
-        surgicalOperations: json['surgicalOperations'] as String? ?? '',
+        communicationMethods: (json['communicationMethods'] as List<dynamic>?)
+                ?.map((e) => e as String)
+                .toList() ??
+            [],
+        communicationMethodOther:
+            json['communicationMethodOther'] as String? ?? '',
+        expressesNeeds: json['expressesNeeds'] as String? ?? '',
+        requestsPreferred: json['requestsPreferred'] as String? ?? '',
+        understandsSimple: json['understandsSimple'] as String? ?? '',
+        understandsComplex: json['understandsComplex'] as String? ?? '',
+        socialCommTraits: (json['socialCommTraits'] as List<dynamic>?)
+                ?.map((e) => e as String)
+                .toList() ??
+            [],
+        communicationNotes: json['communicationNotes'] as String? ?? '',
+        initiatesConversation:
+            json['initiatesConversation'] as String? ?? '',
+        maintainsEyeContact: json['maintainsEyeContact'] as String? ?? '',
+        understandsBodyLanguage:
+            json['understandsBodyLanguage'] as String? ?? '',
+        understandsJokes: json['understandsJokes'] as String? ?? '',
+        conversationTurnTaking:
+            json['conversationTurnTaking'] as String? ?? '',
       );
 }
 
 // =============================================================================
-// Section 7 — Behavioral Issues
+// Section 7 — Daily Life Skills and Independence
 // =============================================================================
-
-class BehavioralFlags {
-  final bool? thumbSucking;
-  final bool? nailBiting;
-  final bool? bedwetting;
-  final bool? foodAversion;
-  final bool? sleepDisorder;
-  final bool? continuousCrying;
-  final bool? daydreaming;
-  final bool? angerAttacks;
-  final bool? aggression;
-  final bool? destroyingObjects;
-  final bool? epilepticSeizures;
-  final bool? speechDifficulties;
-
-  const BehavioralFlags({
-    this.thumbSucking,
-    this.nailBiting,
-    this.bedwetting,
-    this.foodAversion,
-    this.sleepDisorder,
-    this.continuousCrying,
-    this.daydreaming,
-    this.angerAttacks,
-    this.aggression,
-    this.destroyingObjects,
-    this.epilepticSeizures,
-    this.speechDifficulties,
-  });
-
-  BehavioralFlags copyWith({
-    bool? thumbSucking,
-    bool? nailBiting,
-    bool? bedwetting,
-    bool? foodAversion,
-    bool? sleepDisorder,
-    bool? continuousCrying,
-    bool? daydreaming,
-    bool? angerAttacks,
-    bool? aggression,
-    bool? destroyingObjects,
-    bool? epilepticSeizures,
-    bool? speechDifficulties,
-  }) =>
-      BehavioralFlags(
-        thumbSucking: thumbSucking ?? this.thumbSucking,
-        nailBiting: nailBiting ?? this.nailBiting,
-        bedwetting: bedwetting ?? this.bedwetting,
-        foodAversion: foodAversion ?? this.foodAversion,
-        sleepDisorder: sleepDisorder ?? this.sleepDisorder,
-        continuousCrying: continuousCrying ?? this.continuousCrying,
-        daydreaming: daydreaming ?? this.daydreaming,
-        angerAttacks: angerAttacks ?? this.angerAttacks,
-        aggression: aggression ?? this.aggression,
-        destroyingObjects: destroyingObjects ?? this.destroyingObjects,
-        epilepticSeizures: epilepticSeizures ?? this.epilepticSeizures,
-        speechDifficulties: speechDifficulties ?? this.speechDifficulties,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'thumbSucking': thumbSucking,
-        'nailBiting': nailBiting,
-        'bedwetting': bedwetting,
-        'foodAversion': foodAversion,
-        'sleepDisorder': sleepDisorder,
-        'continuousCrying': continuousCrying,
-        'daydreaming': daydreaming,
-        'angerAttacks': angerAttacks,
-        'aggression': aggression,
-        'destroyingObjects': destroyingObjects,
-        'epilepticSeizures': epilepticSeizures,
-        'speechDifficulties': speechDifficulties,
-      };
-
-  factory BehavioralFlags.fromJson(Map<String, dynamic> json) =>
-      BehavioralFlags(
-        thumbSucking: json['thumbSucking'] as bool?,
-        nailBiting: json['nailBiting'] as bool?,
-        bedwetting: json['bedwetting'] as bool?,
-        foodAversion: json['foodAversion'] as bool?,
-        sleepDisorder: json['sleepDisorder'] as bool?,
-        continuousCrying: json['continuousCrying'] as bool?,
-        daydreaming: json['daydreaming'] as bool?,
-        angerAttacks: json['angerAttacks'] as bool?,
-        aggression: json['aggression'] as bool?,
-        destroyingObjects: json['destroyingObjects'] as bool?,
-        epilepticSeizures: json['epilepticSeizures'] as bool?,
-        speechDifficulties: json['speechDifficulties'] as bool?,
-      );
-}
-
-class VaccineFlags {
-  final bool? tripleQuadrupleQuintuple;
-  final bool? polio;
-  final bool? tuberculosis;
-  final bool? measles;
-  final bool? germanMeaslesMumps;
-  final bool? hepatitisB;
-
-  const VaccineFlags({
-    this.tripleQuadrupleQuintuple,
-    this.polio,
-    this.tuberculosis,
-    this.measles,
-    this.germanMeaslesMumps,
-    this.hepatitisB,
-  });
-
-  VaccineFlags copyWith({
-    bool? tripleQuadrupleQuintuple,
-    bool? polio,
-    bool? tuberculosis,
-    bool? measles,
-    bool? germanMeaslesMumps,
-    bool? hepatitisB,
-  }) =>
-      VaccineFlags(
-        tripleQuadrupleQuintuple:
-            tripleQuadrupleQuintuple ?? this.tripleQuadrupleQuintuple,
-        polio: polio ?? this.polio,
-        tuberculosis: tuberculosis ?? this.tuberculosis,
-        measles: measles ?? this.measles,
-        germanMeaslesMumps: germanMeaslesMumps ?? this.germanMeaslesMumps,
-        hepatitisB: hepatitisB ?? this.hepatitisB,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'tripleQuadrupleQuintuple': tripleQuadrupleQuintuple,
-        'polio': polio,
-        'tuberculosis': tuberculosis,
-        'measles': measles,
-        'germanMeaslesMumps': germanMeaslesMumps,
-        'hepatitisB': hepatitisB,
-      };
-
-  factory VaccineFlags.fromJson(Map<String, dynamic> json) => VaccineFlags(
-        tripleQuadrupleQuintuple:
-            json['tripleQuadrupleQuintuple'] as bool?,
-        polio: json['polio'] as bool?,
-        tuberculosis: json['tuberculosis'] as bool?,
-        measles: json['measles'] as bool?,
-        germanMeaslesMumps: json['germanMeaslesMumps'] as bool?,
-        hepatitisB: json['hepatitisB'] as bool?,
-      );
-}
 
 class Section7Data {
-  final BehavioralFlags behaviors;
-  final VaccineFlags vaccines;
+  // Eating & Drinking
+  final bool usesSpoonFork;
+  final bool selectiveEater;
+  final bool usesHandsForEating;
+  final bool refusesTextures;
+  final bool drinksFromCup;
+  final bool needsFullAssistanceEating;
+  final String howRequestsFood;
+
+  // Dressing
+  final bool removesShoesSocks;
+  final bool closesZipperButtons;
+  final bool dressesWithAssistance;
+
+  // Personal Hygiene
+  final bool washesHandsFace;
+  final bool bathesAlone;
+  final bool cleansTeetHair;
+  final bool nailCuttingDifficulty;
+
+  // Bathroom & Sleep
+  final String bathroomIndependence; // 'independent' | 'training' | 'diapers'
+  final String howRequestsSleep;
 
   const Section7Data({
-    this.behaviors = const BehavioralFlags(),
-    this.vaccines = const VaccineFlags(),
+    this.usesSpoonFork = false,
+    this.selectiveEater = false,
+    this.usesHandsForEating = false,
+    this.refusesTextures = false,
+    this.drinksFromCup = false,
+    this.needsFullAssistanceEating = false,
+    this.howRequestsFood = '',
+    this.removesShoesSocks = false,
+    this.closesZipperButtons = false,
+    this.dressesWithAssistance = false,
+    this.washesHandsFace = false,
+    this.bathesAlone = false,
+    this.cleansTeetHair = false,
+    this.nailCuttingDifficulty = false,
+    this.bathroomIndependence = '',
+    this.howRequestsSleep = '',
   });
 
   Section7Data copyWith({
-    BehavioralFlags? behaviors,
-    VaccineFlags? vaccines,
+    bool? usesSpoonFork,
+    bool? selectiveEater,
+    bool? usesHandsForEating,
+    bool? refusesTextures,
+    bool? drinksFromCup,
+    bool? needsFullAssistanceEating,
+    String? howRequestsFood,
+    bool? removesShoesSocks,
+    bool? closesZipperButtons,
+    bool? dressesWithAssistance,
+    bool? washesHandsFace,
+    bool? bathesAlone,
+    bool? cleansTeetHair,
+    bool? nailCuttingDifficulty,
+    String? bathroomIndependence,
+    String? howRequestsSleep,
   }) =>
       Section7Data(
-        behaviors: behaviors ?? this.behaviors,
-        vaccines: vaccines ?? this.vaccines,
+        usesSpoonFork: usesSpoonFork ?? this.usesSpoonFork,
+        selectiveEater: selectiveEater ?? this.selectiveEater,
+        usesHandsForEating: usesHandsForEating ?? this.usesHandsForEating,
+        refusesTextures: refusesTextures ?? this.refusesTextures,
+        drinksFromCup: drinksFromCup ?? this.drinksFromCup,
+        needsFullAssistanceEating:
+            needsFullAssistanceEating ?? this.needsFullAssistanceEating,
+        howRequestsFood: howRequestsFood ?? this.howRequestsFood,
+        removesShoesSocks: removesShoesSocks ?? this.removesShoesSocks,
+        closesZipperButtons: closesZipperButtons ?? this.closesZipperButtons,
+        dressesWithAssistance:
+            dressesWithAssistance ?? this.dressesWithAssistance,
+        washesHandsFace: washesHandsFace ?? this.washesHandsFace,
+        bathesAlone: bathesAlone ?? this.bathesAlone,
+        cleansTeetHair: cleansTeetHair ?? this.cleansTeetHair,
+        nailCuttingDifficulty:
+            nailCuttingDifficulty ?? this.nailCuttingDifficulty,
+        bathroomIndependence: bathroomIndependence ?? this.bathroomIndependence,
+        howRequestsSleep: howRequestsSleep ?? this.howRequestsSleep,
       );
 
   Map<String, dynamic> toJson() => {
-        'behaviors': behaviors.toJson(),
-        'vaccines': vaccines.toJson(),
+        'usesSpoonFork': usesSpoonFork,
+        'selectiveEater': selectiveEater,
+        'usesHandsForEating': usesHandsForEating,
+        'refusesTextures': refusesTextures,
+        'drinksFromCup': drinksFromCup,
+        'needsFullAssistanceEating': needsFullAssistanceEating,
+        'howRequestsFood': howRequestsFood,
+        'removesShoesSocks': removesShoesSocks,
+        'closesZipperButtons': closesZipperButtons,
+        'dressesWithAssistance': dressesWithAssistance,
+        'washesHandsFace': washesHandsFace,
+        'bathesAlone': bathesAlone,
+        'cleansTeetHair': cleansTeetHair,
+        'nailCuttingDifficulty': nailCuttingDifficulty,
+        'bathroomIndependence': bathroomIndependence,
+        'howRequestsSleep': howRequestsSleep,
       };
 
   factory Section7Data.fromJson(Map<String, dynamic> json) => Section7Data(
-        behaviors: json['behaviors'] != null
-            ? BehavioralFlags.fromJson(
-                json['behaviors'] as Map<String, dynamic>)
-            : const BehavioralFlags(),
-        vaccines: json['vaccines'] != null
-            ? VaccineFlags.fromJson(json['vaccines'] as Map<String, dynamic>)
-            : const VaccineFlags(),
+        usesSpoonFork: json['usesSpoonFork'] as bool? ?? false,
+        selectiveEater: json['selectiveEater'] as bool? ?? false,
+        usesHandsForEating: json['usesHandsForEating'] as bool? ?? false,
+        refusesTextures: json['refusesTextures'] as bool? ?? false,
+        drinksFromCup: json['drinksFromCup'] as bool? ?? false,
+        needsFullAssistanceEating:
+            json['needsFullAssistanceEating'] as bool? ?? false,
+        howRequestsFood: json['howRequestsFood'] as String? ?? '',
+        removesShoesSocks: json['removesShoesSocks'] as bool? ?? false,
+        closesZipperButtons: json['closesZipperButtons'] as bool? ?? false,
+        dressesWithAssistance: json['dressesWithAssistance'] as bool? ?? false,
+        washesHandsFace: json['washesHandsFace'] as bool? ?? false,
+        bathesAlone: json['bathesAlone'] as bool? ?? false,
+        cleansTeetHair: json['cleansTeetHair'] as bool? ?? false,
+        nailCuttingDifficulty: json['nailCuttingDifficulty'] as bool? ?? false,
+        bathroomIndependence: json['bathroomIndependence'] as String? ?? '',
+        howRequestsSleep: json['howRequestsSleep'] as String? ?? '',
       );
 }
 
 // =============================================================================
-// Section 8 — Developmental Growth (Motor & Physical)
+// Section 8 — Sensory and Behavioral Profile
 // =============================================================================
 
+class BehavioralPattern {
+  final String pattern;
+  final String practices;
+  final String expectedFunction;
+
+  const BehavioralPattern({
+    this.pattern = '',
+    this.practices = '',
+    this.expectedFunction = '',
+  });
+
+  BehavioralPattern copyWith({
+    String? pattern,
+    String? practices,
+    String? expectedFunction,
+  }) =>
+      BehavioralPattern(
+        pattern: pattern ?? this.pattern,
+        practices: practices ?? this.practices,
+        expectedFunction: expectedFunction ?? this.expectedFunction,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'pattern': pattern,
+        'practices': practices,
+        'expectedFunction': expectedFunction,
+      };
+
+  factory BehavioralPattern.fromJson(Map<String, dynamic> json) =>
+      BehavioralPattern(
+        pattern: json['pattern'] as String? ?? '',
+        practices: json['practices'] as String? ?? '',
+        expectedFunction: json['expectedFunction'] as String? ?? '',
+      );
+}
+
 class Section8Data {
-  final bool? satAtRightTime;
-  final bool? crawledAtRightTime;
-  final bool? walkedAtRightTime;
-  final String teethingAge;
-  final bool? dropsThings;
-  final bool? hasMovementDifficulties;
-  final bool? isConstantlyMoving;
-  final bool? hasVisualImpairment;
-  final String visualImpairmentDegree;
-  final bool? hasEyeDiseases;
-  final String eyeDiseasesType;
-  final bool? hasHearingImpairment;
-  final String hearingImpairmentDegree;
-  final bool? hasEarDiseases;
-  final String earDiseasesType;
-  final bool? hasAllergies;
-  final String allergyType; // 'food' | 'environmental'
-  final String allergyTriggers;
+  final String aggressionDescription;
+  final String selfHarmDescription;
+  final String stereotypicalBehaviorsDescription;
+  final String resistanceToChangeDescription;
+  final String excessiveAttachmentDescription;
+  final List<BehavioralPattern> behavioralPatterns;
+  final String generalAttentionState;
+  final String generalStateNotes;
+  final bool? hasSensoryIssues;
+  final String sensoryIssuesNotes;
+  final bool? hearingIssue;
+  final String hearingNotes;
+  final bool? touchIssue;
+  final String touchNotes;
+  final bool? tasteIssue;
+  final String tasteNotes;
+  final bool? vestibularIssue;
+  final String vestibularNotes;
+  final bool? visualSensoryIssue;
+  final String visualSensoryNotes;
+  final String sensoryReactionDescription;
+  final bool? makesFriendsEasily;
+  final String makesFriendsNotes;
+  final bool? sharesInterests;
+  final String sharesInterestsNotes;
+  final String abuseExposure;
+  final String abuseNotes;
+  final bool? hasSignificantSocialEvent;
+  final String significantSocialEventNotes;
+  final String reactionToNegativeBehavior;
 
   const Section8Data({
-    this.satAtRightTime,
-    this.crawledAtRightTime,
-    this.walkedAtRightTime,
-    this.teethingAge = '',
-    this.dropsThings,
-    this.hasMovementDifficulties,
-    this.isConstantlyMoving,
-    this.hasVisualImpairment,
-    this.visualImpairmentDegree = '',
-    this.hasEyeDiseases,
-    this.eyeDiseasesType = '',
-    this.hasHearingImpairment,
-    this.hearingImpairmentDegree = '',
-    this.hasEarDiseases,
-    this.earDiseasesType = '',
-    this.hasAllergies,
-    this.allergyType = '',
-    this.allergyTriggers = '',
+    this.aggressionDescription = '',
+    this.selfHarmDescription = '',
+    this.stereotypicalBehaviorsDescription = '',
+    this.resistanceToChangeDescription = '',
+    this.excessiveAttachmentDescription = '',
+    this.behavioralPatterns = const [],
+    this.generalAttentionState = '',
+    this.generalStateNotes = '',
+    this.hasSensoryIssues,
+    this.sensoryIssuesNotes = '',
+    this.hearingIssue,
+    this.hearingNotes = '',
+    this.touchIssue,
+    this.touchNotes = '',
+    this.tasteIssue,
+    this.tasteNotes = '',
+    this.vestibularIssue,
+    this.vestibularNotes = '',
+    this.visualSensoryIssue,
+    this.visualSensoryNotes = '',
+    this.sensoryReactionDescription = '',
+    this.makesFriendsEasily,
+    this.makesFriendsNotes = '',
+    this.sharesInterests,
+    this.sharesInterestsNotes = '',
+    this.abuseExposure = '',
+    this.abuseNotes = '',
+    this.hasSignificantSocialEvent,
+    this.significantSocialEventNotes = '',
+    this.reactionToNegativeBehavior = '',
   });
 
   Section8Data copyWith({
-    bool? satAtRightTime,
-    bool? crawledAtRightTime,
-    bool? walkedAtRightTime,
-    String? teethingAge,
-    bool? dropsThings,
-    bool? hasMovementDifficulties,
-    bool? isConstantlyMoving,
-    bool? hasVisualImpairment,
-    String? visualImpairmentDegree,
-    bool? hasEyeDiseases,
-    String? eyeDiseasesType,
-    bool? hasHearingImpairment,
-    String? hearingImpairmentDegree,
-    bool? hasEarDiseases,
-    String? earDiseasesType,
-    bool? hasAllergies,
-    String? allergyType,
-    String? allergyTriggers,
+    String? aggressionDescription,
+    String? selfHarmDescription,
+    String? stereotypicalBehaviorsDescription,
+    String? resistanceToChangeDescription,
+    String? excessiveAttachmentDescription,
+    List<BehavioralPattern>? behavioralPatterns,
+    String? generalAttentionState,
+    String? generalStateNotes,
+    bool? hasSensoryIssues,
+    String? sensoryIssuesNotes,
+    bool? hearingIssue,
+    String? hearingNotes,
+    bool? touchIssue,
+    String? touchNotes,
+    bool? tasteIssue,
+    String? tasteNotes,
+    bool? vestibularIssue,
+    String? vestibularNotes,
+    bool? visualSensoryIssue,
+    String? visualSensoryNotes,
+    String? sensoryReactionDescription,
+    bool? makesFriendsEasily,
+    String? makesFriendsNotes,
+    bool? sharesInterests,
+    String? sharesInterestsNotes,
+    String? abuseExposure,
+    String? abuseNotes,
+    bool? hasSignificantSocialEvent,
+    String? significantSocialEventNotes,
+    String? reactionToNegativeBehavior,
   }) =>
       Section8Data(
-        satAtRightTime: satAtRightTime ?? this.satAtRightTime,
-        crawledAtRightTime: crawledAtRightTime ?? this.crawledAtRightTime,
-        walkedAtRightTime: walkedAtRightTime ?? this.walkedAtRightTime,
-        teethingAge: teethingAge ?? this.teethingAge,
-        dropsThings: dropsThings ?? this.dropsThings,
-        hasMovementDifficulties:
-            hasMovementDifficulties ?? this.hasMovementDifficulties,
-        isConstantlyMoving: isConstantlyMoving ?? this.isConstantlyMoving,
-        hasVisualImpairment: hasVisualImpairment ?? this.hasVisualImpairment,
-        visualImpairmentDegree:
-            visualImpairmentDegree ?? this.visualImpairmentDegree,
-        hasEyeDiseases: hasEyeDiseases ?? this.hasEyeDiseases,
-        eyeDiseasesType: eyeDiseasesType ?? this.eyeDiseasesType,
-        hasHearingImpairment: hasHearingImpairment ?? this.hasHearingImpairment,
-        hearingImpairmentDegree:
-            hearingImpairmentDegree ?? this.hearingImpairmentDegree,
-        hasEarDiseases: hasEarDiseases ?? this.hasEarDiseases,
-        earDiseasesType: earDiseasesType ?? this.earDiseasesType,
-        hasAllergies: hasAllergies ?? this.hasAllergies,
-        allergyType: allergyType ?? this.allergyType,
-        allergyTriggers: allergyTriggers ?? this.allergyTriggers,
+        aggressionDescription:
+            aggressionDescription ?? this.aggressionDescription,
+        selfHarmDescription: selfHarmDescription ?? this.selfHarmDescription,
+        stereotypicalBehaviorsDescription: stereotypicalBehaviorsDescription ??
+            this.stereotypicalBehaviorsDescription,
+        resistanceToChangeDescription:
+            resistanceToChangeDescription ?? this.resistanceToChangeDescription,
+        excessiveAttachmentDescription:
+            excessiveAttachmentDescription ?? this.excessiveAttachmentDescription,
+        behavioralPatterns: behavioralPatterns ?? this.behavioralPatterns,
+        generalAttentionState:
+            generalAttentionState ?? this.generalAttentionState,
+        generalStateNotes: generalStateNotes ?? this.generalStateNotes,
+        hasSensoryIssues: hasSensoryIssues ?? this.hasSensoryIssues,
+        sensoryIssuesNotes: sensoryIssuesNotes ?? this.sensoryIssuesNotes,
+        hearingIssue: hearingIssue ?? this.hearingIssue,
+        hearingNotes: hearingNotes ?? this.hearingNotes,
+        touchIssue: touchIssue ?? this.touchIssue,
+        touchNotes: touchNotes ?? this.touchNotes,
+        tasteIssue: tasteIssue ?? this.tasteIssue,
+        tasteNotes: tasteNotes ?? this.tasteNotes,
+        vestibularIssue: vestibularIssue ?? this.vestibularIssue,
+        vestibularNotes: vestibularNotes ?? this.vestibularNotes,
+        visualSensoryIssue: visualSensoryIssue ?? this.visualSensoryIssue,
+        visualSensoryNotes: visualSensoryNotes ?? this.visualSensoryNotes,
+        sensoryReactionDescription:
+            sensoryReactionDescription ?? this.sensoryReactionDescription,
+        makesFriendsEasily: makesFriendsEasily ?? this.makesFriendsEasily,
+        makesFriendsNotes: makesFriendsNotes ?? this.makesFriendsNotes,
+        sharesInterests: sharesInterests ?? this.sharesInterests,
+        sharesInterestsNotes:
+            sharesInterestsNotes ?? this.sharesInterestsNotes,
+        abuseExposure: abuseExposure ?? this.abuseExposure,
+        abuseNotes: abuseNotes ?? this.abuseNotes,
+        hasSignificantSocialEvent:
+            hasSignificantSocialEvent ?? this.hasSignificantSocialEvent,
+        significantSocialEventNotes:
+            significantSocialEventNotes ?? this.significantSocialEventNotes,
+        reactionToNegativeBehavior:
+            reactionToNegativeBehavior ?? this.reactionToNegativeBehavior,
       );
 
   Map<String, dynamic> toJson() => {
-        'satAtRightTime': satAtRightTime,
-        'crawledAtRightTime': crawledAtRightTime,
-        'walkedAtRightTime': walkedAtRightTime,
-        'teethingAge': teethingAge,
-        'dropsThings': dropsThings,
-        'hasMovementDifficulties': hasMovementDifficulties,
-        'isConstantlyMoving': isConstantlyMoving,
-        'hasVisualImpairment': hasVisualImpairment,
-        'visualImpairmentDegree': visualImpairmentDegree,
-        'hasEyeDiseases': hasEyeDiseases,
-        'eyeDiseasesType': eyeDiseasesType,
-        'hasHearingImpairment': hasHearingImpairment,
-        'hearingImpairmentDegree': hearingImpairmentDegree,
-        'hasEarDiseases': hasEarDiseases,
-        'earDiseasesType': earDiseasesType,
-        'hasAllergies': hasAllergies,
-        'allergyType': allergyType,
-        'allergyTriggers': allergyTriggers,
+        'aggressionDescription': aggressionDescription,
+        'selfHarmDescription': selfHarmDescription,
+        'stereotypicalBehaviorsDescription': stereotypicalBehaviorsDescription,
+        'resistanceToChangeDescription': resistanceToChangeDescription,
+        'excessiveAttachmentDescription': excessiveAttachmentDescription,
+        'behavioralPatterns':
+            behavioralPatterns.map((e) => e.toJson()).toList(),
+        'generalAttentionState': generalAttentionState,
+        'generalStateNotes': generalStateNotes,
+        'hasSensoryIssues': hasSensoryIssues,
+        'sensoryIssuesNotes': sensoryIssuesNotes,
+        'hearingIssue': hearingIssue,
+        'hearingNotes': hearingNotes,
+        'touchIssue': touchIssue,
+        'touchNotes': touchNotes,
+        'tasteIssue': tasteIssue,
+        'tasteNotes': tasteNotes,
+        'vestibularIssue': vestibularIssue,
+        'vestibularNotes': vestibularNotes,
+        'visualSensoryIssue': visualSensoryIssue,
+        'visualSensoryNotes': visualSensoryNotes,
+        'sensoryReactionDescription': sensoryReactionDescription,
+        'makesFriendsEasily': makesFriendsEasily,
+        'makesFriendsNotes': makesFriendsNotes,
+        'sharesInterests': sharesInterests,
+        'sharesInterestsNotes': sharesInterestsNotes,
+        'abuseExposure': abuseExposure,
+        'abuseNotes': abuseNotes,
+        'hasSignificantSocialEvent': hasSignificantSocialEvent,
+        'significantSocialEventNotes': significantSocialEventNotes,
+        'reactionToNegativeBehavior': reactionToNegativeBehavior,
       };
 
   factory Section8Data.fromJson(Map<String, dynamic> json) => Section8Data(
-        satAtRightTime: json['satAtRightTime'] as bool?,
-        crawledAtRightTime: json['crawledAtRightTime'] as bool?,
-        walkedAtRightTime: json['walkedAtRightTime'] as bool?,
-        teethingAge: json['teethingAge'] as String? ?? '',
-        dropsThings: json['dropsThings'] as bool?,
-        hasMovementDifficulties: json['hasMovementDifficulties'] as bool?,
-        isConstantlyMoving: json['isConstantlyMoving'] as bool?,
-        hasVisualImpairment: json['hasVisualImpairment'] as bool?,
-        visualImpairmentDegree:
-            json['visualImpairmentDegree'] as String? ?? '',
-        hasEyeDiseases: json['hasEyeDiseases'] as bool?,
-        eyeDiseasesType: json['eyeDiseasesType'] as String? ?? '',
-        hasHearingImpairment: json['hasHearingImpairment'] as bool?,
-        hearingImpairmentDegree:
-            json['hearingImpairmentDegree'] as String? ?? '',
-        hasEarDiseases: json['hasEarDiseases'] as bool?,
-        earDiseasesType: json['earDiseasesType'] as String? ?? '',
-        hasAllergies: json['hasAllergies'] as bool?,
-        allergyType: json['allergyType'] as String? ?? '',
-        allergyTriggers: json['allergyTriggers'] as String? ?? '',
+        aggressionDescription:
+            json['aggressionDescription'] as String? ?? '',
+        selfHarmDescription: json['selfHarmDescription'] as String? ?? '',
+        stereotypicalBehaviorsDescription:
+            json['stereotypicalBehaviorsDescription'] as String? ?? '',
+        resistanceToChangeDescription:
+            json['resistanceToChangeDescription'] as String? ?? '',
+        excessiveAttachmentDescription:
+            json['excessiveAttachmentDescription'] as String? ?? '',
+        behavioralPatterns: (json['behavioralPatterns'] as List<dynamic>? ?? [])
+            .map((e) => BehavioralPattern.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        generalAttentionState:
+            json['generalAttentionState'] as String? ?? '',
+        generalStateNotes: json['generalStateNotes'] as String? ?? '',
+        hasSensoryIssues: json['hasSensoryIssues'] as bool?,
+        sensoryIssuesNotes: json['sensoryIssuesNotes'] as String? ?? '',
+        hearingIssue: json['hearingIssue'] as bool?,
+        hearingNotes: json['hearingNotes'] as String? ?? '',
+        touchIssue: json['touchIssue'] as bool?,
+        touchNotes: json['touchNotes'] as String? ?? '',
+        tasteIssue: json['tasteIssue'] as bool?,
+        tasteNotes: json['tasteNotes'] as String? ?? '',
+        vestibularIssue: json['vestibularIssue'] as bool?,
+        vestibularNotes: json['vestibularNotes'] as String? ?? '',
+        visualSensoryIssue: json['visualSensoryIssue'] as bool?,
+        visualSensoryNotes: json['visualSensoryNotes'] as String? ?? '',
+        sensoryReactionDescription:
+            json['sensoryReactionDescription'] as String? ?? '',
+        makesFriendsEasily: json['makesFriendsEasily'] as bool?,
+        makesFriendsNotes: json['makesFriendsNotes'] as String? ?? '',
+        sharesInterests: json['sharesInterests'] as bool?,
+        sharesInterestsNotes: json['sharesInterestsNotes'] as String? ?? '',
+        abuseExposure: json['abuseExposure'] as String? ?? '',
+        abuseNotes: json['abuseNotes'] as String? ?? '',
+        hasSignificantSocialEvent: json['hasSignificantSocialEvent'] as bool?,
+        significantSocialEventNotes:
+            json['significantSocialEventNotes'] as String? ?? '',
+        reactionToNegativeBehavior:
+            json['reactionToNegativeBehavior'] as String? ?? '',
       );
 }
 
 // =============================================================================
-// Section 9 — Developmental Growth (Language Aspects)
+// Section 9 — Capabilities, Strengths, and Interests
 // =============================================================================
 
 class Section9Data {
-  final bool? speechUnderstoodByMother;
-  final bool? hasStuttering;
-  final bool? hasLetterSubstitution;
-  final String substitutedLetters;
-  final bool? speaksUnintelligibly;
-  final bool? hasPronunciationDifficulty;
-  final String difficultLettersAndWords;
-  final bool? languageLikeAgePeers;
+  final String observedStrengths;
+  final bool activitySensoryGames;
+  final bool activityElectronics;
+  final bool activityMotor;
+  final bool activityFoods;
+  final bool activityCharacters;
+  final bool activityMusic;
+  final bool activityOther;
+  final String otherActivitiesDescription;
+  final String foodExample;
+  final String foodRating;
+  final String sensoryExample;
+  final String sensoryRating;
+  final String socialExample;
+  final String socialRating;
+  final String materialExample;
+  final String materialRating;
+  final String positiveDistinction;
 
   const Section9Data({
-    this.speechUnderstoodByMother,
-    this.hasStuttering,
-    this.hasLetterSubstitution,
-    this.substitutedLetters = '',
-    this.speaksUnintelligibly,
-    this.hasPronunciationDifficulty,
-    this.difficultLettersAndWords = '',
-    this.languageLikeAgePeers,
+    this.observedStrengths = '',
+    this.activitySensoryGames = false,
+    this.activityElectronics = false,
+    this.activityMotor = false,
+    this.activityFoods = false,
+    this.activityCharacters = false,
+    this.activityMusic = false,
+    this.activityOther = false,
+    this.otherActivitiesDescription = '',
+    this.foodExample = '',
+    this.foodRating = '',
+    this.sensoryExample = '',
+    this.sensoryRating = '',
+    this.socialExample = '',
+    this.socialRating = '',
+    this.materialExample = '',
+    this.materialRating = '',
+    this.positiveDistinction = '',
   });
 
   Section9Data copyWith({
-    bool? speechUnderstoodByMother,
-    bool? hasStuttering,
-    bool? hasLetterSubstitution,
-    String? substitutedLetters,
-    bool? speaksUnintelligibly,
-    bool? hasPronunciationDifficulty,
-    String? difficultLettersAndWords,
-    bool? languageLikeAgePeers,
+    String? observedStrengths,
+    bool? activitySensoryGames,
+    bool? activityElectronics,
+    bool? activityMotor,
+    bool? activityFoods,
+    bool? activityCharacters,
+    bool? activityMusic,
+    bool? activityOther,
+    String? otherActivitiesDescription,
+    String? foodExample,
+    String? foodRating,
+    String? sensoryExample,
+    String? sensoryRating,
+    String? socialExample,
+    String? socialRating,
+    String? materialExample,
+    String? materialRating,
+    String? positiveDistinction,
   }) =>
       Section9Data(
-        speechUnderstoodByMother:
-            speechUnderstoodByMother ?? this.speechUnderstoodByMother,
-        hasStuttering: hasStuttering ?? this.hasStuttering,
-        hasLetterSubstitution:
-            hasLetterSubstitution ?? this.hasLetterSubstitution,
-        substitutedLetters: substitutedLetters ?? this.substitutedLetters,
-        speaksUnintelligibly:
-            speaksUnintelligibly ?? this.speaksUnintelligibly,
-        hasPronunciationDifficulty:
-            hasPronunciationDifficulty ?? this.hasPronunciationDifficulty,
-        difficultLettersAndWords:
-            difficultLettersAndWords ?? this.difficultLettersAndWords,
-        languageLikeAgePeers:
-            languageLikeAgePeers ?? this.languageLikeAgePeers,
+        observedStrengths: observedStrengths ?? this.observedStrengths,
+        activitySensoryGames: activitySensoryGames ?? this.activitySensoryGames,
+        activityElectronics: activityElectronics ?? this.activityElectronics,
+        activityMotor: activityMotor ?? this.activityMotor,
+        activityFoods: activityFoods ?? this.activityFoods,
+        activityCharacters: activityCharacters ?? this.activityCharacters,
+        activityMusic: activityMusic ?? this.activityMusic,
+        activityOther: activityOther ?? this.activityOther,
+        otherActivitiesDescription:
+            otherActivitiesDescription ?? this.otherActivitiesDescription,
+        foodExample: foodExample ?? this.foodExample,
+        foodRating: foodRating ?? this.foodRating,
+        sensoryExample: sensoryExample ?? this.sensoryExample,
+        sensoryRating: sensoryRating ?? this.sensoryRating,
+        socialExample: socialExample ?? this.socialExample,
+        socialRating: socialRating ?? this.socialRating,
+        materialExample: materialExample ?? this.materialExample,
+        materialRating: materialRating ?? this.materialRating,
+        positiveDistinction: positiveDistinction ?? this.positiveDistinction,
       );
 
   Map<String, dynamic> toJson() => {
-        'speechUnderstoodByMother': speechUnderstoodByMother,
-        'hasStuttering': hasStuttering,
-        'hasLetterSubstitution': hasLetterSubstitution,
-        'substitutedLetters': substitutedLetters,
-        'speaksUnintelligibly': speaksUnintelligibly,
-        'hasPronunciationDifficulty': hasPronunciationDifficulty,
-        'difficultLettersAndWords': difficultLettersAndWords,
-        'languageLikeAgePeers': languageLikeAgePeers,
+        'observedStrengths': observedStrengths,
+        'activitySensoryGames': activitySensoryGames,
+        'activityElectronics': activityElectronics,
+        'activityMotor': activityMotor,
+        'activityFoods': activityFoods,
+        'activityCharacters': activityCharacters,
+        'activityMusic': activityMusic,
+        'activityOther': activityOther,
+        'otherActivitiesDescription': otherActivitiesDescription,
+        'foodExample': foodExample,
+        'foodRating': foodRating,
+        'sensoryExample': sensoryExample,
+        'sensoryRating': sensoryRating,
+        'socialExample': socialExample,
+        'socialRating': socialRating,
+        'materialExample': materialExample,
+        'materialRating': materialRating,
+        'positiveDistinction': positiveDistinction,
       };
 
   factory Section9Data.fromJson(Map<String, dynamic> json) => Section9Data(
-        speechUnderstoodByMother: json['speechUnderstoodByMother'] as bool?,
-        hasStuttering: json['hasStuttering'] as bool?,
-        hasLetterSubstitution: json['hasLetterSubstitution'] as bool?,
-        substitutedLetters: json['substitutedLetters'] as String? ?? '',
-        speaksUnintelligibly: json['speaksUnintelligibly'] as bool?,
-        hasPronunciationDifficulty:
-            json['hasPronunciationDifficulty'] as bool?,
-        difficultLettersAndWords:
-            json['difficultLettersAndWords'] as String? ?? '',
-        languageLikeAgePeers: json['languageLikeAgePeers'] as bool?,
+        observedStrengths: json['observedStrengths'] as String? ?? '',
+        activitySensoryGames: json['activitySensoryGames'] as bool? ?? false,
+        activityElectronics: json['activityElectronics'] as bool? ?? false,
+        activityMotor: json['activityMotor'] as bool? ?? false,
+        activityFoods: json['activityFoods'] as bool? ?? false,
+        activityCharacters: json['activityCharacters'] as bool? ?? false,
+        activityMusic: json['activityMusic'] as bool? ?? false,
+        activityOther: json['activityOther'] as bool? ?? false,
+        otherActivitiesDescription:
+            json['otherActivitiesDescription'] as String? ?? '',
+        foodExample: json['foodExample'] as String? ?? '',
+        foodRating: json['foodRating'] as String? ?? '',
+        sensoryExample: json['sensoryExample'] as String? ?? '',
+        sensoryRating: json['sensoryRating'] as String? ?? '',
+        socialExample: json['socialExample'] as String? ?? '',
+        socialRating: json['socialRating'] as String? ?? '',
+        materialExample: json['materialExample'] as String? ?? '',
+        materialRating: json['materialRating'] as String? ?? '',
+        positiveDistinction: json['positiveDistinction'] as String? ?? '',
       );
 }
 
 // =============================================================================
-// Section 10 — Developmental Growth (Cognitive Aspects)
+// Section 10 — Educational and Services
 // =============================================================================
 
 class Section10Data {
-  final bool? followsInstructions;
-  final bool? completesAssignedTasks;
-  final String understandsInstructions; // 'always' | 'sometimes' | 'rarely'
-  final bool? hasMemoryDifficulty;
-  final bool? hasNamingDifficulty;
-  final bool? isImpulsive;
-  final String concentrationLevel; // 'good' | 'average' | 'weak'
+  final bool? isEnrolledInSchool;
+  final String schoolName;
+  final String schoolGrade;
+  final bool serviceABA;
+  final bool serviceSpeech;
+  final bool serviceOccupational;
+  final bool servicePhysical;
+  final bool servicePsychological;
+  final bool serviceSpecialEd;
+  final bool serviceOther;
+  final bool serviceNone;
+  final String otherServiceDescription;
+  final String serviceDuration;
+  final bool? hasIEP;
+  final bool reportVineland;
+  final bool reportEFL;
+  final bool reportAFLS;
+  final bool reportABLLS;
+  final bool reportVBMAPP;
+  final bool reportOther;
+  final bool reportNone;
+  final String classType;
+  final bool? hasShadowTeacher;
+  final String shadowTeacherName;
+  final bool modReduceDistractions;
+  final bool modVisualSchedule;
+  final bool modSpecificSeat;
+  final bool modOther;
+  final String schoolBehavior;
 
   const Section10Data({
-    this.followsInstructions,
-    this.completesAssignedTasks,
-    this.understandsInstructions = '',
-    this.hasMemoryDifficulty,
-    this.hasNamingDifficulty,
-    this.isImpulsive,
-    this.concentrationLevel = '',
+    this.isEnrolledInSchool,
+    this.schoolName = '',
+    this.schoolGrade = '',
+    this.serviceABA = false,
+    this.serviceSpeech = false,
+    this.serviceOccupational = false,
+    this.servicePhysical = false,
+    this.servicePsychological = false,
+    this.serviceSpecialEd = false,
+    this.serviceOther = false,
+    this.serviceNone = false,
+    this.otherServiceDescription = '',
+    this.serviceDuration = '',
+    this.hasIEP,
+    this.reportVineland = false,
+    this.reportEFL = false,
+    this.reportAFLS = false,
+    this.reportABLLS = false,
+    this.reportVBMAPP = false,
+    this.reportOther = false,
+    this.reportNone = false,
+    this.classType = '',
+    this.hasShadowTeacher,
+    this.shadowTeacherName = '',
+    this.modReduceDistractions = false,
+    this.modVisualSchedule = false,
+    this.modSpecificSeat = false,
+    this.modOther = false,
+    this.schoolBehavior = '',
   });
 
   Section10Data copyWith({
-    bool? followsInstructions,
-    bool? completesAssignedTasks,
-    String? understandsInstructions,
-    bool? hasMemoryDifficulty,
-    bool? hasNamingDifficulty,
-    bool? isImpulsive,
-    String? concentrationLevel,
+    bool? isEnrolledInSchool,
+    String? schoolName,
+    String? schoolGrade,
+    bool? serviceABA,
+    bool? serviceSpeech,
+    bool? serviceOccupational,
+    bool? servicePhysical,
+    bool? servicePsychological,
+    bool? serviceSpecialEd,
+    bool? serviceOther,
+    bool? serviceNone,
+    String? otherServiceDescription,
+    String? serviceDuration,
+    bool? hasIEP,
+    bool? reportVineland,
+    bool? reportEFL,
+    bool? reportAFLS,
+    bool? reportABLLS,
+    bool? reportVBMAPP,
+    bool? reportOther,
+    bool? reportNone,
+    String? classType,
+    bool? hasShadowTeacher,
+    String? shadowTeacherName,
+    bool? modReduceDistractions,
+    bool? modVisualSchedule,
+    bool? modSpecificSeat,
+    bool? modOther,
+    String? schoolBehavior,
   }) =>
       Section10Data(
-        followsInstructions: followsInstructions ?? this.followsInstructions,
-        completesAssignedTasks:
-            completesAssignedTasks ?? this.completesAssignedTasks,
-        understandsInstructions:
-            understandsInstructions ?? this.understandsInstructions,
-        hasMemoryDifficulty: hasMemoryDifficulty ?? this.hasMemoryDifficulty,
-        hasNamingDifficulty: hasNamingDifficulty ?? this.hasNamingDifficulty,
-        isImpulsive: isImpulsive ?? this.isImpulsive,
-        concentrationLevel: concentrationLevel ?? this.concentrationLevel,
+        isEnrolledInSchool: isEnrolledInSchool ?? this.isEnrolledInSchool,
+        schoolName: schoolName ?? this.schoolName,
+        schoolGrade: schoolGrade ?? this.schoolGrade,
+        serviceABA: serviceABA ?? this.serviceABA,
+        serviceSpeech: serviceSpeech ?? this.serviceSpeech,
+        serviceOccupational: serviceOccupational ?? this.serviceOccupational,
+        servicePhysical: servicePhysical ?? this.servicePhysical,
+        servicePsychological: servicePsychological ?? this.servicePsychological,
+        serviceSpecialEd: serviceSpecialEd ?? this.serviceSpecialEd,
+        serviceOther: serviceOther ?? this.serviceOther,
+        serviceNone: serviceNone ?? this.serviceNone,
+        otherServiceDescription:
+            otherServiceDescription ?? this.otherServiceDescription,
+        serviceDuration: serviceDuration ?? this.serviceDuration,
+        hasIEP: hasIEP ?? this.hasIEP,
+        reportVineland: reportVineland ?? this.reportVineland,
+        reportEFL: reportEFL ?? this.reportEFL,
+        reportAFLS: reportAFLS ?? this.reportAFLS,
+        reportABLLS: reportABLLS ?? this.reportABLLS,
+        reportVBMAPP: reportVBMAPP ?? this.reportVBMAPP,
+        reportOther: reportOther ?? this.reportOther,
+        reportNone: reportNone ?? this.reportNone,
+        classType: classType ?? this.classType,
+        hasShadowTeacher: hasShadowTeacher ?? this.hasShadowTeacher,
+        shadowTeacherName: shadowTeacherName ?? this.shadowTeacherName,
+        modReduceDistractions:
+            modReduceDistractions ?? this.modReduceDistractions,
+        modVisualSchedule: modVisualSchedule ?? this.modVisualSchedule,
+        modSpecificSeat: modSpecificSeat ?? this.modSpecificSeat,
+        modOther: modOther ?? this.modOther,
+        schoolBehavior: schoolBehavior ?? this.schoolBehavior,
       );
 
   Map<String, dynamic> toJson() => {
-        'followsInstructions': followsInstructions,
-        'completesAssignedTasks': completesAssignedTasks,
-        'understandsInstructions': understandsInstructions,
-        'hasMemoryDifficulty': hasMemoryDifficulty,
-        'hasNamingDifficulty': hasNamingDifficulty,
-        'isImpulsive': isImpulsive,
-        'concentrationLevel': concentrationLevel,
+        'isEnrolledInSchool': isEnrolledInSchool,
+        'schoolName': schoolName,
+        'schoolGrade': schoolGrade,
+        'serviceABA': serviceABA,
+        'serviceSpeech': serviceSpeech,
+        'serviceOccupational': serviceOccupational,
+        'servicePhysical': servicePhysical,
+        'servicePsychological': servicePsychological,
+        'serviceSpecialEd': serviceSpecialEd,
+        'serviceOther': serviceOther,
+        'serviceNone': serviceNone,
+        'otherServiceDescription': otherServiceDescription,
+        'serviceDuration': serviceDuration,
+        'hasIEP': hasIEP,
+        'reportVineland': reportVineland,
+        'reportEFL': reportEFL,
+        'reportAFLS': reportAFLS,
+        'reportABLLS': reportABLLS,
+        'reportVBMAPP': reportVBMAPP,
+        'reportOther': reportOther,
+        'reportNone': reportNone,
+        'classType': classType,
+        'hasShadowTeacher': hasShadowTeacher,
+        'shadowTeacherName': shadowTeacherName,
+        'modReduceDistractions': modReduceDistractions,
+        'modVisualSchedule': modVisualSchedule,
+        'modSpecificSeat': modSpecificSeat,
+        'modOther': modOther,
+        'schoolBehavior': schoolBehavior,
       };
 
   factory Section10Data.fromJson(Map<String, dynamic> json) => Section10Data(
-        followsInstructions: json['followsInstructions'] as bool?,
-        completesAssignedTasks: json['completesAssignedTasks'] as bool?,
-        understandsInstructions:
-            json['understandsInstructions'] as String? ?? '',
-        hasMemoryDifficulty: json['hasMemoryDifficulty'] as bool?,
-        hasNamingDifficulty: json['hasNamingDifficulty'] as bool?,
-        isImpulsive: json['isImpulsive'] as bool?,
-        concentrationLevel: json['concentrationLevel'] as String? ?? '',
+        isEnrolledInSchool: json['isEnrolledInSchool'] as bool?,
+        schoolName: json['schoolName'] as String? ?? '',
+        schoolGrade: json['schoolGrade'] as String? ?? '',
+        serviceABA: json['serviceABA'] as bool? ?? false,
+        serviceSpeech: json['serviceSpeech'] as bool? ?? false,
+        serviceOccupational: json['serviceOccupational'] as bool? ?? false,
+        servicePhysical: json['servicePhysical'] as bool? ?? false,
+        servicePsychological: json['servicePsychological'] as bool? ?? false,
+        serviceSpecialEd: json['serviceSpecialEd'] as bool? ?? false,
+        serviceOther: json['serviceOther'] as bool? ?? false,
+        serviceNone: json['serviceNone'] as bool? ?? false,
+        otherServiceDescription:
+            json['otherServiceDescription'] as String? ?? '',
+        serviceDuration: json['serviceDuration'] as String? ?? '',
+        hasIEP: json['hasIEP'] as bool?,
+        reportVineland: json['reportVineland'] as bool? ?? false,
+        reportEFL: json['reportEFL'] as bool? ?? false,
+        reportAFLS: json['reportAFLS'] as bool? ?? false,
+        reportABLLS: json['reportABLLS'] as bool? ?? false,
+        reportVBMAPP: json['reportVBMAPP'] as bool? ?? false,
+        reportOther: json['reportOther'] as bool? ?? false,
+        reportNone: json['reportNone'] as bool? ?? false,
+        classType: json['classType'] as String? ?? '',
+        hasShadowTeacher: json['hasShadowTeacher'] as bool?,
+        shadowTeacherName: json['shadowTeacherName'] as String? ?? '',
+        modReduceDistractions: json['modReduceDistractions'] as bool? ?? false,
+        modVisualSchedule: json['modVisualSchedule'] as bool? ?? false,
+        modSpecificSeat: json['modSpecificSeat'] as bool? ?? false,
+        modOther: json['modOther'] as bool? ?? false,
+        schoolBehavior: json['schoolBehavior'] as String? ?? '',
       );
 }
 
 // =============================================================================
-// Section 11 — Developmental Growth (Social Aspects)
+// Section 11 — Family Priorities and Goals
 // =============================================================================
 
 class Section11Data {
-  final bool? isQuickToAnger;
-  final bool? destroysPlaythings;
-  final bool? isStubborn;
-  final bool? isAggressive;
-  final bool? canPlayCalmly;
-  final bool? attacksSiblings;
-  final bool? isPopularWithPeers;
-  final String behaviorDuringVisits;
-  final bool? socialMaturityLikeAgePeers;
+  final String topConcerns;
+  final String topGoals;
+  final String sessionTimePreferences;
+  final String parentTrainingReadiness;
 
   const Section11Data({
-    this.isQuickToAnger,
-    this.destroysPlaythings,
-    this.isStubborn,
-    this.isAggressive,
-    this.canPlayCalmly,
-    this.attacksSiblings,
-    this.isPopularWithPeers,
-    this.behaviorDuringVisits = '',
-    this.socialMaturityLikeAgePeers,
+    this.topConcerns = '',
+    this.topGoals = '',
+    this.sessionTimePreferences = '',
+    this.parentTrainingReadiness = '',
   });
 
   Section11Data copyWith({
-    bool? isQuickToAnger,
-    bool? destroysPlaythings,
-    bool? isStubborn,
-    bool? isAggressive,
-    bool? canPlayCalmly,
-    bool? attacksSiblings,
-    bool? isPopularWithPeers,
-    String? behaviorDuringVisits,
-    bool? socialMaturityLikeAgePeers,
+    String? topConcerns,
+    String? topGoals,
+    String? sessionTimePreferences,
+    String? parentTrainingReadiness,
   }) =>
       Section11Data(
-        isQuickToAnger: isQuickToAnger ?? this.isQuickToAnger,
-        destroysPlaythings: destroysPlaythings ?? this.destroysPlaythings,
-        isStubborn: isStubborn ?? this.isStubborn,
-        isAggressive: isAggressive ?? this.isAggressive,
-        canPlayCalmly: canPlayCalmly ?? this.canPlayCalmly,
-        attacksSiblings: attacksSiblings ?? this.attacksSiblings,
-        isPopularWithPeers: isPopularWithPeers ?? this.isPopularWithPeers,
-        behaviorDuringVisits:
-            behaviorDuringVisits ?? this.behaviorDuringVisits,
-        socialMaturityLikeAgePeers:
-            socialMaturityLikeAgePeers ?? this.socialMaturityLikeAgePeers,
+        topConcerns: topConcerns ?? this.topConcerns,
+        topGoals: topGoals ?? this.topGoals,
+        sessionTimePreferences:
+            sessionTimePreferences ?? this.sessionTimePreferences,
+        parentTrainingReadiness:
+            parentTrainingReadiness ?? this.parentTrainingReadiness,
       );
 
   Map<String, dynamic> toJson() => {
-        'isQuickToAnger': isQuickToAnger,
-        'destroysPlaythings': destroysPlaythings,
-        'isStubborn': isStubborn,
-        'isAggressive': isAggressive,
-        'canPlayCalmly': canPlayCalmly,
-        'attacksSiblings': attacksSiblings,
-        'isPopularWithPeers': isPopularWithPeers,
-        'behaviorDuringVisits': behaviorDuringVisits,
-        'socialMaturityLikeAgePeers': socialMaturityLikeAgePeers,
+        'topConcerns': topConcerns,
+        'topGoals': topGoals,
+        'sessionTimePreferences': sessionTimePreferences,
+        'parentTrainingReadiness': parentTrainingReadiness,
       };
 
   factory Section11Data.fromJson(Map<String, dynamic> json) => Section11Data(
-        isQuickToAnger: json['isQuickToAnger'] as bool?,
-        destroysPlaythings: json['destroysPlaythings'] as bool?,
-        isStubborn: json['isStubborn'] as bool?,
-        isAggressive: json['isAggressive'] as bool?,
-        canPlayCalmly: json['canPlayCalmly'] as bool?,
-        attacksSiblings: json['attacksSiblings'] as bool?,
-        isPopularWithPeers: json['isPopularWithPeers'] as bool?,
-        behaviorDuringVisits:
-            json['behaviorDuringVisits'] as String? ?? '',
-        socialMaturityLikeAgePeers:
-            json['socialMaturityLikeAgePeers'] as bool?,
+        topConcerns: json['topConcerns'] as String? ?? '',
+        topGoals: json['topGoals'] as String? ?? '',
+        sessionTimePreferences:
+            json['sessionTimePreferences'] as String? ?? '',
+        parentTrainingReadiness:
+            json['parentTrainingReadiness'] as String? ?? '',
       );
 }
 
@@ -1412,73 +2120,388 @@ class Section12Data {
 }
 
 // =============================================================================
-// Section 13 — Developmental Growth (Self-Care Aspects)
+// Section 13 — Initial Assessment and Follow-up Plan
 // =============================================================================
 
 class Section13Data {
-  final bool? usesToiletProperly;
-  final bool? bathesAlone;
-  final bool? dressesAlone;
-  final bool? usesToothbrush;
-  final bool? wearsShoesAlone;
-  final bool? washesFaceOnWaking;
-  final bool? washesHandsBeforeAfterEating;
-  final bool? washesFeetAfterPlay;
+  final String priorityLevel; // 'low'|'medium'|'high'|'urgent'
+
+  final bool specABA;
+  final bool specSpeech;
+  final bool specOccupational;
+  final bool specPhysical;
+  final bool specPsychological;
+  final bool specSpecialEd;
+
+  final bool? reviewOtherReports;
+  final bool? directObservation;
+  final bool? familyMeeting;
+
+  final String notesAndNextSteps;
+  final DateTime? nextAssessmentDate;
+  final String nextAssessmentTime; // "HH:mm"
 
   const Section13Data({
-    this.usesToiletProperly,
-    this.bathesAlone,
-    this.dressesAlone,
-    this.usesToothbrush,
-    this.wearsShoesAlone,
-    this.washesFaceOnWaking,
-    this.washesHandsBeforeAfterEating,
-    this.washesFeetAfterPlay,
+    this.priorityLevel = '',
+    this.specABA = false,
+    this.specSpeech = false,
+    this.specOccupational = false,
+    this.specPhysical = false,
+    this.specPsychological = false,
+    this.specSpecialEd = false,
+    this.reviewOtherReports,
+    this.directObservation,
+    this.familyMeeting,
+    this.notesAndNextSteps = '',
+    this.nextAssessmentDate,
+    this.nextAssessmentTime = '',
   });
 
   Section13Data copyWith({
-    bool? usesToiletProperly,
-    bool? bathesAlone,
-    bool? dressesAlone,
-    bool? usesToothbrush,
-    bool? wearsShoesAlone,
-    bool? washesFaceOnWaking,
-    bool? washesHandsBeforeAfterEating,
-    bool? washesFeetAfterPlay,
+    String? priorityLevel,
+    bool? specABA,
+    bool? specSpeech,
+    bool? specOccupational,
+    bool? specPhysical,
+    bool? specPsychological,
+    bool? specSpecialEd,
+    bool? reviewOtherReports,
+    bool? directObservation,
+    bool? familyMeeting,
+    String? notesAndNextSteps,
+    DateTime? nextAssessmentDate,
+    bool clearNextAssessmentDate = false,
+    String? nextAssessmentTime,
   }) =>
       Section13Data(
-        usesToiletProperly: usesToiletProperly ?? this.usesToiletProperly,
-        bathesAlone: bathesAlone ?? this.bathesAlone,
-        dressesAlone: dressesAlone ?? this.dressesAlone,
-        usesToothbrush: usesToothbrush ?? this.usesToothbrush,
-        wearsShoesAlone: wearsShoesAlone ?? this.wearsShoesAlone,
-        washesFaceOnWaking: washesFaceOnWaking ?? this.washesFaceOnWaking,
-        washesHandsBeforeAfterEating:
-            washesHandsBeforeAfterEating ?? this.washesHandsBeforeAfterEating,
-        washesFeetAfterPlay: washesFeetAfterPlay ?? this.washesFeetAfterPlay,
+        priorityLevel: priorityLevel ?? this.priorityLevel,
+        specABA: specABA ?? this.specABA,
+        specSpeech: specSpeech ?? this.specSpeech,
+        specOccupational: specOccupational ?? this.specOccupational,
+        specPhysical: specPhysical ?? this.specPhysical,
+        specPsychological: specPsychological ?? this.specPsychological,
+        specSpecialEd: specSpecialEd ?? this.specSpecialEd,
+        reviewOtherReports: reviewOtherReports ?? this.reviewOtherReports,
+        directObservation: directObservation ?? this.directObservation,
+        familyMeeting: familyMeeting ?? this.familyMeeting,
+        notesAndNextSteps: notesAndNextSteps ?? this.notesAndNextSteps,
+        nextAssessmentDate: clearNextAssessmentDate
+            ? null
+            : (nextAssessmentDate ?? this.nextAssessmentDate),
+        nextAssessmentTime: nextAssessmentTime ?? this.nextAssessmentTime,
       );
 
   Map<String, dynamic> toJson() => {
-        'usesToiletProperly': usesToiletProperly,
-        'bathesAlone': bathesAlone,
-        'dressesAlone': dressesAlone,
-        'usesToothbrush': usesToothbrush,
-        'wearsShoesAlone': wearsShoesAlone,
-        'washesFaceOnWaking': washesFaceOnWaking,
-        'washesHandsBeforeAfterEating': washesHandsBeforeAfterEating,
-        'washesFeetAfterPlay': washesFeetAfterPlay,
+        'priorityLevel': priorityLevel,
+        'specABA': specABA,
+        'specSpeech': specSpeech,
+        'specOccupational': specOccupational,
+        'specPhysical': specPhysical,
+        'specPsychological': specPsychological,
+        'specSpecialEd': specSpecialEd,
+        'reviewOtherReports': reviewOtherReports,
+        'directObservation': directObservation,
+        'familyMeeting': familyMeeting,
+        'notesAndNextSteps': notesAndNextSteps,
+        'nextAssessmentDate': nextAssessmentDate?.toIso8601String(),
+        'nextAssessmentTime': nextAssessmentTime,
       };
 
   factory Section13Data.fromJson(Map<String, dynamic> json) => Section13Data(
-        usesToiletProperly: json['usesToiletProperly'] as bool?,
-        bathesAlone: json['bathesAlone'] as bool?,
-        dressesAlone: json['dressesAlone'] as bool?,
-        usesToothbrush: json['usesToothbrush'] as bool?,
-        wearsShoesAlone: json['wearsShoesAlone'] as bool?,
-        washesFaceOnWaking: json['washesFaceOnWaking'] as bool?,
-        washesHandsBeforeAfterEating:
-            json['washesHandsBeforeAfterEating'] as bool?,
-        washesFeetAfterPlay: json['washesFeetAfterPlay'] as bool?,
+        priorityLevel: json['priorityLevel'] as String? ?? '',
+        specABA: json['specABA'] as bool? ?? false,
+        specSpeech: json['specSpeech'] as bool? ?? false,
+        specOccupational: json['specOccupational'] as bool? ?? false,
+        specPhysical: json['specPhysical'] as bool? ?? false,
+        specPsychological: json['specPsychological'] as bool? ?? false,
+        specSpecialEd: json['specSpecialEd'] as bool? ?? false,
+        reviewOtherReports: json['reviewOtherReports'] as bool?,
+        directObservation: json['directObservation'] as bool?,
+        familyMeeting: json['familyMeeting'] as bool?,
+        notesAndNextSteps: json['notesAndNextSteps'] as String? ?? '',
+        nextAssessmentDate: json['nextAssessmentDate'] != null
+            ? DateTime.tryParse(json['nextAssessmentDate'] as String)
+            : null,
+        nextAssessmentTime: json['nextAssessmentTime'] as String? ?? '',
+      );
+}
+
+// =============================================================================
+// Section – Documents and Consents
+// =============================================================================
+
+class SectionDocumentsConsentData {
+  final bool docID;
+  final bool docMedicalReports;
+  final bool docDiagnosticReports;
+  final bool docSchoolReports;
+  final bool docPrevTreatmentReports;
+  final bool docOther;
+  final String docOtherName;
+  final bool consentPrivacy;
+  final bool consentInfoSharing;
+  final bool consentOtherComms;
+  final bool consentAssessments;
+  final bool consentFuturePlan;
+
+  const SectionDocumentsConsentData({
+    this.docID = false,
+    this.docMedicalReports = false,
+    this.docDiagnosticReports = false,
+    this.docSchoolReports = false,
+    this.docPrevTreatmentReports = false,
+    this.docOther = false,
+    this.docOtherName = '',
+    this.consentPrivacy = false,
+    this.consentInfoSharing = false,
+    this.consentOtherComms = false,
+    this.consentAssessments = false,
+    this.consentFuturePlan = false,
+  });
+
+  SectionDocumentsConsentData copyWith({
+    bool? docID,
+    bool? docMedicalReports,
+    bool? docDiagnosticReports,
+    bool? docSchoolReports,
+    bool? docPrevTreatmentReports,
+    bool? docOther,
+    String? docOtherName,
+    bool? consentPrivacy,
+    bool? consentInfoSharing,
+    bool? consentOtherComms,
+    bool? consentAssessments,
+    bool? consentFuturePlan,
+  }) =>
+      SectionDocumentsConsentData(
+        docID: docID ?? this.docID,
+        docMedicalReports: docMedicalReports ?? this.docMedicalReports,
+        docDiagnosticReports: docDiagnosticReports ?? this.docDiagnosticReports,
+        docSchoolReports: docSchoolReports ?? this.docSchoolReports,
+        docPrevTreatmentReports:
+            docPrevTreatmentReports ?? this.docPrevTreatmentReports,
+        docOther: docOther ?? this.docOther,
+        docOtherName: docOtherName ?? this.docOtherName,
+        consentPrivacy: consentPrivacy ?? this.consentPrivacy,
+        consentInfoSharing: consentInfoSharing ?? this.consentInfoSharing,
+        consentOtherComms: consentOtherComms ?? this.consentOtherComms,
+        consentAssessments: consentAssessments ?? this.consentAssessments,
+        consentFuturePlan: consentFuturePlan ?? this.consentFuturePlan,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'docID': docID,
+        'docMedicalReports': docMedicalReports,
+        'docDiagnosticReports': docDiagnosticReports,
+        'docSchoolReports': docSchoolReports,
+        'docPrevTreatmentReports': docPrevTreatmentReports,
+        'docOther': docOther,
+        'docOtherName': docOtherName,
+        'consentPrivacy': consentPrivacy,
+        'consentInfoSharing': consentInfoSharing,
+        'consentOtherComms': consentOtherComms,
+        'consentAssessments': consentAssessments,
+        'consentFuturePlan': consentFuturePlan,
+      };
+
+  factory SectionDocumentsConsentData.fromJson(Map<String, dynamic> json) =>
+      SectionDocumentsConsentData(
+        docID: json['docID'] as bool? ?? false,
+        docMedicalReports: json['docMedicalReports'] as bool? ?? false,
+        docDiagnosticReports: json['docDiagnosticReports'] as bool? ?? false,
+        docSchoolReports: json['docSchoolReports'] as bool? ?? false,
+        docPrevTreatmentReports:
+            json['docPrevTreatmentReports'] as bool? ?? false,
+        docOther: json['docOther'] as bool? ?? false,
+        docOtherName: json['docOtherName'] as String? ?? '',
+        consentPrivacy: json['consentPrivacy'] as bool? ?? false,
+        consentInfoSharing: json['consentInfoSharing'] as bool? ?? false,
+        consentOtherComms: json['consentOtherComms'] as bool? ?? false,
+        consentAssessments: json['consentAssessments'] as bool? ?? false,
+        consentFuturePlan: json['consentFuturePlan'] as bool? ?? false,
+      );
+}
+
+// =============================================================================
+// Signature helpers
+// =============================================================================
+
+/// Pure-Dart serializable signature data (list of strokes, each stroke a list
+/// of {x, y} points). The widget layer converts to/from [dart:ui Offset].
+class SignatureData {
+  final List<List<Map<String, double>>> strokes;
+
+  const SignatureData({this.strokes = const []});
+
+  bool get isEmpty => strokes.isEmpty;
+
+  List<dynamic> toJson() => strokes
+      .map((s) => s.map((p) => {'x': p['x']!, 'y': p['y']!}).toList())
+      .toList();
+
+  factory SignatureData.fromJson(dynamic json) {
+    if (json == null || json is! List) return const SignatureData();
+    return SignatureData(
+      strokes: json.map((s) {
+        return (s as List<dynamic>).map((p) {
+          final m = p as Map;
+          return <String, double>{
+            'x': (m['x'] as num).toDouble(),
+            'y': (m['y'] as num).toDouble(),
+          };
+        }).toList();
+      }).toList(),
+    );
+  }
+}
+
+// =============================================================================
+// Section 15 — Signatures
+// =============================================================================
+
+class TeamMemberData {
+  final String specialization;
+  final String name;
+  final SignatureData signature;
+
+  const TeamMemberData({
+    this.specialization = '',
+    this.name = '',
+    this.signature = const SignatureData(),
+  });
+
+  TeamMemberData copyWith({
+    String? specialization,
+    String? name,
+    SignatureData? signature,
+  }) =>
+      TeamMemberData(
+        specialization: specialization ?? this.specialization,
+        name: name ?? this.name,
+        signature: signature ?? this.signature,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'specialization': specialization,
+        'name': name,
+        'signature': signature.toJson(),
+      };
+
+  factory TeamMemberData.fromJson(Map<String, dynamic> json) => TeamMemberData(
+        specialization: json['specialization'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        signature: SignatureData.fromJson(json['signature']),
+      );
+}
+
+class Section15Data {
+  final String guardianName;
+  final SignatureData guardianSignature;
+  final DateTime? guardianDate;
+  final String specialistName;
+  final String specialistJobTitle;
+  final SignatureData specialistSignature;
+  final DateTime? specialistDate;
+  final List<TeamMemberData> teamMembers;
+
+  const Section15Data({
+    this.guardianName = '',
+    this.guardianSignature = const SignatureData(),
+    this.guardianDate,
+    this.specialistName = '',
+    this.specialistJobTitle = '',
+    this.specialistSignature = const SignatureData(),
+    this.specialistDate,
+    this.teamMembers = const [],
+  });
+
+  Section15Data copyWith({
+    String? guardianName,
+    SignatureData? guardianSignature,
+    DateTime? guardianDate,
+    bool clearGuardianDate = false,
+    String? specialistName,
+    String? specialistJobTitle,
+    SignatureData? specialistSignature,
+    DateTime? specialistDate,
+    bool clearSpecialistDate = false,
+    List<TeamMemberData>? teamMembers,
+  }) =>
+      Section15Data(
+        guardianName: guardianName ?? this.guardianName,
+        guardianSignature: guardianSignature ?? this.guardianSignature,
+        guardianDate: clearGuardianDate
+            ? null
+            : (guardianDate ?? this.guardianDate),
+        specialistName: specialistName ?? this.specialistName,
+        specialistJobTitle: specialistJobTitle ?? this.specialistJobTitle,
+        specialistSignature: specialistSignature ?? this.specialistSignature,
+        specialistDate: clearSpecialistDate
+            ? null
+            : (specialistDate ?? this.specialistDate),
+        teamMembers: teamMembers ?? this.teamMembers,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'guardianName': guardianName,
+        'guardianSignature': guardianSignature.toJson(),
+        'guardianDate': guardianDate?.toIso8601String(),
+        'specialistName': specialistName,
+        'specialistJobTitle': specialistJobTitle,
+        'specialistSignature': specialistSignature.toJson(),
+        'specialistDate': specialistDate?.toIso8601String(),
+        'teamMembers': teamMembers.map((m) => m.toJson()).toList(),
+      };
+
+  factory Section15Data.fromJson(Map<String, dynamic> json) => Section15Data(
+        guardianName: json['guardianName'] as String? ?? '',
+        guardianSignature: SignatureData.fromJson(json['guardianSignature']),
+        guardianDate: json['guardianDate'] != null
+            ? DateTime.tryParse(json['guardianDate'] as String)
+            : null,
+        specialistName: json['specialistName'] as String? ?? '',
+        specialistJobTitle: json['specialistJobTitle'] as String? ?? '',
+        specialistSignature:
+            SignatureData.fromJson(json['specialistSignature']),
+        specialistDate: json['specialistDate'] != null
+            ? DateTime.tryParse(json['specialistDate'] as String)
+            : null,
+        teamMembers: (json['teamMembers'] as List<dynamic>? ?? [])
+            .map((m) => TeamMemberData.fromJson(m as Map<String, dynamic>))
+            .toList(),
+      );
+}
+
+// =============================================================================
+// Section 14 — Daily Routine
+// =============================================================================
+
+class Section14Data {
+  final String weekdayRoutine;
+  final String weekendRoutine;
+
+  const Section14Data({
+    this.weekdayRoutine = '',
+    this.weekendRoutine = '',
+  });
+
+  Section14Data copyWith({
+    String? weekdayRoutine,
+    String? weekendRoutine,
+  }) =>
+      Section14Data(
+        weekdayRoutine: weekdayRoutine ?? this.weekdayRoutine,
+        weekendRoutine: weekendRoutine ?? this.weekendRoutine,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'weekdayRoutine': weekdayRoutine,
+        'weekendRoutine': weekendRoutine,
+      };
+
+  factory Section14Data.fromJson(Map<String, dynamic> json) => Section14Data(
+        weekdayRoutine: json['weekdayRoutine'] as String? ?? '',
+        weekendRoutine: json['weekendRoutine'] as String? ?? '',
       );
 }
 
@@ -1500,8 +2523,10 @@ class CaseStudyFormData {
   final Section9Data? section9;
   final Section10Data? section10;
   final Section11Data? section11;
-  final Section12Data? section12;
+  final SectionDocumentsConsentData? sectionDocs;
   final Section13Data? section13;
+  final Section14Data? section14;
+  final Section15Data? section15;
   final bool isCompleted;
 
   const CaseStudyFormData({
@@ -1517,8 +2542,10 @@ class CaseStudyFormData {
     this.section9,
     this.section10,
     this.section11,
-    this.section12,
+    this.sectionDocs,
     this.section13,
+    this.section14,
+    this.section15,
     this.isCompleted = false,
   });
 
@@ -1535,8 +2562,10 @@ class CaseStudyFormData {
     Section9Data? section9,
     Section10Data? section10,
     Section11Data? section11,
-    Section12Data? section12,
+    SectionDocumentsConsentData? sectionDocs,
     Section13Data? section13,
+    Section14Data? section14,
+    Section15Data? section15,
     bool? isCompleted,
   }) =>
       CaseStudyFormData(
@@ -1552,8 +2581,10 @@ class CaseStudyFormData {
         section9: section9 ?? this.section9,
         section10: section10 ?? this.section10,
         section11: section11 ?? this.section11,
-        section12: section12 ?? this.section12,
+        sectionDocs: sectionDocs ?? this.sectionDocs,
         section13: section13 ?? this.section13,
+        section14: section14 ?? this.section14,
+        section15: section15 ?? this.section15,
         isCompleted: isCompleted ?? this.isCompleted,
       );
 
@@ -1570,8 +2601,10 @@ class CaseStudyFormData {
         'section9': section9?.toJson(),
         'section10': section10?.toJson(),
         'section11': section11?.toJson(),
-        'section12': section12?.toJson(),
+        'sectionDocs': sectionDocs?.toJson(),
         'section13': section13?.toJson(),
+        'section14': section14?.toJson(),
+        'section15': section15?.toJson(),
         'isCompleted': isCompleted,
       };
 
@@ -1613,13 +2646,21 @@ class CaseStudyFormData {
             ? Section11Data.fromJson(
                 json['section11'] as Map<String, dynamic>)
             : null,
-        section12: json['section12'] != null
-            ? Section12Data.fromJson(
-                json['section12'] as Map<String, dynamic>)
+        sectionDocs: json['sectionDocs'] != null
+            ? SectionDocumentsConsentData.fromJson(
+                json['sectionDocs'] as Map<String, dynamic>)
             : null,
         section13: json['section13'] != null
             ? Section13Data.fromJson(
                 json['section13'] as Map<String, dynamic>)
+            : null,
+        section14: json['section14'] != null
+            ? Section14Data.fromJson(
+                json['section14'] as Map<String, dynamic>)
+            : null,
+        section15: json['section15'] != null
+            ? Section15Data.fromJson(
+                json['section15'] as Map<String, dynamic>)
             : null,
         isCompleted: json['isCompleted'] as bool? ?? false,
       );

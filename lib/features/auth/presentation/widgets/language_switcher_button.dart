@@ -47,7 +47,7 @@ class LanguageSwitcherButton extends ConsumerWidget {
               Icon(Icons.language, size: res.scaleText(16), color: isDark ? Colors.white : AppColors.primary),
               SizedBox(width: res.scaleWidth(6)),
               Text(
-                'En/Ar',
+                'En/عر',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : AppColors.textPrimary,

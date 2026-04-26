@@ -6,7 +6,11 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
 
-class OverviewTab extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../config/routes.dart';
+import '../../../case_study_form/presentation/providers/case_study_provider.dart';
+
+class OverviewTab extends ConsumerWidget {
   final bool isDark;
   final ResponsiveHelper res;
   final bool canViewAiSuggestions;
@@ -19,8 +23,10 @@ class OverviewTab extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final canAccessCaseStudy = ref.watch(caseStudyAccessProvider);
+    final isCaseStudyCompleted = ref.watch(caseStudyFormProvider).isCompleted;
 
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(
@@ -37,12 +43,43 @@ class OverviewTab extends StatelessWidget {
           _buildProgressCard(context, l10n),
           SizedBox(height: res.scaleHeight(AppSpacing.p16)),
           _buildStatsRow(context, l10n),
+          if (canAccessCaseStudy) ...[
+            SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+            _buildCaseStudySection(context, isCaseStudyCompleted, l10n),
+          ],
           if (canViewAiSuggestions) ...[
             SizedBox(height: res.scaleHeight(AppSpacing.p16)),
             buildAiBanner(context, l10n, res),
           ],
         ],
       ),
+    );
+  }
+
+  Widget _buildCaseStudySection(BuildContext context, bool isCompleted, AppLocalizations l10n) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(res.scaleSpacing(AppSpacing.p16)),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.surfaceDark : Colors.white,
+        borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusLg)),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
+      ),
+      child: isCompleted
+          ? ElevatedButton(
+              onPressed: () {
+                // TODO: API integration later
+              },
+              child: Text(l10n.downloadCaseStudy),
+            )
+          : ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.caseStudyIntro);
+              },
+              child: Text(l10n.fillCaseStudyForm),
+            ),
     );
   }
 

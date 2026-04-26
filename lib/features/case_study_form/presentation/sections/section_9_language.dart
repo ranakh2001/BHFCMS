@@ -4,9 +4,12 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../domain/entities/case_study_form_data.dart';
-import '../widgets/form_labeled_field.dart';
+import '../widgets/form_checkbox_grid.dart';
+import '../widgets/form_checkbox_item.dart';
 import '../widgets/form_next_button.dart';
-import '../widgets/form_yes_no_question.dart';
+import '../widgets/form_notes_field.dart';
+import '../widgets/form_section_header.dart';
+import '../widgets/form_subsection_title.dart';
 
 class Section9Language extends StatefulWidget {
   final Section9Data? initialData;
@@ -25,235 +28,280 @@ class Section9Language extends StatefulWidget {
 }
 
 class _Section9LanguageState extends State<Section9Language> {
-  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _observedStrengthsCtrl;
+  late bool _activitySensoryGames;
+  late bool _activityElectronics;
+  late bool _activityMotor;
+  late bool _activityFoods;
+  late bool _activityCharacters;
+  late bool _activityMusic;
+  late bool _activityOther;
+  late final TextEditingController _otherActivitiesCtrl;
 
-  late final TextEditingController _substitutedLettersCtrl;
-  late final TextEditingController _difficultLettersCtrl;
+  late final TextEditingController _foodExampleCtrl;
+  late String _foodRating;
+  late final TextEditingController _sensoryExampleCtrl;
+  late String _sensoryRating;
+  late final TextEditingController _socialExampleCtrl;
+  late String _socialRating;
+  late final TextEditingController _materialExampleCtrl;
+  late String _materialRating;
 
-  bool? _speechUnderstoodByMother;
-  bool? _hasStuttering;
-  bool? _hasLetterSubstitution;
-  bool? _speaksUnintelligibly;
-  bool? _hasPronunciationDifficulty;
-  bool? _languageLikeAgePeers;
-
-  final Map<String, String?> _errors = {};
+  late final TextEditingController _positiveDistinctionCtrl;
 
   @override
   void initState() {
     super.initState();
     final d = widget.initialData;
-    _substitutedLettersCtrl =
-        TextEditingController(text: d?.substitutedLetters ?? '');
-    _difficultLettersCtrl =
-        TextEditingController(text: d?.difficultLettersAndWords ?? '');
-
-    _speechUnderstoodByMother = d?.speechUnderstoodByMother;
-    _hasStuttering = d?.hasStuttering;
-    _hasLetterSubstitution = d?.hasLetterSubstitution;
-    _speaksUnintelligibly = d?.speaksUnintelligibly;
-    _hasPronunciationDifficulty = d?.hasPronunciationDifficulty;
-    _languageLikeAgePeers = d?.languageLikeAgePeers;
+    _observedStrengthsCtrl =
+        TextEditingController(text: d?.observedStrengths ?? '');
+    _activitySensoryGames = d?.activitySensoryGames ?? false;
+    _activityElectronics = d?.activityElectronics ?? false;
+    _activityMotor = d?.activityMotor ?? false;
+    _activityFoods = d?.activityFoods ?? false;
+    _activityCharacters = d?.activityCharacters ?? false;
+    _activityMusic = d?.activityMusic ?? false;
+    _activityOther = d?.activityOther ?? false;
+    _otherActivitiesCtrl =
+        TextEditingController(text: d?.otherActivitiesDescription ?? '');
+    _foodExampleCtrl = TextEditingController(text: d?.foodExample ?? '');
+    _foodRating = d?.foodRating ?? '';
+    _sensoryExampleCtrl =
+        TextEditingController(text: d?.sensoryExample ?? '');
+    _sensoryRating = d?.sensoryRating ?? '';
+    _socialExampleCtrl =
+        TextEditingController(text: d?.socialExample ?? '');
+    _socialRating = d?.socialRating ?? '';
+    _materialExampleCtrl =
+        TextEditingController(text: d?.materialExample ?? '');
+    _materialRating = d?.materialRating ?? '';
+    _positiveDistinctionCtrl =
+        TextEditingController(text: d?.positiveDistinction ?? '');
   }
 
   @override
   void dispose() {
-    _substitutedLettersCtrl.dispose();
-    _difficultLettersCtrl.dispose();
+    _observedStrengthsCtrl.dispose();
+    _otherActivitiesCtrl.dispose();
+    _foodExampleCtrl.dispose();
+    _sensoryExampleCtrl.dispose();
+    _socialExampleCtrl.dispose();
+    _materialExampleCtrl.dispose();
+    _positiveDistinctionCtrl.dispose();
     super.dispose();
   }
 
-  String _req(BuildContext context) =>
-      AppLocalizations.of(context)!.validationRequired;
-
-  bool _validate(BuildContext context) {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    bool allValid = true;
-
-    void checkBool(String key, bool? v) {
-      if (v == null) {
-        _errors[key] = _req(context);
-        allValid = false;
-      } else {
-        _errors[key] = null;
-      }
-    }
-
-    setState(() {
-      checkBool('speechUnderstoodByMother', _speechUnderstoodByMother);
-      checkBool('hasStuttering', _hasStuttering);
-      checkBool('hasLetterSubstitution', _hasLetterSubstitution);
-      checkBool('speaksUnintelligibly', _speaksUnintelligibly);
-      checkBool('hasPronunciationDifficulty', _hasPronunciationDifficulty);
-      checkBool('languageLikeAgePeers', _languageLikeAgePeers);
-    });
-
-    return formValid && allValid;
-  }
-
   void _submit(BuildContext context) {
-    if (!_validate(context)) return;
-    widget.onNext(
-      Section9Data(
-        speechUnderstoodByMother: _speechUnderstoodByMother,
-        hasStuttering: _hasStuttering,
-        hasLetterSubstitution: _hasLetterSubstitution,
-        substitutedLetters: _hasLetterSubstitution == true
-            ? _substitutedLettersCtrl.text.trim()
-            : '',
-        speaksUnintelligibly: _speaksUnintelligibly,
-        hasPronunciationDifficulty: _hasPronunciationDifficulty,
-        difficultLettersAndWords: _hasPronunciationDifficulty == true
-            ? _difficultLettersCtrl.text.trim()
-            : '',
-        languageLikeAgePeers: _languageLikeAgePeers,
-      ),
-    );
+    widget.onNext(Section9Data(
+      observedStrengths: _observedStrengthsCtrl.text.trim(),
+      activitySensoryGames: _activitySensoryGames,
+      activityElectronics: _activityElectronics,
+      activityMotor: _activityMotor,
+      activityFoods: _activityFoods,
+      activityCharacters: _activityCharacters,
+      activityMusic: _activityMusic,
+      activityOther: _activityOther,
+      otherActivitiesDescription: _otherActivitiesCtrl.text.trim(),
+      foodExample: _foodExampleCtrl.text.trim(),
+      foodRating: _foodRating,
+      sensoryExample: _sensoryExampleCtrl.text.trim(),
+      sensoryRating: _sensoryRating,
+      socialExample: _socialExampleCtrl.text.trim(),
+      socialRating: _socialRating,
+      materialExample: _materialExampleCtrl.text.trim(),
+      materialRating: _materialRating,
+      positiveDistinction: _positiveDistinctionCtrl.text.trim(),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Header ────────────────────────────────────────────────────
-          Text(
-            l10n.csSection9Title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // ── Header ────────────────────────────────────────────────────────────
+        FormSectionHeader(title: l10n.csSection9Title),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 1. Observed Strengths ─────────────────────────────────────────────
+        Text(
+          l10n.csS9ObservedStrengthsLabel,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+          ),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _observedStrengthsCtrl,
+          hint: l10n.csS9ObservedStrengthsHint,
+          maxLines: 4,
+        ),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 2. Preferred Activities ───────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS9PreferredActivitiesTitle),
+        const SizedBox(height: AppSpacing.p12),
+        FormCheckboxGrid(items: [
+          FormCheckboxItem(
+            label: l10n.csS9ActivitySensoryGames,
+            value: _activitySensoryGames,
+            onChanged: (v) => setState(() => _activitySensoryGames = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityElectronics,
+            value: _activityElectronics,
+            onChanged: (v) => setState(() => _activityElectronics = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityMotor,
+            value: _activityMotor,
+            onChanged: (v) => setState(() => _activityMotor = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityFoods,
+            value: _activityFoods,
+            onChanged: (v) => setState(() => _activityFoods = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityCharacters,
+            value: _activityCharacters,
+            onChanged: (v) => setState(() => _activityCharacters = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityMusic,
+            value: _activityMusic,
+            onChanged: (v) => setState(() => _activityMusic = v),
+          ),
+          FormCheckboxItem(
+            label: l10n.csS9ActivityOther,
+            value: _activityOther,
+            onChanged: (v) => setState(() => _activityOther = v),
+          ),
+        ]),
+        if (_activityOther) ...[
+          const SizedBox(height: AppSpacing.p12),
+          FormNotesField(
+            controller: _otherActivitiesCtrl,
+            hint: l10n.csS9OtherActivitiesHint,
+            maxLines: 2,
           ),
           const SizedBox(height: 4),
           Text(
-            '(${l10n.csSection9Subtitle})',
+            l10n.csS9OtherActivitiesLabel,
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 11.5,
               color: AppColors.textSecondary,
+              fontStyle: FontStyle.italic,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.p24),
-
-          // ── Q1: Speech understood ─────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9SpeechUnderstoodByMother,
-            value: _speechUnderstoodByMother,
-            errorText: _errors['speechUnderstoodByMother'],
-            onChanged: (v) => setState(() {
-              _speechUnderstoodByMother = v;
-              _errors['speechUnderstoodByMother'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q2: Stuttering ────────────────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9HasStuttering,
-            value: _hasStuttering,
-            errorText: _errors['hasStuttering'],
-            onChanged: (v) => setState(() {
-              _hasStuttering = v;
-              _errors['hasStuttering'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q3: Letter substitution ───────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9HasLetterSubstitution,
-            value: _hasLetterSubstitution,
-            errorText: _errors['hasLetterSubstitution'],
-            onChanged: (v) => setState(() {
-              _hasLetterSubstitution = v;
-              _errors['hasLetterSubstitution'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS9SubstitutedLetters,
-              hint: l10n.csS9SubstitutedLettersHint,
-              note: l10n.csIfPreviousYes,
-              controller: _substitutedLettersCtrl,
-              isRequired: _hasLetterSubstitution == true,
-              requiredMsg: _req(context),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q4: Speaks unintelligibly ─────────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9SpeaksUnintelligibly,
-            value: _speaksUnintelligibly,
-            errorText: _errors['speaksUnintelligibly'],
-            onChanged: (v) => setState(() {
-              _speaksUnintelligibly = v;
-              _errors['speaksUnintelligibly'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q5: Pronunciation difficulty ──────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9HasPronunciationDifficulty,
-            value: _hasPronunciationDifficulty,
-            errorText: _errors['hasPronunciationDifficulty'],
-            onChanged: (v) => setState(() {
-              _hasPronunciationDifficulty = v;
-              _errors['hasPronunciationDifficulty'] = null;
-            }),
-            conditionalChild: _ConditionalField(
-              label: l10n.csS9DifficultLettersAndWords,
-              hint: l10n.csS9DifficultLettersHint,
-              note: l10n.csIfPreviousYes,
-              controller: _difficultLettersCtrl,
-              isRequired: _hasPronunciationDifficulty == true,
-              requiredMsg: _req(context),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.p16),
-
-          // ── Q6: Language like age peers ───────────────────────────────
-          FormYesNoQuestion(
-            label: l10n.csS9LanguageLikeAgePeers,
-            value: _languageLikeAgePeers,
-            errorText: _errors['languageLikeAgePeers'],
-            onChanged: (v) => setState(() {
-              _languageLikeAgePeers = v;
-              _errors['languageLikeAgePeers'] = null;
-            }),
-          ),
-          const SizedBox(height: AppSpacing.p32),
-
-          FormNextButton(
-            label: l10n.csFormNext,
-            onPressed: () => _submit(context),
-            isLoading: widget.isSaving,
+            textAlign: TextAlign.start,
           ),
         ],
-      ),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 3. Preference Scan ────────────────────────────────────────────────
+        FormSubsectionTitle(l10n.csS9PreferenceScanTitle),
+        const SizedBox(height: AppSpacing.p12),
+        _PreferenceScanRow(
+          label: l10n.csS9PrefFoodLabel,
+          exampleHint: l10n.csS9PrefExampleHint,
+          controller: _foodExampleCtrl,
+          rating: _foodRating,
+          highlyLabel: l10n.csS9PrefHighlyPreferred,
+          acceptableLabel: l10n.csS9PrefAcceptable,
+          notPreferredLabel: l10n.csS9PrefNotPreferred,
+          onRatingChanged: (v) => setState(() => _foodRating = v),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        _PreferenceScanRow(
+          label: l10n.csS9PrefSensoryLabel,
+          exampleHint: l10n.csS9PrefExampleHint,
+          controller: _sensoryExampleCtrl,
+          rating: _sensoryRating,
+          highlyLabel: l10n.csS9PrefHighlyPreferred,
+          acceptableLabel: l10n.csS9PrefAcceptable,
+          notPreferredLabel: l10n.csS9PrefNotPreferred,
+          onRatingChanged: (v) => setState(() => _sensoryRating = v),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        _PreferenceScanRow(
+          label: l10n.csS9PrefSocialLabel,
+          exampleHint: l10n.csS9PrefExampleHint,
+          controller: _socialExampleCtrl,
+          rating: _socialRating,
+          highlyLabel: l10n.csS9PrefHighlyPreferred,
+          acceptableLabel: l10n.csS9PrefAcceptable,
+          notPreferredLabel: l10n.csS9PrefNotPreferred,
+          onRatingChanged: (v) => setState(() => _socialRating = v),
+        ),
+        const SizedBox(height: AppSpacing.p16),
+        _PreferenceScanRow(
+          label: l10n.csS9PrefMaterialLabel,
+          exampleHint: l10n.csS9PrefExampleHint,
+          controller: _materialExampleCtrl,
+          rating: _materialRating,
+          highlyLabel: l10n.csS9PrefHighlyPreferred,
+          acceptableLabel: l10n.csS9PrefAcceptable,
+          notPreferredLabel: l10n.csS9PrefNotPreferred,
+          onRatingChanged: (v) => setState(() => _materialRating = v),
+        ),
+        const SizedBox(height: AppSpacing.p24),
+
+        // ── 4. Positive Distinction ───────────────────────────────────────────
+        Text(
+          l10n.csS9PositiveDistinctionLabel,
+          style: const TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+          ),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(
+          controller: _positiveDistinctionCtrl,
+          hint: l10n.csS9PositiveDistinctionHint,
+          maxLines: 4,
+        ),
+        const SizedBox(height: AppSpacing.p32),
+
+        FormNextButton(
+          label: l10n.csFormNext,
+          onPressed: () => _submit(context),
+          isLoading: widget.isSaving,
+        ),
+      ],
     );
   }
 }
 
-class _ConditionalField extends StatelessWidget {
-  final String label;
-  final String hint;
-  final String note;
-  final TextEditingController controller;
-  final bool isRequired;
-  final String requiredMsg;
+// ═══════════════════════════════════════════════════════════════════════════════
+// Private helpers
+// ═══════════════════════════════════════════════════════════════════════════════
 
-  const _ConditionalField({
+class _PreferenceScanRow extends StatelessWidget {
+  final String label;
+  final String exampleHint;
+  final TextEditingController controller;
+  final String rating;
+  final String highlyLabel;
+  final String acceptableLabel;
+  final String notPreferredLabel;
+  final void Function(String) onRatingChanged;
+
+  const _PreferenceScanRow({
     required this.label,
-    required this.hint,
-    required this.note,
+    required this.exampleHint,
     required this.controller,
-    required this.isRequired,
-    required this.requiredMsg,
+    required this.rating,
+    required this.highlyLabel,
+    required this.acceptableLabel,
+    required this.notPreferredLabel,
+    required this.onRatingChanged,
   });
 
   @override
@@ -261,25 +309,100 @@ class _ConditionalField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FormLabeledField(
-          label: label,
-          hint: hint,
-          controller: controller,
-          validator: (v) =>
-              (isRequired && (v == null || v.trim().isEmpty))
-                  ? requiredMsg
-                  : null,
-        ),
-        const SizedBox(height: 4),
         Text(
-          note,
+          label,
           style: const TextStyle(
-            fontSize: 11.5,
-            color: AppColors.textSecondary,
-            fontStyle: FontStyle.italic,
+            fontSize: 13.5,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
           ),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: AppSpacing.p8),
+        FormNotesField(controller: controller, hint: exampleHint, maxLines: 1),
+        const SizedBox(height: AppSpacing.p8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _RatingChip(
+              label: notPreferredLabel,
+              selected: rating == 'not_preferred',
+              onTap: () => onRatingChanged('not_preferred'),
+            ),
+            const SizedBox(width: AppSpacing.p16),
+            _RatingChip(
+              label: acceptableLabel,
+              selected: rating == 'acceptable',
+              onTap: () => onRatingChanged('acceptable'),
+            ),
+            const SizedBox(width: AppSpacing.p16),
+            _RatingChip(
+              label: highlyLabel,
+              selected: rating == 'highly_preferred',
+              onTap: () => onRatingChanged('highly_preferred'),
+            ),
+          ],
         ),
       ],
+    );
+  }
+}
+
+class _RatingChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _RatingChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected ? AppColors.primary : Colors.grey.shade400,
+                width: 2,
+              ),
+            ),
+            child: selected
+                ? Center(
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              color: selected ? AppColors.primary : AppColors.textPrimary,
+              fontWeight:
+                  selected ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

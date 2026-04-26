@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailHint.
   ///
   /// In en, this message translates to:
-  /// **'name@example.com'**
+  /// **'Enter email address'**
   String get emailHint;
 
   /// No description provided for @passwordLabel.
@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @passwordHint.
   ///
   /// In en, this message translates to:
-  /// **'**********'**
+  /// **'Enter password'**
   String get passwordHint;
 
   /// No description provided for @loginButton.
@@ -923,7 +923,7 @@ abstract class AppLocalizations {
   /// No description provided for @csFormIntroBody.
   ///
   /// In en, this message translates to:
-  /// **'To accurately assess your child and provide the best possible service, you are required to fill out the case study form.'**
+  /// **'To document the child\'s case study accurately and comprehensively, please fill out all sections of the form carefully. You can fill out this form more than once.'**
   String get csFormIntroBody;
 
   /// No description provided for @csFormIntroNote.
@@ -1076,10 +1076,130 @@ abstract class AppLocalizations {
   /// **'Date of Joining the Center'**
   String get csCenterJoinDate;
 
+  /// No description provided for @csChildInfoDisplaySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Child\'s Data'**
+  String get csChildInfoDisplaySection;
+
+  /// No description provided for @csReferenceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference File Number'**
+  String get csReferenceNumber;
+
+  /// No description provided for @csPrimaryLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Language'**
+  String get csPrimaryLanguage;
+
+  /// No description provided for @csFullAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Address'**
+  String get csFullAddress;
+
+  /// No description provided for @csCaregiverName.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Caregiver Name'**
+  String get csCaregiverName;
+
+  /// No description provided for @csCaregiverRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get csCaregiverRelationship;
+
+  /// No description provided for @csPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Number'**
+  String get csPhoneNumber;
+
+  /// No description provided for @csEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get csEmailAddress;
+
+  /// No description provided for @csReferralInfoSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral Information'**
+  String get csReferralInfoSection;
+
+  /// No description provided for @csReferralSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral Source'**
+  String get csReferralSource;
+
+  /// No description provided for @csReferralSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Self'**
+  String get csReferralSelf;
+
+  /// No description provided for @csReferralDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor'**
+  String get csReferralDoctor;
+
+  /// No description provided for @csReferralSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'School'**
+  String get csReferralSchool;
+
+  /// No description provided for @csReferralOtherCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Another Center'**
+  String get csReferralOtherCenter;
+
+  /// No description provided for @csReferralOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get csReferralOther;
+
+  /// No description provided for @csReferralOtherNote.
+  ///
+  /// In en, this message translates to:
+  /// **'(If other is selected)'**
+  String get csReferralOtherNote;
+
+  /// No description provided for @csReferralOtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter referral source'**
+  String get csReferralOtherHint;
+
+  /// No description provided for @csMainServiceReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Reason for Service Request'**
+  String get csMainServiceReason;
+
+  /// No description provided for @csMainServiceReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter main reason for service request'**
+  String get csMainServiceReasonHint;
+
+  /// No description provided for @csChangeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Language'**
+  String get csChangeLanguage;
+
   /// No description provided for @csSection2Title.
   ///
   /// In en, this message translates to:
-  /// **'Family Information'**
+  /// **'Family and Guardianship Information'**
   String get csSection2Title;
 
   /// No description provided for @csFatherName.
@@ -1154,11 +1274,629 @@ abstract class AppLocalizations {
   /// **'(In case of kinship between parents)'**
   String get csKinshipNote;
 
+  /// No description provided for @csChildResidenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Child\'s Residence and Time Percentage'**
+  String get csChildResidenceTitle;
+
+  /// No description provided for @csChildResidenceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'(If parents are not married)'**
+  String get csChildResidenceNote;
+
+  /// No description provided for @csFirstHome.
+  ///
+  /// In en, this message translates to:
+  /// **'First Home'**
+  String get csFirstHome;
+
+  /// No description provided for @csFirstHomeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add home description and time percentage'**
+  String get csFirstHomeHint;
+
+  /// No description provided for @csFirstHomeOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent/Guardian Name (First Home Owner)'**
+  String get csFirstHomeOwner;
+
+  /// No description provided for @csFirstHomeOwnerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter first home owner\'s name'**
+  String get csFirstHomeOwnerHint;
+
+  /// No description provided for @csSecondHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Second Home'**
+  String get csSecondHome;
+
+  /// No description provided for @csSecondHomeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add home description and time percentage'**
+  String get csSecondHomeHint;
+
+  /// No description provided for @csSecondHomeOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent/Guardian Name (Second Home Owner)'**
+  String get csSecondHomeOwner;
+
+  /// No description provided for @csSecondHomeOwnerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter second home owner\'s name'**
+  String get csSecondHomeOwnerHint;
+
+  /// No description provided for @csMotherOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s Occupation'**
+  String get csMotherOccupation;
+
+  /// No description provided for @csMotherOccupationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter mother\'s occupation'**
+  String get csMotherOccupationHint;
+
+  /// No description provided for @csFatherOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s Occupation'**
+  String get csFatherOccupation;
+
+  /// No description provided for @csFatherOccupationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter father\'s occupation'**
+  String get csFatherOccupationHint;
+
+  /// No description provided for @csDecisionMaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is Responsible for Medical, Educational and Personal Decisions for the Child'**
+  String get csDecisionMaker;
+
+  /// No description provided for @csDecisionBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Both'**
+  String get csDecisionBoth;
+
+  /// No description provided for @csDecisionLegalGuardian.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Guardian'**
+  String get csDecisionLegalGuardian;
+
+  /// No description provided for @csSeparationDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'In Case of Separation'**
+  String get csSeparationDecision;
+
+  /// No description provided for @csSeparationDecisionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mention who is responsible for the child\'s decisions'**
+  String get csSeparationDecisionHint;
+
+  /// No description provided for @csBothParentsAware.
+  ///
+  /// In en, this message translates to:
+  /// **'Are Both Parents Aware of the Services Required at the Center'**
+  String get csBothParentsAware;
+
+  /// No description provided for @csFamilyMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Members and Residents'**
+  String get csFamilyMembersTitle;
+
+  /// No description provided for @csAddPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Person'**
+  String get csAddPerson;
+
+  /// No description provided for @csMemberName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get csMemberName;
+
+  /// No description provided for @csMemberNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter name'**
+  String get csMemberNameHint;
+
+  /// No description provided for @csMemberAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get csMemberAge;
+
+  /// No description provided for @csMemberAgeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter age'**
+  String get csMemberAgeHint;
+
+  /// No description provided for @csMemberRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get csMemberRelationship;
+
+  /// No description provided for @csMemberRelationshipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter relationship'**
+  String get csMemberRelationshipHint;
+
+  /// No description provided for @csMemberResidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Place of Residence'**
+  String get csMemberResidence;
+
+  /// No description provided for @csResidenceHome1.
+  ///
+  /// In en, this message translates to:
+  /// **'First Home'**
+  String get csResidenceHome1;
+
+  /// No description provided for @csResidenceHome2.
+  ///
+  /// In en, this message translates to:
+  /// **'Second Home'**
+  String get csResidenceHome2;
+
+  /// No description provided for @csResidenceDoesNotLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Does Not Reside'**
+  String get csResidenceDoesNotLive;
+
+  /// No description provided for @csFamilyHealthHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Health and Psychological History'**
+  String get csFamilyHealthHistoryTitle;
+
+  /// No description provided for @csFamilyConditionFather.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get csFamilyConditionFather;
+
+  /// No description provided for @csFamilyConditionMother.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get csFamilyConditionMother;
+
+  /// No description provided for @csFamilyConditionPaternalRel.
+  ///
+  /// In en, this message translates to:
+  /// **'Paternal Relatives'**
+  String get csFamilyConditionPaternalRel;
+
+  /// No description provided for @csFamilyConditionOtherRel.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Relatives'**
+  String get csFamilyConditionOtherRel;
+
+  /// No description provided for @csFamilyConditionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get csFamilyConditionNone;
+
+  /// No description provided for @csFamilyConditionRelation.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get csFamilyConditionRelation;
+
+  /// No description provided for @csFamilyConditionRelationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter relationship'**
+  String get csFamilyConditionRelationHint;
+
+  /// No description provided for @csAutismSpectrum.
+  ///
+  /// In en, this message translates to:
+  /// **'Autism Spectrum'**
+  String get csAutismSpectrum;
+
+  /// No description provided for @csLanguageDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Delay'**
+  String get csLanguageDelay;
+
+  /// No description provided for @csLearningDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Difficulty'**
+  String get csLearningDifficulty;
+
+  /// No description provided for @csADHD.
+  ///
+  /// In en, this message translates to:
+  /// **'Hyperactivity and Attention Deficit (ADHD)'**
+  String get csADHD;
+
+  /// No description provided for @csMoodDisorders.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood Disorders (Depression, Anxiety)'**
+  String get csMoodDisorders;
+
   /// No description provided for @csSection3Title.
   ///
   /// In en, this message translates to:
-  /// **'Family Social and Economic Data'**
+  /// **'Pregnancy and Birth Information'**
   String get csSection3Title;
+
+  /// No description provided for @csPregnancyBirthSubsection.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy and Birth'**
+  String get csPregnancyBirthSubsection;
+
+  /// No description provided for @csLiveBirthCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Pregnancies (Live Births)'**
+  String get csLiveBirthCount;
+
+  /// No description provided for @csLiveBirthCountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number of pregnancies'**
+  String get csLiveBirthCountHint;
+
+  /// No description provided for @csStillbirthCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Pregnancies (Deaths)'**
+  String get csStillbirthCount;
+
+  /// No description provided for @csStillbirthCountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number of pregnancies'**
+  String get csStillbirthCountHint;
+
+  /// No description provided for @csMotherAgeAtBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s Age at Child\'s Birth'**
+  String get csMotherAgeAtBirth;
+
+  /// No description provided for @csMotherAgeAtBirthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter mother\'s age'**
+  String get csMotherAgeAtBirthHint;
+
+  /// No description provided for @csFatherAgeAtBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s Age at Child\'s Birth'**
+  String get csFatherAgeAtBirth;
+
+  /// No description provided for @csFatherAgeAtBirthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter father\'s age'**
+  String get csFatherAgeAtBirthHint;
+
+  /// No description provided for @csParentKinship.
+  ///
+  /// In en, this message translates to:
+  /// **'Degree of Kinship Between Parents'**
+  String get csParentKinship;
+
+  /// No description provided for @csKinshipFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'First Degree'**
+  String get csKinshipFirst;
+
+  /// No description provided for @csKinshipSecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Second Degree'**
+  String get csKinshipSecond;
+
+  /// No description provided for @csKinshipNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get csKinshipNone;
+
+  /// No description provided for @csWasPregnancyPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Was the Pregnancy Planned'**
+  String get csWasPregnancyPlanned;
+
+  /// No description provided for @csUsedFertilityTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Were Fertility Treatments Used'**
+  String get csUsedFertilityTreatment;
+
+  /// No description provided for @csMedicationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use of Medications/Supplements During Pregnancy'**
+  String get csMedicationsTitle;
+
+  /// No description provided for @csMedVitamins.
+  ///
+  /// In en, this message translates to:
+  /// **'Vitamins'**
+  String get csMedVitamins;
+
+  /// No description provided for @csMedSupplements.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplements'**
+  String get csMedSupplements;
+
+  /// No description provided for @csMedAntidepressants.
+  ///
+  /// In en, this message translates to:
+  /// **'Antidepressants'**
+  String get csMedAntidepressants;
+
+  /// No description provided for @csMedAntiSeizure.
+  ///
+  /// In en, this message translates to:
+  /// **'Anti-Seizure'**
+  String get csMedAntiSeizure;
+
+  /// No description provided for @csMedOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get csMedOther;
+
+  /// No description provided for @csMedUnsure.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsure'**
+  String get csMedUnsure;
+
+  /// No description provided for @csMedicationsOtherNote.
+  ///
+  /// In en, this message translates to:
+  /// **'(If other is selected)'**
+  String get csMedicationsOtherNote;
+
+  /// No description provided for @csMedicationsOtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter medication types'**
+  String get csMedicationsOtherHint;
+
+  /// No description provided for @csPregnancyDifficultiesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulties During Pregnancy'**
+  String get csPregnancyDifficultiesSection;
+
+  /// No description provided for @csFeverInfection.
+  ///
+  /// In en, this message translates to:
+  /// **'Fever/Infection'**
+  String get csFeverInfection;
+
+  /// No description provided for @csBleedingMiscarriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Bleeding/Threatened Miscarriage'**
+  String get csBleedingMiscarriage;
+
+  /// No description provided for @csHighBpDiabetes.
+  ///
+  /// In en, this message translates to:
+  /// **'High Blood Pressure/Gestational Diabetes'**
+  String get csHighBpDiabetes;
+
+  /// No description provided for @csSevereStressAccidents.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe Stress/Accidents'**
+  String get csSevereStressAccidents;
+
+  /// No description provided for @csTriUnsure.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsure'**
+  String get csTriUnsure;
+
+  /// No description provided for @csLaborDeliverySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Labor and Delivery'**
+  String get csLaborDeliverySection;
+
+  /// No description provided for @csUsedPitocin.
+  ///
+  /// In en, this message translates to:
+  /// **'Use of Stimulants (Pitocin)'**
+  String get csUsedPitocin;
+
+  /// No description provided for @csPrematureBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Premature Birth'**
+  String get csPrematureBirth;
+
+  /// No description provided for @csPrematureWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Weeks'**
+  String get csPrematureWeeks;
+
+  /// No description provided for @csPrematureWeeksHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter weeks'**
+  String get csPrematureWeeksHint;
+
+  /// No description provided for @csDeliveryComplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Complications (Breech, Cord Wrapped, Umbilical)'**
+  String get csDeliveryComplications;
+
+  /// No description provided for @csDeliveryComplicationsType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of Complications'**
+  String get csDeliveryComplicationsType;
+
+  /// No description provided for @csDeliveryComplicationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter complications type'**
+  String get csDeliveryComplicationsHint;
+
+  /// No description provided for @csNICU.
+  ///
+  /// In en, this message translates to:
+  /// **'NICU/Resuscitation'**
+  String get csNICU;
+
+  /// No description provided for @csNICUReason.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Reason'**
+  String get csNICUReason;
+
+  /// No description provided for @csNICUReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter NICU admission reason'**
+  String get csNICUReasonHint;
+
+  /// No description provided for @csNICUDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get csNICUDuration;
+
+  /// No description provided for @csNICUDurationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration of child\'s hospital stay'**
+  String get csNICUDurationHint;
+
+  /// No description provided for @csDeliveryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of Delivery'**
+  String get csDeliveryType;
+
+  /// No description provided for @csDeliveryNatural.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural'**
+  String get csDeliveryNatural;
+
+  /// No description provided for @csDeliveryCesarean.
+  ///
+  /// In en, this message translates to:
+  /// **'Cesarean'**
+  String get csDeliveryCesarean;
+
+  /// No description provided for @csCesareanReason.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Reason'**
+  String get csCesareanReason;
+
+  /// No description provided for @csCesareanReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for cesarean delivery'**
+  String get csCesareanReasonHint;
+
+  /// No description provided for @csFirstMonthProblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Problems in the First Month After Birth'**
+  String get csFirstMonthProblems;
+
+  /// No description provided for @csFirstMonthBreastfeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Breastfeeding Difficulty'**
+  String get csFirstMonthBreastfeeding;
+
+  /// No description provided for @csFirstMonthSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep Problems'**
+  String get csFirstMonthSleep;
+
+  /// No description provided for @csFirstMonthJaundice.
+  ///
+  /// In en, this message translates to:
+  /// **'Jaundice'**
+  String get csFirstMonthJaundice;
+
+  /// No description provided for @csFirstMonthCongenital.
+  ///
+  /// In en, this message translates to:
+  /// **'Congenital Defects'**
+  String get csFirstMonthCongenital;
+
+  /// No description provided for @csFirstMonthFainting.
+  ///
+  /// In en, this message translates to:
+  /// **'Fainting/Loss of Consciousness'**
+  String get csFirstMonthFainting;
+
+  /// No description provided for @csFirstMonthCrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Excessive Crying'**
+  String get csFirstMonthCrying;
+
+  /// No description provided for @csFirstMonthDigestive.
+  ///
+  /// In en, this message translates to:
+  /// **'Digestive Symptoms'**
+  String get csFirstMonthDigestive;
+
+  /// No description provided for @csFirstMonthReflux.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflux/Vomiting'**
+  String get csFirstMonthReflux;
+
+  /// No description provided for @csIfYes.
+  ///
+  /// In en, this message translates to:
+  /// **'(If yes is selected)'**
+  String get csIfYes;
 
   /// No description provided for @csHomeLanguage.
   ///
@@ -1196,11 +1934,23 @@ abstract class AppLocalizations {
   /// **'Married'**
   String get csMarried;
 
+  /// No description provided for @csSeparated.
+  ///
+  /// In en, this message translates to:
+  /// **'Separated'**
+  String get csSeparated;
+
   /// No description provided for @csDivorced.
   ///
   /// In en, this message translates to:
   /// **'Divorced'**
   String get csDivorced;
+
+  /// No description provided for @csOneParentDeceased.
+  ///
+  /// In en, this message translates to:
+  /// **'One Parent Deceased'**
+  String get csOneParentDeceased;
 
   /// No description provided for @csChildLivingWith.
   ///
@@ -1733,668 +2483,1178 @@ abstract class AppLocalizations {
   /// No description provided for @csSection6Title.
   ///
   /// In en, this message translates to:
-  /// **'Medical Information and Birth History'**
+  /// **'Communication, Language & Social Interaction'**
   String get csSection6Title;
 
-  /// No description provided for @csSection6Subtitle.
+  /// No description provided for @csS6CommMethodTitle.
   ///
   /// In en, this message translates to:
-  /// **'Post-Birth Period'**
-  String get csSection6Subtitle;
+  /// **'Child\'s Basic Communication Method'**
+  String get csS6CommMethodTitle;
 
-  /// No description provided for @csS6BreastfeedingType.
+  /// No description provided for @csS6CommMethodSingleWords.
   ///
   /// In en, this message translates to:
-  /// **'Was breastfeeding natural, artificial, or both?'**
-  String get csS6BreastfeedingType;
+  /// **'Single words'**
+  String get csS6CommMethodSingleWords;
 
-  /// No description provided for @csS6BreastfeedingNatural.
+  /// No description provided for @csS6CommMethodShortSentences.
   ///
   /// In en, this message translates to:
-  /// **'Natural'**
-  String get csS6BreastfeedingNatural;
+  /// **'Short sentences'**
+  String get csS6CommMethodShortSentences;
 
-  /// No description provided for @csS6BreastfeedingArtificial.
+  /// No description provided for @csS6CommMethodFullSentences.
   ///
   /// In en, this message translates to:
-  /// **'Artificial'**
-  String get csS6BreastfeedingArtificial;
+  /// **'Complete sentences'**
+  String get csS6CommMethodFullSentences;
 
-  /// No description provided for @csS6BreastfeedingBoth.
+  /// No description provided for @csS6CommMethodSigns.
   ///
   /// In en, this message translates to:
-  /// **'Both'**
-  String get csS6BreastfeedingBoth;
+  /// **'Signs'**
+  String get csS6CommMethodSigns;
 
-  /// No description provided for @csS6Diseases.
+  /// No description provided for @csS6CommMethodPecs.
   ///
   /// In en, this message translates to:
-  /// **'Was the child infected with any of the following diseases?'**
-  String get csS6Diseases;
+  /// **'Pictures / PECS'**
+  String get csS6CommMethodPecs;
 
-  /// No description provided for @csS6Meningitis.
+  /// No description provided for @csS6CommMethodDevice.
   ///
   /// In en, this message translates to:
-  /// **'Meningitis'**
-  String get csS6Meningitis;
+  /// **'Communication device'**
+  String get csS6CommMethodDevice;
 
-  /// No description provided for @csS6Measles.
+  /// No description provided for @csS6CommMethodManualPull.
   ///
   /// In en, this message translates to:
-  /// **'Measles'**
-  String get csS6Measles;
+  /// **'Manual pulling'**
+  String get csS6CommMethodManualPull;
 
-  /// No description provided for @csS6Chickenpox.
+  /// No description provided for @csS6CommMethodCrying.
   ///
   /// In en, this message translates to:
-  /// **'Chickenpox'**
-  String get csS6Chickenpox;
+  /// **'Crying / behaviors'**
+  String get csS6CommMethodCrying;
 
-  /// No description provided for @csS6Mumps.
+  /// No description provided for @csS6CommMethodOther.
   ///
   /// In en, this message translates to:
-  /// **'Mumps'**
-  String get csS6Mumps;
+  /// **'Other'**
+  String get csS6CommMethodOther;
 
-  /// No description provided for @csS6TookLongTermMedication.
+  /// No description provided for @csS6CommMethodOtherLabel.
   ///
   /// In en, this message translates to:
-  /// **'Did the child take any medications or treatments for a long time?'**
-  String get csS6TookLongTermMedication;
+  /// **'What is the child\'s communication method?'**
+  String get csS6CommMethodOtherLabel;
 
-  /// No description provided for @csS6MedicationType.
+  /// No description provided for @csS6CommMethodOtherHint.
   ///
   /// In en, this message translates to:
-  /// **'What type of medications?'**
-  String get csS6MedicationType;
+  /// **'Enter communication method'**
+  String get csS6CommMethodOtherHint;
 
-  /// No description provided for @csS6MedicationTypeHint.
+  /// No description provided for @csS6CommMethodOtherNote.
   ///
   /// In en, this message translates to:
-  /// **'Enter type of medications'**
-  String get csS6MedicationTypeHint;
+  /// **'(If the previous question answer is \"Other\")'**
+  String get csS6CommMethodOtherNote;
 
-  /// No description provided for @csS6HadFallsOrAccidents.
+  /// No description provided for @csS6ExprUnderstandTitle.
   ///
   /// In en, this message translates to:
-  /// **'Was the child hit with falls or accidents?'**
-  String get csS6HadFallsOrAccidents;
+  /// **'Ability to Express and Understand'**
+  String get csS6ExprUnderstandTitle;
 
-  /// No description provided for @csS6HadHipDislocationExam.
+  /// No description provided for @csS6ExpressesNeeds.
   ///
   /// In en, this message translates to:
-  /// **'Was a hip dislocation exam done?'**
-  String get csS6HadHipDislocationExam;
+  /// **'Expressing needs'**
+  String get csS6ExpressesNeeds;
 
-  /// No description provided for @csS6HasChronicDiseases.
+  /// No description provided for @csS6RequestsPreferred.
   ///
   /// In en, this message translates to:
-  /// **'Does the child suffer from chronic diseases?'**
-  String get csS6HasChronicDiseases;
+  /// **'Requesting preferred items'**
+  String get csS6RequestsPreferred;
 
-  /// No description provided for @csS6ChronicDiseaseType.
+  /// No description provided for @csS6UnderstandsSimple.
   ///
   /// In en, this message translates to:
-  /// **'What type of chronic disease does the child suffer from?'**
-  String get csS6ChronicDiseaseType;
+  /// **'Understanding simple instructions'**
+  String get csS6UnderstandsSimple;
 
-  /// No description provided for @csS6ChronicDiseaseHint.
+  /// No description provided for @csS6UnderstandsComplex.
   ///
   /// In en, this message translates to:
-  /// **'Enter type of disease'**
-  String get csS6ChronicDiseaseHint;
+  /// **'Understanding complex instructions'**
+  String get csS6UnderstandsComplex;
 
-  /// No description provided for @csS6AteWell.
+  /// No description provided for @csS6OptionYes.
   ///
   /// In en, this message translates to:
-  /// **'Was the child eating well?'**
-  String get csS6AteWell;
+  /// **'Yes'**
+  String get csS6OptionYes;
 
-  /// No description provided for @csS6HospitalizedBefore.
+  /// No description provided for @csS6OptionSometimes.
   ///
   /// In en, this message translates to:
-  /// **'Did the child ever go to hospital?'**
-  String get csS6HospitalizedBefore;
+  /// **'Sometimes'**
+  String get csS6OptionSometimes;
 
-  /// No description provided for @csS6SurgicalOperations.
+  /// No description provided for @csS6OptionNo.
   ///
   /// In en, this message translates to:
-  /// **'What surgical operations were done?'**
-  String get csS6SurgicalOperations;
+  /// **'No'**
+  String get csS6OptionNo;
 
-  /// No description provided for @csS6SurgicalOperationsHint.
+  /// No description provided for @csS6SocialCommTitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter type of operation'**
-  String get csS6SurgicalOperationsHint;
+  /// **'Social Communication'**
+  String get csS6SocialCommTitle;
+
+  /// No description provided for @csS6InitiatesInteraction.
+  ///
+  /// In en, this message translates to:
+  /// **'Initiates interaction'**
+  String get csS6InitiatesInteraction;
+
+  /// No description provided for @csS6RespondsToOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Responds to others'**
+  String get csS6RespondsToOthers;
+
+  /// No description provided for @csS6PrefersSoloPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefers solo play'**
+  String get csS6PrefersSoloPlay;
+
+  /// No description provided for @csS6ImitatesOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Imitates others'**
+  String get csS6ImitatesOthers;
+
+  /// No description provided for @csS6DifficultyPeers.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty playing with peers'**
+  String get csS6DifficultyPeers;
+
+  /// No description provided for @csS6DifficultyTurns.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty with turn-taking'**
+  String get csS6DifficultyTurns;
+
+  /// No description provided for @csS6CommNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional notes about communication and social interaction'**
+  String get csS6CommNotes;
+
+  /// No description provided for @csS6CommNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter notes'**
+  String get csS6CommNotesHint;
+
+  /// No description provided for @csS6PragmaticTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evaluation of Social and Pragmatic Skills'**
+  String get csS6PragmaticTitle;
+
+  /// No description provided for @csS6InitiatesConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting conversation with others'**
+  String get csS6InitiatesConversation;
+
+  /// No description provided for @csS6MaintainsEyeContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintaining eye contact'**
+  String get csS6MaintainsEyeContact;
+
+  /// No description provided for @csS6UnderstandsBodyLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Understanding body language and facial expressions'**
+  String get csS6UnderstandsBodyLanguage;
+
+  /// No description provided for @csS6UnderstandsJokes.
+  ///
+  /// In en, this message translates to:
+  /// **'Understanding jokes or figurative speech'**
+  String get csS6UnderstandsJokes;
+
+  /// No description provided for @csS6ConversationTurnTaking.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn-taking in conversation'**
+  String get csS6ConversationTurnTaking;
+
+  /// No description provided for @csS6OptionAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Always'**
+  String get csS6OptionAlways;
+
+  /// No description provided for @csS6OptionRarely.
+  ///
+  /// In en, this message translates to:
+  /// **'Rarely'**
+  String get csS6OptionRarely;
+
+  /// No description provided for @csS6OptionGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get csS6OptionGood;
+
+  /// No description provided for @csS6OptionAcceptable.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable'**
+  String get csS6OptionAcceptable;
+
+  /// No description provided for @csS6OptionWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get csS6OptionWeak;
+
+  /// No description provided for @csS6OptionPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Partially'**
+  String get csS6OptionPartial;
+
+  /// No description provided for @csS6OptionMastered.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastered'**
+  String get csS6OptionMastered;
+
+  /// No description provided for @csS6OptionInTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'In training'**
+  String get csS6OptionInTraining;
+
+  /// No description provided for @csS6OptionMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get csS6OptionMissing;
 
   /// No description provided for @csSection7Title.
   ///
   /// In en, this message translates to:
-  /// **'Behavioral Issues'**
+  /// **'Daily Life Skills and Independence'**
   String get csSection7Title;
 
-  /// No description provided for @csS7BehaviorsQuestion.
+  /// No description provided for @csS7EatingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Did you notice any of the following behaviors during the child\'s early childhood?'**
-  String get csS7BehaviorsQuestion;
+  /// **'Eating and Drinking'**
+  String get csS7EatingTitle;
 
-  /// No description provided for @csS7ThumbSucking.
+  /// No description provided for @csS7UsesSpoonFork.
   ///
   /// In en, this message translates to:
-  /// **'Thumb Sucking'**
-  String get csS7ThumbSucking;
+  /// **'Uses spoon/fork'**
+  String get csS7UsesSpoonFork;
 
-  /// No description provided for @csS7NailBiting.
+  /// No description provided for @csS7SelectiveEater.
   ///
   /// In en, this message translates to:
-  /// **'Nail Biting'**
-  String get csS7NailBiting;
+  /// **'Selective in food'**
+  String get csS7SelectiveEater;
 
-  /// No description provided for @csS7Bedwetting.
+  /// No description provided for @csS7UsesHandsForEating.
   ///
   /// In en, this message translates to:
-  /// **'Bedwetting'**
-  String get csS7Bedwetting;
+  /// **'Uses hands for eating'**
+  String get csS7UsesHandsForEating;
 
-  /// No description provided for @csS7FoodAversion.
+  /// No description provided for @csS7RefusesTextures.
   ///
   /// In en, this message translates to:
-  /// **'Food Aversion'**
-  String get csS7FoodAversion;
+  /// **'Refuses certain textures'**
+  String get csS7RefusesTextures;
 
-  /// No description provided for @csS7SleepDisorder.
+  /// No description provided for @csS7DrinksFromCup.
   ///
   /// In en, this message translates to:
-  /// **'Sleep Disorder'**
-  String get csS7SleepDisorder;
+  /// **'Drinks from cup/straw'**
+  String get csS7DrinksFromCup;
 
-  /// No description provided for @csS7ContinuousCrying.
+  /// No description provided for @csS7NeedsFullAssistance.
   ///
   /// In en, this message translates to:
-  /// **'Continuous Crying'**
-  String get csS7ContinuousCrying;
+  /// **'Needs full assistance'**
+  String get csS7NeedsFullAssistance;
 
-  /// No description provided for @csS7Daydreaming.
+  /// No description provided for @csS7HowRequestsFoodLabel.
   ///
   /// In en, this message translates to:
-  /// **'Daydreaming'**
-  String get csS7Daydreaming;
+  /// **'How does the child request food?'**
+  String get csS7HowRequestsFoodLabel;
 
-  /// No description provided for @csS7AngerAttacks.
+  /// No description provided for @csS7HowRequestsFoodHint.
   ///
   /// In en, this message translates to:
-  /// **'Anger Attacks'**
-  String get csS7AngerAttacks;
+  /// **'Describe how the child requests food...'**
+  String get csS7HowRequestsFoodHint;
 
-  /// No description provided for @csS7Aggression.
+  /// No description provided for @csS7DressingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Aggression: Hitting/Biting/Cursing'**
-  String get csS7Aggression;
+  /// **'Dressing'**
+  String get csS7DressingTitle;
 
-  /// No description provided for @csS7DestroyingObjects.
+  /// No description provided for @csS7RemovesShoesSocks.
   ///
   /// In en, this message translates to:
-  /// **'Destroying Objects'**
-  String get csS7DestroyingObjects;
+  /// **'Removes shoes/socks'**
+  String get csS7RemovesShoesSocks;
 
-  /// No description provided for @csS7EpilepticSeizures.
+  /// No description provided for @csS7ClosesZipperButtons.
   ///
   /// In en, this message translates to:
-  /// **'Epileptic Seizures'**
-  String get csS7EpilepticSeizures;
+  /// **'Closes zippers/buttons'**
+  String get csS7ClosesZipperButtons;
 
-  /// No description provided for @csS7SpeechDifficulties.
+  /// No description provided for @csS7DressesWithAssistance.
   ///
   /// In en, this message translates to:
-  /// **'Speech & Language Difficulties'**
-  String get csS7SpeechDifficulties;
+  /// **'Dresses with assistance'**
+  String get csS7DressesWithAssistance;
 
-  /// No description provided for @csS7VaccinesQuestion.
+  /// No description provided for @csS7HygieneTitle.
   ///
   /// In en, this message translates to:
-  /// **'Did the child receive the following vaccines?'**
-  String get csS7VaccinesQuestion;
+  /// **'Personal Hygiene'**
+  String get csS7HygieneTitle;
 
-  /// No description provided for @csS7VaccineTriple.
+  /// No description provided for @csS7WashesHandsFace.
   ///
   /// In en, this message translates to:
-  /// **'Triple + Quadruple + Quintuple'**
-  String get csS7VaccineTriple;
+  /// **'Washes hands/face'**
+  String get csS7WashesHandsFace;
 
-  /// No description provided for @csS7VaccinePolio.
+  /// No description provided for @csS7BathesAlone.
   ///
   /// In en, this message translates to:
-  /// **'Polio'**
-  String get csS7VaccinePolio;
+  /// **'Bathes alone'**
+  String get csS7BathesAlone;
 
-  /// No description provided for @csS7VaccineTuberculosis.
+  /// No description provided for @csS7CleansTeetHair.
   ///
   /// In en, this message translates to:
-  /// **'Tuberculosis'**
-  String get csS7VaccineTuberculosis;
+  /// **'Cleans teeth/hair'**
+  String get csS7CleansTeetHair;
 
-  /// No description provided for @csS7VaccineMeasles.
+  /// No description provided for @csS7NailCuttingDifficulty.
   ///
   /// In en, this message translates to:
-  /// **'Measles'**
-  String get csS7VaccineMeasles;
+  /// **'Nail cutting (difficult)'**
+  String get csS7NailCuttingDifficulty;
 
-  /// No description provided for @csS7VaccineGermanMeaslesMumps.
+  /// No description provided for @csS7BathroomSleepTitle.
   ///
   /// In en, this message translates to:
-  /// **'German Measles + Mumps'**
-  String get csS7VaccineGermanMeaslesMumps;
+  /// **'Bathroom and Sleep'**
+  String get csS7BathroomSleepTitle;
 
-  /// No description provided for @csS7VaccineHepatitisB.
+  /// No description provided for @csS7BathroomIndependenceLabel.
   ///
   /// In en, this message translates to:
-  /// **'Hepatitis B'**
-  String get csS7VaccineHepatitisB;
+  /// **'Bathroom independence'**
+  String get csS7BathroomIndependenceLabel;
+
+  /// No description provided for @csS7OptionFullyIndependent.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully independent'**
+  String get csS7OptionFullyIndependent;
+
+  /// No description provided for @csS7OptionCurrentlyTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently training'**
+  String get csS7OptionCurrentlyTraining;
+
+  /// No description provided for @csS7OptionUsesDiapers.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses diapers'**
+  String get csS7OptionUsesDiapers;
+
+  /// No description provided for @csS7HowRequestsSleepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How does the child request sleep?'**
+  String get csS7HowRequestsSleepLabel;
+
+  /// No description provided for @csS7HowRequestsSleepHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe how the child requests sleep...'**
+  String get csS7HowRequestsSleepHint;
 
   /// No description provided for @csSection8Title.
   ///
   /// In en, this message translates to:
-  /// **'Developmental Growth'**
+  /// **'Sensory and Behavioral Profile'**
   String get csSection8Title;
 
-  /// No description provided for @csSection8Subtitle.
+  /// No description provided for @csS8ProblemBehaviorsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Motor & Physical Aspects'**
-  String get csSection8Subtitle;
+  /// **'Problem Behaviors (Concerning)'**
+  String get csS8ProblemBehaviorsTitle;
 
-  /// No description provided for @csS8SatAtRightTime.
+  /// No description provided for @csS8BehaviorDescHint.
   ///
   /// In en, this message translates to:
-  /// **'Did the child sit at the right time?'**
-  String get csS8SatAtRightTime;
+  /// **'Describe behaviors and frequency...'**
+  String get csS8BehaviorDescHint;
 
-  /// No description provided for @csS8CrawledAtRightTime.
+  /// No description provided for @csS8Aggression.
   ///
   /// In en, this message translates to:
-  /// **'Did the child crawl at the right time?'**
-  String get csS8CrawledAtRightTime;
+  /// **'Aggression toward others'**
+  String get csS8Aggression;
 
-  /// No description provided for @csS8WalkedAtRightTime.
+  /// No description provided for @csS8SelfHarm.
   ///
   /// In en, this message translates to:
-  /// **'Did the child walk at the right time?'**
-  String get csS8WalkedAtRightTime;
+  /// **'Self-harm'**
+  String get csS8SelfHarm;
 
-  /// No description provided for @csS8TeethingAge.
+  /// No description provided for @csS8StereotypicalBehaviors.
   ///
   /// In en, this message translates to:
-  /// **'At what age did the child start teething?'**
-  String get csS8TeethingAge;
+  /// **'Stereotypical behaviors (flapping / spinning)'**
+  String get csS8StereotypicalBehaviors;
 
-  /// No description provided for @csS8TeethingAgeHint.
+  /// No description provided for @csS8ResistanceToChange.
   ///
   /// In en, this message translates to:
-  /// **'Enter child\'s age'**
-  String get csS8TeethingAgeHint;
+  /// **'Resistance to change / transition'**
+  String get csS8ResistanceToChange;
 
-  /// No description provided for @csS8DropsThings.
+  /// No description provided for @csS8ExcessiveAttachment.
   ///
   /// In en, this message translates to:
-  /// **'Does the child drop or knock over objects?'**
-  String get csS8DropsThings;
+  /// **'Excessive attachment to specific objects'**
+  String get csS8ExcessiveAttachment;
 
-  /// No description provided for @csS8HasMovementDifficulties.
+  /// No description provided for @csS8BehavioralPatternsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have difficulty running, jumping, hopping, or climbing stairs alone?'**
-  String get csS8HasMovementDifficulties;
+  /// **'Useful and Repetitive Behavioral Patterns'**
+  String get csS8BehavioralPatternsTitle;
 
-  /// No description provided for @csS8IsConstantlyMoving.
+  /// No description provided for @csS8PatternLabel.
   ///
   /// In en, this message translates to:
-  /// **'Is the child constantly moving, with continuous movement?'**
-  String get csS8IsConstantlyMoving;
+  /// **'Pattern'**
+  String get csS8PatternLabel;
 
-  /// No description provided for @csS8HasVisualImpairment.
+  /// No description provided for @csS8PatternHint.
   ///
   /// In en, this message translates to:
-  /// **'Does the child suffer from visual impairment?'**
-  String get csS8HasVisualImpairment;
+  /// **'Describe the pattern...'**
+  String get csS8PatternHint;
 
-  /// No description provided for @csS8VisualImpairmentDegree.
+  /// No description provided for @csS8PracticesLabel.
   ///
   /// In en, this message translates to:
-  /// **'What is the degree of visual impairment?'**
-  String get csS8VisualImpairmentDegree;
+  /// **'Practices'**
+  String get csS8PracticesLabel;
 
-  /// No description provided for @csS8VisualImpairmentHint.
+  /// No description provided for @csS8PracticesHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter degree of impairment'**
-  String get csS8VisualImpairmentHint;
+  /// **'Describe the practices...'**
+  String get csS8PracticesHint;
 
-  /// No description provided for @csS8HasEyeDiseases.
+  /// No description provided for @csS8ExpectedFunctionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Does the child suffer from eye diseases?'**
-  String get csS8HasEyeDiseases;
+  /// **'Expected function'**
+  String get csS8ExpectedFunctionLabel;
 
-  /// No description provided for @csS8EyeDiseasesType.
+  /// No description provided for @csS8ExpectedFunctionHint.
   ///
   /// In en, this message translates to:
-  /// **'What are the eye diseases?'**
-  String get csS8EyeDiseasesType;
+  /// **'Describe the expected function...'**
+  String get csS8ExpectedFunctionHint;
 
-  /// No description provided for @csS8EyeDiseasesHint.
+  /// No description provided for @csS8AddPattern.
   ///
   /// In en, this message translates to:
-  /// **'Enter the diseases'**
-  String get csS8EyeDiseasesHint;
+  /// **'Add another pattern'**
+  String get csS8AddPattern;
 
-  /// No description provided for @csS8HasHearingImpairment.
+  /// No description provided for @csS8SensoryTitle.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have hearing impairment?'**
-  String get csS8HasHearingImpairment;
+  /// **'Sensory Integration and Organization'**
+  String get csS8SensoryTitle;
 
-  /// No description provided for @csS8HearingImpairmentDegree.
+  /// No description provided for @csS8GeneralStateLabel.
   ///
   /// In en, this message translates to:
-  /// **'What is the degree of hearing impairment?'**
-  String get csS8HearingImpairmentDegree;
+  /// **'General description (general state of attention activity)'**
+  String get csS8GeneralStateLabel;
 
-  /// No description provided for @csS8HearingImpairmentHint.
+  /// No description provided for @csS8StateCalm.
   ///
   /// In en, this message translates to:
-  /// **'Enter degree of impairment'**
-  String get csS8HearingImpairmentHint;
+  /// **'Calm'**
+  String get csS8StateCalm;
 
-  /// No description provided for @csS8HasEarDiseases.
+  /// No description provided for @csS8StateDistracted.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have ear diseases?'**
-  String get csS8HasEarDiseases;
+  /// **'Distracted'**
+  String get csS8StateDistracted;
 
-  /// No description provided for @csS8EarDiseasesType.
+  /// No description provided for @csS8StateVeryActive.
   ///
   /// In en, this message translates to:
-  /// **'What are the ear diseases?'**
-  String get csS8EarDiseasesType;
+  /// **'Very active'**
+  String get csS8StateVeryActive;
 
-  /// No description provided for @csS8EarDiseasesHint.
+  /// No description provided for @csS8StateFastTransition.
   ///
   /// In en, this message translates to:
-  /// **'Enter the diseases'**
-  String get csS8EarDiseasesHint;
+  /// **'Fast transition'**
+  String get csS8StateFastTransition;
 
-  /// No description provided for @csS8HasAllergies.
+  /// No description provided for @csS8StateAbnormal.
   ///
   /// In en, this message translates to:
-  /// **'Does the child suffer from allergies?'**
-  String get csS8HasAllergies;
+  /// **'Abnormal'**
+  String get csS8StateAbnormal;
 
-  /// No description provided for @csS8AllergyType.
+  /// No description provided for @csS8GeneralStateNotesHint.
   ///
   /// In en, this message translates to:
-  /// **'What type of allergy?'**
-  String get csS8AllergyType;
+  /// **'Describe the general state...'**
+  String get csS8GeneralStateNotesHint;
 
-  /// No description provided for @csS8AllergyFood.
+  /// No description provided for @csS8SensoryInterestsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Food Allergy'**
-  String get csS8AllergyFood;
+  /// **'Special sensory interests'**
+  String get csS8SensoryInterestsLabel;
 
-  /// No description provided for @csS8AllergyEnvironmental.
+  /// No description provided for @csS8HasSensoryIssues.
   ///
   /// In en, this message translates to:
-  /// **'Environmental Allergy'**
-  String get csS8AllergyEnvironmental;
+  /// **'Does the child have problems with the senses?'**
+  String get csS8HasSensoryIssues;
 
-  /// No description provided for @csS8AllergyTriggers.
+  /// No description provided for @csS8SensoryIssuesNotesHint.
   ///
   /// In en, this message translates to:
-  /// **'What triggers the child\'s allergies?'**
-  String get csS8AllergyTriggers;
+  /// **'Add notes...'**
+  String get csS8SensoryIssuesNotesHint;
 
-  /// No description provided for @csS8AllergyTriggersHint.
+  /// No description provided for @csS8HearingIssue.
   ///
   /// In en, this message translates to:
-  /// **'Enter the triggers'**
-  String get csS8AllergyTriggersHint;
+  /// **'Hearing (gain, loss)'**
+  String get csS8HearingIssue;
+
+  /// No description provided for @csS8TouchIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Touch (sensitivity)'**
+  String get csS8TouchIssue;
+
+  /// No description provided for @csS8TasteIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Taste (putting in mouth)'**
+  String get csS8TasteIssue;
+
+  /// No description provided for @csS8VestibularIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Body position (sounds, spinning)'**
+  String get csS8VestibularIssue;
+
+  /// No description provided for @csS8VisualSensoryIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual (colors, light)'**
+  String get csS8VisualSensoryIssue;
+
+  /// No description provided for @csS8SensoryNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add notes...'**
+  String get csS8SensoryNotesHint;
+
+  /// No description provided for @csS8SensoryReactionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Child\'s reaction to sensory stimuli'**
+  String get csS8SensoryReactionLabel;
+
+  /// No description provided for @csS8SensoryReactionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the child\'s reaction...'**
+  String get csS8SensoryReactionHint;
+
+  /// No description provided for @csS8SocialBehaviorsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Behaviors'**
+  String get csS8SocialBehaviorsTitle;
+
+  /// No description provided for @csS8MakesFriendsEasily.
+  ///
+  /// In en, this message translates to:
+  /// **'Does the child make friends easily?'**
+  String get csS8MakesFriendsEasily;
+
+  /// No description provided for @csS8MakesFriendsNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe...'**
+  String get csS8MakesFriendsNotesHint;
+
+  /// No description provided for @csS8SharesInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Does the child share social skills or interests?'**
+  String get csS8SharesInterests;
+
+  /// No description provided for @csS8SharesInterestsNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe...'**
+  String get csS8SharesInterestsNotesHint;
+
+  /// No description provided for @csS8AbuseExposure.
+  ///
+  /// In en, this message translates to:
+  /// **'Has the child been exposed to any form of abuse, physical insult, or domestic violence?'**
+  String get csS8AbuseExposure;
+
+  /// No description provided for @csS8AbuseWitnessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, witnessed behavior before avoiding'**
+  String get csS8AbuseWitnessed;
+
+  /// No description provided for @csS8AbuseNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe...'**
+  String get csS8AbuseNotesHint;
+
+  /// No description provided for @csS8HasSignificantSocialEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Has the child been exposed to a major life event (such as abuse or personal friendship loss)?'**
+  String get csS8HasSignificantSocialEvent;
+
+  /// No description provided for @csS8SignificantSocialEventNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe...'**
+  String get csS8SignificantSocialEventNotesHint;
+
+  /// No description provided for @csS8ReactionToNegativeBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the child\'s reaction to others\' negative behavior?'**
+  String get csS8ReactionToNegativeBehavior;
+
+  /// No description provided for @csS8ReactionToNegativeBehaviorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the reaction...'**
+  String get csS8ReactionToNegativeBehaviorHint;
 
   /// No description provided for @csSection9Title.
   ///
   /// In en, this message translates to:
-  /// **'Developmental Growth'**
+  /// **'Capabilities, Strengths, and Interests'**
   String get csSection9Title;
 
-  /// No description provided for @csSection9Subtitle.
+  /// No description provided for @csS9ObservedStrengthsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Language Aspects'**
-  String get csSection9Subtitle;
+  /// **'Observed Strengths'**
+  String get csS9ObservedStrengthsLabel;
 
-  /// No description provided for @csS9SpeechUnderstoodByMother.
+  /// No description provided for @csS9ObservedStrengthsHint.
   ///
   /// In en, this message translates to:
-  /// **'Was the child\'s speech understood when speaking with the mother?'**
-  String get csS9SpeechUnderstoodByMother;
+  /// **'Describe observed strengths...'**
+  String get csS9ObservedStrengthsHint;
 
-  /// No description provided for @csS9HasStuttering.
+  /// No description provided for @csS9PreferredActivitiesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have stuttering in speech?'**
-  String get csS9HasStuttering;
+  /// **'Preferred Activities / Reinforcers'**
+  String get csS9PreferredActivitiesTitle;
 
-  /// No description provided for @csS9HasLetterSubstitution.
+  /// No description provided for @csS9ActivitySensoryGames.
   ///
   /// In en, this message translates to:
-  /// **'Does the child substitute some letters?'**
-  String get csS9HasLetterSubstitution;
+  /// **'Sensory games'**
+  String get csS9ActivitySensoryGames;
 
-  /// No description provided for @csS9SubstitutedLetters.
+  /// No description provided for @csS9ActivityElectronics.
   ///
   /// In en, this message translates to:
-  /// **'What are the letters the child substitutes?'**
-  String get csS9SubstitutedLetters;
+  /// **'Electronics'**
+  String get csS9ActivityElectronics;
 
-  /// No description provided for @csS9SubstitutedLettersHint.
+  /// No description provided for @csS9ActivityMotor.
   ///
   /// In en, this message translates to:
-  /// **'Enter the substituted letters'**
-  String get csS9SubstitutedLettersHint;
+  /// **'Motor'**
+  String get csS9ActivityMotor;
 
-  /// No description provided for @csS9SpeaksUnintelligibly.
+  /// No description provided for @csS9ActivityFoods.
   ///
   /// In en, this message translates to:
-  /// **'Does the child sometimes speak unintelligibly?'**
-  String get csS9SpeaksUnintelligibly;
+  /// **'Foods'**
+  String get csS9ActivityFoods;
 
-  /// No description provided for @csS9HasPronunciationDifficulty.
+  /// No description provided for @csS9ActivityCharacters.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have difficulty pronouncing some letters and words?'**
-  String get csS9HasPronunciationDifficulty;
+  /// **'Characters'**
+  String get csS9ActivityCharacters;
 
-  /// No description provided for @csS9DifficultLettersAndWords.
+  /// No description provided for @csS9ActivityMusic.
   ///
   /// In en, this message translates to:
-  /// **'What letters and words does the child have difficulty pronouncing?'**
-  String get csS9DifficultLettersAndWords;
+  /// **'Music'**
+  String get csS9ActivityMusic;
 
-  /// No description provided for @csS9DifficultLettersHint.
+  /// No description provided for @csS9ActivityOther.
   ///
   /// In en, this message translates to:
-  /// **'Enter the letters and words'**
-  String get csS9DifficultLettersHint;
+  /// **'Other'**
+  String get csS9ActivityOther;
 
-  /// No description provided for @csS9LanguageLikeAgePeers.
+  /// No description provided for @csS9OtherActivitiesLabel.
   ///
   /// In en, this message translates to:
-  /// **'Is the child\'s language like that of peers their age?'**
-  String get csS9LanguageLikeAgePeers;
+  /// **'What are the child\'s preferred activities (if other was selected in the previous question)'**
+  String get csS9OtherActivitiesLabel;
+
+  /// No description provided for @csS9OtherActivitiesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter child\'s preferred activities'**
+  String get csS9OtherActivitiesHint;
+
+  /// No description provided for @csS9PreferenceScanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preference and Reinforcer Survey'**
+  String get csS9PreferenceScanTitle;
+
+  /// No description provided for @csS9PrefFoodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get csS9PrefFoodLabel;
+
+  /// No description provided for @csS9PrefSensoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensory'**
+  String get csS9PrefSensoryLabel;
+
+  /// No description provided for @csS9PrefSocialLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get csS9PrefSocialLabel;
+
+  /// No description provided for @csS9PrefMaterialLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Material / Activity'**
+  String get csS9PrefMaterialLabel;
+
+  /// No description provided for @csS9PrefExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example'**
+  String get csS9PrefExampleHint;
+
+  /// No description provided for @csS9PrefHighlyPreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Highly preferred'**
+  String get csS9PrefHighlyPreferred;
+
+  /// No description provided for @csS9PrefAcceptable.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable'**
+  String get csS9PrefAcceptable;
+
+  /// No description provided for @csS9PrefNotPreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Not preferred'**
+  String get csS9PrefNotPreferred;
+
+  /// No description provided for @csS9PositiveDistinctionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What positively distinguishes the child?'**
+  String get csS9PositiveDistinctionLabel;
+
+  /// No description provided for @csS9PositiveDistinctionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what positively distinguishes the child...'**
+  String get csS9PositiveDistinctionHint;
 
   /// No description provided for @csSection10Title.
   ///
   /// In en, this message translates to:
-  /// **'Developmental Growth'**
+  /// **'Educational and Services'**
   String get csSection10Title;
 
-  /// No description provided for @csSection10Subtitle.
+  /// No description provided for @csS10EnrolledInSchool.
   ///
   /// In en, this message translates to:
-  /// **'Cognitive Aspects'**
-  String get csSection10Subtitle;
+  /// **'Educational enrollment'**
+  String get csS10EnrolledInSchool;
 
-  /// No description provided for @csS10FollowsInstructions.
+  /// No description provided for @csS10SchoolNameLabel.
   ///
   /// In en, this message translates to:
-  /// **'Does the child follow instructions when assigned a task?'**
-  String get csS10FollowsInstructions;
+  /// **'School name'**
+  String get csS10SchoolNameLabel;
 
-  /// No description provided for @csS10CompletesAssignedTasks.
+  /// No description provided for @csS10SchoolNameHint.
   ///
   /// In en, this message translates to:
-  /// **'Does the child complete the task requested of them?'**
-  String get csS10CompletesAssignedTasks;
+  /// **'Enter child\'s school name'**
+  String get csS10SchoolNameHint;
 
-  /// No description provided for @csS10UnderstandsInstructions.
+  /// No description provided for @csS10SchoolGradeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Does the child understand what is said or requested of them?'**
-  String get csS10UnderstandsInstructions;
+  /// **'Grade'**
+  String get csS10SchoolGradeLabel;
 
-  /// No description provided for @csS10UnderstandsAlways.
+  /// No description provided for @csS10SchoolGradeHint.
   ///
   /// In en, this message translates to:
-  /// **'Always'**
-  String get csS10UnderstandsAlways;
+  /// **'Enter child\'s grade'**
+  String get csS10SchoolGradeHint;
 
-  /// No description provided for @csS10UnderstandsSometimes.
+  /// No description provided for @csS10CurrentServicesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Sometimes'**
-  String get csS10UnderstandsSometimes;
+  /// **'Current / Previous Services'**
+  String get csS10CurrentServicesTitle;
 
-  /// No description provided for @csS10UnderstandsRarely.
+  /// No description provided for @csS10ServiceABA.
   ///
   /// In en, this message translates to:
-  /// **'Rarely'**
-  String get csS10UnderstandsRarely;
+  /// **'ABA'**
+  String get csS10ServiceABA;
 
-  /// No description provided for @csS10HasMemoryDifficulty.
+  /// No description provided for @csS10ServiceSpeech.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have difficulty remembering things and information?'**
-  String get csS10HasMemoryDifficulty;
+  /// **'Speech therapy'**
+  String get csS10ServiceSpeech;
 
-  /// No description provided for @csS10HasNamingDifficulty.
+  /// No description provided for @csS10ServiceOccupational.
   ///
   /// In en, this message translates to:
-  /// **'Does the child have difficulty naming familiar objects?'**
-  String get csS10HasNamingDifficulty;
+  /// **'Occupational therapy'**
+  String get csS10ServiceOccupational;
 
-  /// No description provided for @csS10IsImpulsive.
+  /// No description provided for @csS10ServicePhysical.
   ///
   /// In en, this message translates to:
-  /// **'Is the child impulsive (acts without thinking about consequences)?'**
-  String get csS10IsImpulsive;
+  /// **'Physical therapy'**
+  String get csS10ServicePhysical;
 
-  /// No description provided for @csS10ConcentrationLevel.
+  /// No description provided for @csS10ServicePsychological.
   ///
   /// In en, this message translates to:
-  /// **'What is the child\'s ability to concentrate and pay attention?'**
-  String get csS10ConcentrationLevel;
+  /// **'Psychological'**
+  String get csS10ServicePsychological;
 
-  /// No description provided for @csS10ConcentrationGood.
+  /// No description provided for @csS10ServiceSpecialEd.
   ///
   /// In en, this message translates to:
-  /// **'Good'**
-  String get csS10ConcentrationGood;
+  /// **'Special education'**
+  String get csS10ServiceSpecialEd;
 
-  /// No description provided for @csS10ConcentrationAverage.
+  /// No description provided for @csS10ServiceOther.
   ///
   /// In en, this message translates to:
-  /// **'Average'**
-  String get csS10ConcentrationAverage;
+  /// **'Other'**
+  String get csS10ServiceOther;
 
-  /// No description provided for @csS10ConcentrationWeak.
+  /// No description provided for @csS10ServiceNone.
   ///
   /// In en, this message translates to:
-  /// **'Weak'**
-  String get csS10ConcentrationWeak;
+  /// **'None'**
+  String get csS10ServiceNone;
+
+  /// No description provided for @csS10OtherServiceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What are the current/previous services (if other was selected in the previous question)'**
+  String get csS10OtherServiceLabel;
+
+  /// No description provided for @csS10OtherServiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter services'**
+  String get csS10OtherServiceHint;
+
+  /// No description provided for @csS10ServiceDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service duration'**
+  String get csS10ServiceDurationLabel;
+
+  /// No description provided for @csS10ServiceDurationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter service duration'**
+  String get csS10ServiceDurationHint;
+
+  /// No description provided for @csS10HasIEP.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there an individualized educational plan?'**
+  String get csS10HasIEP;
+
+  /// No description provided for @csS10PreviousReportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous Assessment Reports'**
+  String get csS10PreviousReportsTitle;
+
+  /// No description provided for @csS10ReportVineland.
+  ///
+  /// In en, this message translates to:
+  /// **'Vineland'**
+  String get csS10ReportVineland;
+
+  /// No description provided for @csS10ReportEFL.
+  ///
+  /// In en, this message translates to:
+  /// **'EFL'**
+  String get csS10ReportEFL;
+
+  /// No description provided for @csS10ReportAFLS.
+  ///
+  /// In en, this message translates to:
+  /// **'AFLS'**
+  String get csS10ReportAFLS;
+
+  /// No description provided for @csS10ReportABLLS.
+  ///
+  /// In en, this message translates to:
+  /// **'ABLLS-R'**
+  String get csS10ReportABLLS;
+
+  /// No description provided for @csS10ReportVBMAPP.
+  ///
+  /// In en, this message translates to:
+  /// **'VB-MAPP'**
+  String get csS10ReportVBMAPP;
+
+  /// No description provided for @csS10ReportOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get csS10ReportOther;
+
+  /// No description provided for @csS10ReportNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get csS10ReportNone;
+
+  /// No description provided for @csS10SchoolSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'School Environment and Support Details'**
+  String get csS10SchoolSupportTitle;
+
+  /// No description provided for @csS10ClassTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Class type'**
+  String get csS10ClassTypeLabel;
+
+  /// No description provided for @csS10ClassTypeFullInclusion.
+  ///
+  /// In en, this message translates to:
+  /// **'Full inclusion'**
+  String get csS10ClassTypeFullInclusion;
+
+  /// No description provided for @csS10ClassTypePartialInclusion.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial inclusion'**
+  String get csS10ClassTypePartialInclusion;
+
+  /// No description provided for @csS10ClassTypeSpecialClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Special class'**
+  String get csS10ClassTypeSpecialClass;
+
+  /// No description provided for @csS10ClassTypeCareCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Care center'**
+  String get csS10ClassTypeCareCenter;
+
+  /// No description provided for @csS10HasShadowTeacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there a shadow teacher?'**
+  String get csS10HasShadowTeacher;
+
+  /// No description provided for @csS10ShadowTeacherNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher name'**
+  String get csS10ShadowTeacherNameLabel;
+
+  /// No description provided for @csS10ShadowTeacherNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter teacher name'**
+  String get csS10ShadowTeacherNameHint;
+
+  /// No description provided for @csS10EnvironmentalModsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Environmental modifications'**
+  String get csS10EnvironmentalModsTitle;
+
+  /// No description provided for @csS10ModReduceDistractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce distractions'**
+  String get csS10ModReduceDistractions;
+
+  /// No description provided for @csS10ModVisualSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual schedule'**
+  String get csS10ModVisualSchedule;
+
+  /// No description provided for @csS10ModSpecificSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific seating'**
+  String get csS10ModSpecificSeat;
+
+  /// No description provided for @csS10ModOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get csS10ModOther;
+
+  /// No description provided for @csS10SchoolBehaviorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Behavior at school'**
+  String get csS10SchoolBehaviorLabel;
+
+  /// No description provided for @csS10SchoolBehaviorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the child\'s behavior at school...'**
+  String get csS10SchoolBehaviorHint;
 
   /// No description provided for @csSection11Title.
   ///
   /// In en, this message translates to:
-  /// **'Developmental Growth'**
+  /// **'Family Priorities and Goals'**
   String get csSection11Title;
 
-  /// No description provided for @csSection11Subtitle.
+  /// No description provided for @csS11TopConcernsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Social Aspects'**
-  String get csSection11Subtitle;
+  /// **'Top 3 family concerns'**
+  String get csS11TopConcernsLabel;
 
-  /// No description provided for @csS11IsQuickToAnger.
+  /// No description provided for @csS11TopConcernsHint.
   ///
   /// In en, this message translates to:
-  /// **'Is the child quick to anger and irritability?'**
-  String get csS11IsQuickToAnger;
+  /// **'Describe the top 3 concerns...'**
+  String get csS11TopConcernsHint;
 
-  /// No description provided for @csS11DestroysPlaythings.
+  /// No description provided for @csS11TopGoalsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Does the child destroy toys, tools, and objects?'**
-  String get csS11DestroysPlaythings;
+  /// **'Top 3 goals the family wants to achieve'**
+  String get csS11TopGoalsLabel;
 
-  /// No description provided for @csS11IsStubborn.
+  /// No description provided for @csS11TopGoalsHint.
   ///
   /// In en, this message translates to:
-  /// **'Is the child stubborn and uncooperative?'**
-  String get csS11IsStubborn;
+  /// **'Describe the top 3 goals...'**
+  String get csS11TopGoalsHint;
 
-  /// No description provided for @csS11IsAggressive.
+  /// No description provided for @csS11SessionTimePrefsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Is the child aggressive by nature with others?'**
-  String get csS11IsAggressive;
+  /// **'Session time preferences'**
+  String get csS11SessionTimePrefsLabel;
 
-  /// No description provided for @csS11CanPlayCalmly.
+  /// No description provided for @csS11SessionTimePrefsHint.
   ///
   /// In en, this message translates to:
-  /// **'Is the child able to play calmly?'**
-  String get csS11CanPlayCalmly;
+  /// **'Enter session time preferences'**
+  String get csS11SessionTimePrefsHint;
 
-  /// No description provided for @csS11AttacksSiblings.
+  /// No description provided for @csS11ParentTrainingReadinessLabel.
   ///
   /// In en, this message translates to:
-  /// **'Does the child attack their siblings?'**
-  String get csS11AttacksSiblings;
+  /// **'Readiness for parent training'**
+  String get csS11ParentTrainingReadinessLabel;
 
-  /// No description provided for @csS11IsPopularWithPeers.
+  /// No description provided for @csS11OptionMaybe.
   ///
   /// In en, this message translates to:
-  /// **'Is the child popular with classmates and neighbors?'**
-  String get csS11IsPopularWithPeers;
-
-  /// No description provided for @csS11BehaviorDuringVisits.
-  ///
-  /// In en, this message translates to:
-  /// **'How is the child\'s behavior and conduct when visiting others?'**
-  String get csS11BehaviorDuringVisits;
-
-  /// No description provided for @csS11BehaviorDuringVisitsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Describe the child\'s behavior'**
-  String get csS11BehaviorDuringVisitsHint;
-
-  /// No description provided for @csS11SocialMaturityLikeAgePeers.
-  ///
-  /// In en, this message translates to:
-  /// **'Is the child\'s social maturity at the level of their age peers?'**
-  String get csS11SocialMaturityLikeAgePeers;
+  /// **'Maybe'**
+  String get csS11OptionMaybe;
 
   /// No description provided for @csSection12Title.
   ///
@@ -2651,62 +3911,350 @@ abstract class AppLocalizations {
   /// No description provided for @csSection13Title.
   ///
   /// In en, this message translates to:
-  /// **'Developmental Growth'**
+  /// **'Initial Assessment and Follow-up Plan'**
   String get csSection13Title;
 
-  /// No description provided for @csSection13Subtitle.
+  /// No description provided for @csS13PriorityLevel.
   ///
   /// In en, this message translates to:
-  /// **'Self-Care Aspects'**
-  String get csSection13Subtitle;
+  /// **'Priority level'**
+  String get csS13PriorityLevel;
 
-  /// No description provided for @csS13UsesToiletProperly.
+  /// No description provided for @csS13PriorityLow.
   ///
   /// In en, this message translates to:
-  /// **'Does the child use the toilet properly?'**
-  String get csS13UsesToiletProperly;
+  /// **'Low'**
+  String get csS13PriorityLow;
 
-  /// No description provided for @csS13BathesAlone.
+  /// No description provided for @csS13PriorityMedium.
   ///
   /// In en, this message translates to:
-  /// **'Does the child bathe alone?'**
-  String get csS13BathesAlone;
+  /// **'Medium'**
+  String get csS13PriorityMedium;
 
-  /// No description provided for @csS13DressesAlone.
+  /// No description provided for @csS13PriorityHigh.
   ///
   /// In en, this message translates to:
-  /// **'Does the child dress themselves alone?'**
-  String get csS13DressesAlone;
+  /// **'High'**
+  String get csS13PriorityHigh;
 
-  /// No description provided for @csS13UsesToothbrush.
+  /// No description provided for @csS13PriorityUrgent.
   ///
   /// In en, this message translates to:
-  /// **'Does the child use a toothbrush to clean their teeth?'**
-  String get csS13UsesToothbrush;
+  /// **'Urgent'**
+  String get csS13PriorityUrgent;
 
-  /// No description provided for @csS13WearsShoesAlone.
+  /// No description provided for @csS13SpecializationsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Does the child put on and tie their shoes alone?'**
-  String get csS13WearsShoesAlone;
+  /// **'Suggested specializations'**
+  String get csS13SpecializationsTitle;
 
-  /// No description provided for @csS13WashesFaceOnWaking.
+  /// No description provided for @csS13SpecABA.
   ///
   /// In en, this message translates to:
-  /// **'Does the child wash their face upon waking?'**
-  String get csS13WashesFaceOnWaking;
+  /// **'ABA'**
+  String get csS13SpecABA;
 
-  /// No description provided for @csS13WashesHandsBeforeAfterEating.
+  /// No description provided for @csS13SpecSpeech.
   ///
   /// In en, this message translates to:
-  /// **'Does the child wash their hands before and after eating?'**
-  String get csS13WashesHandsBeforeAfterEating;
+  /// **'Speech therapy'**
+  String get csS13SpecSpeech;
 
-  /// No description provided for @csS13WashesFeetAfterPlay.
+  /// No description provided for @csS13SpecOccupational.
   ///
   /// In en, this message translates to:
-  /// **'Does the child wash their feet after returning from the center or playing?'**
-  String get csS13WashesFeetAfterPlay;
+  /// **'Occupational therapy'**
+  String get csS13SpecOccupational;
+
+  /// No description provided for @csS13SpecPhysical.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical therapy'**
+  String get csS13SpecPhysical;
+
+  /// No description provided for @csS13SpecPsychological.
+  ///
+  /// In en, this message translates to:
+  /// **'Psychological'**
+  String get csS13SpecPsychological;
+
+  /// No description provided for @csS13SpecSpecialEd.
+  ///
+  /// In en, this message translates to:
+  /// **'Special education'**
+  String get csS13SpecSpecialEd;
+
+  /// No description provided for @csS13AdditionalReqsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional requirements'**
+  String get csS13AdditionalReqsTitle;
+
+  /// No description provided for @csS13ReviewOtherReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Review other reports'**
+  String get csS13ReviewOtherReports;
+
+  /// No description provided for @csS13DirectObservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct observation'**
+  String get csS13DirectObservation;
+
+  /// No description provided for @csS13FamilyMeeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Family meeting'**
+  String get csS13FamilyMeeting;
+
+  /// No description provided for @csS13NotesAndNextStepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary of notes and next steps'**
+  String get csS13NotesAndNextStepsLabel;
+
+  /// No description provided for @csS13NotesAndNextStepsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter notes and next steps...'**
+  String get csS13NotesAndNextStepsHint;
+
+  /// No description provided for @csS13NextAssessmentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next assessment date'**
+  String get csS13NextAssessmentDateLabel;
+
+  /// No description provided for @csS13NextAssessmentTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next assessment time'**
+  String get csS13NextAssessmentTimeLabel;
+
+  /// No description provided for @csSectionDocsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents and Consents'**
+  String get csSectionDocsTitle;
+
+  /// No description provided for @csSectionDocsSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents Submitted'**
+  String get csSectionDocsSubmittedTitle;
+
+  /// No description provided for @csSectionDocsID.
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get csSectionDocsID;
+
+  /// No description provided for @csSectionDocsMedicalReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical reports'**
+  String get csSectionDocsMedicalReports;
+
+  /// No description provided for @csSectionDocsDiagnosticReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostic reports'**
+  String get csSectionDocsDiagnosticReports;
+
+  /// No description provided for @csSectionDocsSchoolReports.
+  ///
+  /// In en, this message translates to:
+  /// **'School reports'**
+  String get csSectionDocsSchoolReports;
+
+  /// No description provided for @csSectionDocsPrevTreatmentReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous treatment reports'**
+  String get csSectionDocsPrevTreatmentReports;
+
+  /// No description provided for @csSectionDocsOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get csSectionDocsOther;
+
+  /// No description provided for @csSectionDocsOtherLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What are the documents submitted'**
+  String get csSectionDocsOtherLabel;
+
+  /// No description provided for @csSectionDocsOtherNote.
+  ///
+  /// In en, this message translates to:
+  /// **'(In case other was selected in the previous question)'**
+  String get csSectionDocsOtherNote;
+
+  /// No description provided for @csSectionDocsOtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter document name'**
+  String get csSectionDocsOtherHint;
+
+  /// No description provided for @csSectionDocsConsentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consents'**
+  String get csSectionDocsConsentsTitle;
+
+  /// No description provided for @csSectionDocsConsentPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get csSectionDocsConsentPrivacy;
+
+  /// No description provided for @csSectionDocsConsentInfoSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Information sharing'**
+  String get csSectionDocsConsentInfoSharing;
+
+  /// No description provided for @csSectionDocsConsentOtherComms.
+  ///
+  /// In en, this message translates to:
+  /// **'Communications with other parties'**
+  String get csSectionDocsConsentOtherComms;
+
+  /// No description provided for @csSectionDocsConsentAssessments.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete assessments'**
+  String get csSectionDocsConsentAssessments;
+
+  /// No description provided for @csSectionDocsConsentFuturePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Future steps plan'**
+  String get csSectionDocsConsentFuturePlan;
+
+  /// No description provided for @csSection14Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Routine'**
+  String get csSection14Title;
+
+  /// No description provided for @csS14WeekdayRoutineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekday routine (Work / School)'**
+  String get csS14WeekdayRoutineLabel;
+
+  /// No description provided for @csS14WeekdayRoutineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the weekday routine...'**
+  String get csS14WeekdayRoutineHint;
+
+  /// No description provided for @csS14WeekendRoutineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekend routine'**
+  String get csS14WeekendRoutineLabel;
+
+  /// No description provided for @csS14WeekendRoutineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the weekend routine...'**
+  String get csS14WeekendRoutineHint;
+
+  /// No description provided for @csSection15Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Signatures'**
+  String get csSection15Title;
+
+  /// No description provided for @csS15GuardianNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian / Caregiver Name'**
+  String get csS15GuardianNameLabel;
+
+  /// No description provided for @csS15GuardianNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter guardian name'**
+  String get csS15GuardianNameHint;
+
+  /// No description provided for @csS15SignatureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature'**
+  String get csS15SignatureLabel;
+
+  /// No description provided for @csS15ClearSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get csS15ClearSignature;
+
+  /// No description provided for @csS15DateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get csS15DateLabel;
+
+  /// No description provided for @csS15SpecialistNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name of Receiving Specialist'**
+  String get csS15SpecialistNameLabel;
+
+  /// No description provided for @csS15SpecialistNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter specialist name'**
+  String get csS15SpecialistNameHint;
+
+  /// No description provided for @csS15JobTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Title'**
+  String get csS15JobTitleLabel;
+
+  /// No description provided for @csS15JobTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter job title'**
+  String get csS15JobTitleHint;
+
+  /// No description provided for @csS15AddTeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Add team members who participated in the interview if any'**
+  String get csS15AddTeamMember;
+
+  /// No description provided for @csS15SpecializationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialization'**
+  String get csS15SpecializationLabel;
+
+  /// No description provided for @csS15SpecializationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter specialization'**
+  String get csS15SpecializationHint;
+
+  /// No description provided for @csS15MemberNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get csS15MemberNameLabel;
+
+  /// No description provided for @csS15MemberNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter member name'**
+  String get csS15MemberNameHint;
 
   /// No description provided for @parentRole.
   ///
@@ -2731,6 +4279,1062 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Therapist of {name}'**
   String therapistOf(String name);
+
+  /// No description provided for @csS4ComprehensiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Comprehensive Medical History'**
+  String get csS4ComprehensiveTitle;
+
+  /// No description provided for @csS4MedHistYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get csS4MedHistYes;
+
+  /// No description provided for @csS4MedHistNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get csS4MedHistNo;
+
+  /// No description provided for @csS4HearingVision.
+  ///
+  /// In en, this message translates to:
+  /// **'Hearing/Vision Issues'**
+  String get csS4HearingVision;
+
+  /// No description provided for @csS4SeizuresHeadInjury.
+  ///
+  /// In en, this message translates to:
+  /// **'Seizures/Head Injury'**
+  String get csS4SeizuresHeadInjury;
+
+  /// No description provided for @csS4SleepNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep/Nutrition Issues'**
+  String get csS4SleepNutrition;
+
+  /// No description provided for @csS4BloodAnemiaResp.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood/Anemia/Respiratory Issues'**
+  String get csS4BloodAnemiaResp;
+
+  /// No description provided for @csS4DentalPerception.
+  ///
+  /// In en, this message translates to:
+  /// **'Dental/Perception Issues'**
+  String get csS4DentalPerception;
+
+  /// No description provided for @csS4FattyFailureStunting.
+  ///
+  /// In en, this message translates to:
+  /// **'Fatty Failure/Stunting'**
+  String get csS4FattyFailureStunting;
+
+  /// No description provided for @csS4PrevTreatmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous Treatments'**
+  String get csS4PrevTreatmentTitle;
+
+  /// No description provided for @csS4AddTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Treatment'**
+  String get csS4AddTreatment;
+
+  /// No description provided for @csS4CurrentMedsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Medications'**
+  String get csS4CurrentMedsTitle;
+
+  /// No description provided for @csS4AddMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Medication'**
+  String get csS4AddMedication;
+
+  /// No description provided for @csS4DiagnosesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnoses'**
+  String get csS4DiagnosesTitle;
+
+  /// No description provided for @csS4DiagnosedOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosed'**
+  String get csS4DiagnosedOption;
+
+  /// No description provided for @csS4SuspectedOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspected'**
+  String get csS4SuspectedOption;
+
+  /// No description provided for @csS4ASD.
+  ///
+  /// In en, this message translates to:
+  /// **'Autism Spectrum Disorder'**
+  String get csS4ASD;
+
+  /// No description provided for @csS4ADHD.
+  ///
+  /// In en, this message translates to:
+  /// **'ADHD'**
+  String get csS4ADHD;
+
+  /// No description provided for @csS4LearningDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Delay'**
+  String get csS4LearningDelay;
+
+  /// No description provided for @csS4DownSyndrome.
+  ///
+  /// In en, this message translates to:
+  /// **'Down Syndrome'**
+  String get csS4DownSyndrome;
+
+  /// No description provided for @csS4OtherDiagnosis.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Diagnosis'**
+  String get csS4OtherDiagnosis;
+
+  /// No description provided for @csS4MedAssessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Assessments'**
+  String get csS4MedAssessTitle;
+
+  /// No description provided for @csS4NormalOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get csS4NormalOption;
+
+  /// No description provided for @csS4AbnormalOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Abnormal'**
+  String get csS4AbnormalOption;
+
+  /// No description provided for @csS4AssessmentNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment Notes'**
+  String get csS4AssessmentNotes;
+
+  /// No description provided for @csS4AuditoryVisual.
+  ///
+  /// In en, this message translates to:
+  /// **'Auditory/Visual'**
+  String get csS4AuditoryVisual;
+
+  /// No description provided for @csS4BrainScanEEG.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain Scan/EEG'**
+  String get csS4BrainScanEEG;
+
+  /// No description provided for @csS4GeneticTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Genetic Test'**
+  String get csS4GeneticTest;
+
+  /// No description provided for @csS4PsychoIQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Psychological/IQ'**
+  String get csS4PsychoIQ;
+
+  /// No description provided for @csS4DietAllergyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet and Allergies'**
+  String get csS4DietAllergyTitle;
+
+  /// No description provided for @csS4HasAllergiesQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Does the child have allergies?'**
+  String get csS4HasAllergiesQuestion;
+
+  /// No description provided for @csS4AllergyTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergy Type'**
+  String get csS4AllergyTypeLabel;
+
+  /// No description provided for @csS4AllergyTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., Peanuts, Dairy'**
+  String get csS4AllergyTypeHint;
+
+  /// No description provided for @csS4SpecialDietQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Is the child on a special diet?'**
+  String get csS4SpecialDietQuestion;
+
+  /// No description provided for @csS4GlutenFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten Free'**
+  String get csS4GlutenFree;
+
+  /// No description provided for @csS4CaseinFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Casein Free'**
+  String get csS4CaseinFree;
+
+  /// No description provided for @csS4Biometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric'**
+  String get csS4Biometric;
+
+  /// No description provided for @csS4OtherDiet.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Diet'**
+  String get csS4OtherDiet;
+
+  /// No description provided for @csS4OtherDietHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Specify other diet'**
+  String get csS4OtherDietHint;
+
+  /// No description provided for @csS4AltVaccinesQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Any alternative vaccines?'**
+  String get csS4AltVaccinesQuestion;
+
+  /// No description provided for @csS4AltVaccinesDescLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative Vaccines Description'**
+  String get csS4AltVaccinesDescLabel;
+
+  /// No description provided for @csS4AltVaccinesDescHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe alternative vaccines'**
+  String get csS4AltVaccinesDescHint;
+
+  /// No description provided for @csS4AllVaccinesOnTimeQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'All vaccines on time?'**
+  String get csS4AllVaccinesOnTimeQuestion;
+
+  /// No description provided for @csS4RemoveTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Treatment'**
+  String get csS4RemoveTreatment;
+
+  /// No description provided for @csS4TreatmentTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment Type'**
+  String get csS4TreatmentTypeLabel;
+
+  /// No description provided for @csS4TreatmentTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select treatment type'**
+  String get csS4TreatmentTypeHint;
+
+  /// No description provided for @csS4TreatmentSpeech.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech Therapy'**
+  String get csS4TreatmentSpeech;
+
+  /// No description provided for @csS4TreatmentOccupational.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupational Therapy'**
+  String get csS4TreatmentOccupational;
+
+  /// No description provided for @csS4TreatmentPhysical.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Therapy'**
+  String get csS4TreatmentPhysical;
+
+  /// No description provided for @csS4TreatmentABA.
+  ///
+  /// In en, this message translates to:
+  /// **'ABA Therapy'**
+  String get csS4TreatmentABA;
+
+  /// No description provided for @csS4TreatmentPsychological.
+  ///
+  /// In en, this message translates to:
+  /// **'Psychological Therapy'**
+  String get csS4TreatmentPsychological;
+
+  /// No description provided for @csS4TreatmentOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Therapy'**
+  String get csS4TreatmentOther;
+
+  /// No description provided for @csS4OrganizationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get csS4OrganizationLabel;
+
+  /// No description provided for @csS4OrganizationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., ABC Center'**
+  String get csS4OrganizationHint;
+
+  /// No description provided for @csS4ImprovementsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Improvements'**
+  String get csS4ImprovementsLabel;
+
+  /// No description provided for @csS4NotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Any additional notes'**
+  String get csS4NotesHint;
+
+  /// No description provided for @csS4MedNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication Name'**
+  String get csS4MedNameLabel;
+
+  /// No description provided for @csS4MedNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., Ritalin'**
+  String get csS4MedNameHint;
+
+  /// No description provided for @csS4DosageTimingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage & Timing'**
+  String get csS4DosageTimingLabel;
+
+  /// No description provided for @csS4DosageTimingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., 10mg morning'**
+  String get csS4DosageTimingHint;
+
+  /// No description provided for @csS4UsageDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Duration'**
+  String get csS4UsageDurationLabel;
+
+  /// No description provided for @csS4UsageDurationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., 6 months'**
+  String get csS4UsageDurationHint;
+
+  /// No description provided for @csS5Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Period Information'**
+  String get csS5Subtitle;
+
+  /// No description provided for @csS5SocialEmotionalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Social & Emotional Development'**
+  String get csS5SocialEmotionalTitle;
+
+  /// No description provided for @csS5SocialSmile.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Smile'**
+  String get csS5SocialSmile;
+
+  /// No description provided for @csS5KnowsFamilyMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Knows Family Members'**
+  String get csS5KnowsFamilyMembers;
+
+  /// No description provided for @csS5RespondsToName.
+  ///
+  /// In en, this message translates to:
+  /// **'Responds to Name'**
+  String get csS5RespondsToName;
+
+  /// No description provided for @csS5ShowsAffection.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows Affection'**
+  String get csS5ShowsAffection;
+
+  /// No description provided for @csS5ShyOrFearful.
+  ///
+  /// In en, this message translates to:
+  /// **'Shy or Fearful'**
+  String get csS5ShyOrFearful;
+
+  /// No description provided for @csS5CognitiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cognitive Development'**
+  String get csS5CognitiveTitle;
+
+  /// No description provided for @csS5ImitatesAdults.
+  ///
+  /// In en, this message translates to:
+  /// **'Imitates Adults'**
+  String get csS5ImitatesAdults;
+
+  /// No description provided for @csS5PutsObjectsInMouth.
+  ///
+  /// In en, this message translates to:
+  /// **'Puts Objects in Mouth'**
+  String get csS5PutsObjectsInMouth;
+
+  /// No description provided for @csS5RecognizesColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognizes Colors'**
+  String get csS5RecognizesColors;
+
+  /// No description provided for @csS5ImaginativePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Imaginative Play'**
+  String get csS5ImaginativePlay;
+
+  /// No description provided for @csS5FollowsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Follows Instructions'**
+  String get csS5FollowsInstructions;
+
+  /// No description provided for @csS5LanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Development'**
+  String get csS5LanguageTitle;
+
+  /// No description provided for @csS5Cooing.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooing'**
+  String get csS5Cooing;
+
+  /// No description provided for @csS5TwoWordPhrases.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Word Phrases'**
+  String get csS5TwoWordPhrases;
+
+  /// No description provided for @csS5UsesGestures.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses Gestures'**
+  String get csS5UsesGestures;
+
+  /// No description provided for @csS5RequestsByWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests by Words'**
+  String get csS5RequestsByWords;
+
+  /// No description provided for @csS5MotorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motor Development'**
+  String get csS5MotorTitle;
+
+  /// No description provided for @csS5SittingCrawling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sitting/Crawling'**
+  String get csS5SittingCrawling;
+
+  /// No description provided for @csS5JumpingClimbing.
+  ///
+  /// In en, this message translates to:
+  /// **'Jumping/Climbing'**
+  String get csS5JumpingClimbing;
+
+  /// No description provided for @csS5WalkingWithoutHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking Without Help'**
+  String get csS5WalkingWithoutHelp;
+
+  /// No description provided for @csS5HoldingPenDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Holding Pen/Drawing'**
+  String get csS5HoldingPenDrawing;
+
+  /// No description provided for @csS5KickingThrowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Kicking/Throwing'**
+  String get csS5KickingThrowing;
+
+  /// No description provided for @csS5MilestoneAgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone Ages'**
+  String get csS5MilestoneAgesTitle;
+
+  /// No description provided for @csS5SocialSmileMilestone.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Smile Age'**
+  String get csS5SocialSmileMilestone;
+
+  /// No description provided for @csS5AgeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Age in months'**
+  String get csS5AgeHint;
+
+  /// No description provided for @csS5IndependentSitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent Sitting'**
+  String get csS5IndependentSitting;
+
+  /// No description provided for @csS5IndependentWalking.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent Walking'**
+  String get csS5IndependentWalking;
+
+  /// No description provided for @csS5FirstFunctionalWord.
+  ///
+  /// In en, this message translates to:
+  /// **'First Functional Word'**
+  String get csS5FirstFunctionalWord;
+
+  /// No description provided for @csS5RegressionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Developmental Regression'**
+  String get csS5RegressionTitle;
+
+  /// No description provided for @csS5RegressionQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Any regression?'**
+  String get csS5RegressionQuestion;
+
+  /// No description provided for @csS5RegressionAgeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Regression Age'**
+  String get csS5RegressionAgeLabel;
+
+  /// No description provided for @csS5RegressionAgeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Age when regression occurred'**
+  String get csS5RegressionAgeHint;
+
+  /// No description provided for @csS5RegressionAgeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Age in months'**
+  String get csS5RegressionAgeNote;
+
+  /// No description provided for @csS5RegressionDetailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Regression Details'**
+  String get csS5RegressionDetailsLabel;
+
+  /// No description provided for @csS5RegressionDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide details of regression'**
+  String get csS5RegressionDetailsHint;
+
+  /// No description provided for @csS5NotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Any additional notes'**
+  String get csS5NotesHint;
+
+  /// No description provided for @downloadCaseStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Case Study'**
+  String get downloadCaseStudy;
+
+  /// No description provided for @fillCaseStudyForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill Case Study Form'**
+  String get fillCaseStudyForm;
+
+  /// No description provided for @totalFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Families'**
+  String get totalFamilies;
+
+  /// No description provided for @activeChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Children'**
+  String get activeChildren;
+
+  /// No description provided for @todayAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Appointments'**
+  String get todayAppointments;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @addFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Family'**
+  String get addFamily;
+
+  /// No description provided for @addChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Child'**
+  String get addChild;
+
+  /// No description provided for @newAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'New Appointment'**
+  String get newAppointment;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @manageDailySessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage daily therapy sessions'**
+  String get manageDailySessions;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @statusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmed;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @statusWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get statusWaiting;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// No description provided for @printReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Print Report'**
+  String get printReport;
+
+  /// No description provided for @addFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Family'**
+  String get addFamilyTitle;
+
+  /// No description provided for @addChildTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Child'**
+  String get addChildTitle;
+
+  /// No description provided for @newAppointmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule New Appointment'**
+  String get newAppointmentTitle;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @personalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInfo;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name (Family)'**
+  String get lastName;
+
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter name'**
+  String get nameHint;
+
+  /// No description provided for @usernameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get usernameLabel;
+
+  /// No description provided for @usernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Child ID number'**
+  String get usernameHint;
+
+  /// No description provided for @fatherMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s Mobile'**
+  String get fatherMobile;
+
+  /// No description provided for @fatherMobileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s mobile number'**
+  String get fatherMobileHint;
+
+  /// No description provided for @motherMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s Mobile'**
+  String get motherMobile;
+
+  /// No description provided for @motherMobileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s mobile number'**
+  String get motherMobileHint;
+
+  /// No description provided for @addChildrenSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Children'**
+  String get addChildrenSection;
+
+  /// No description provided for @assignChildrenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Children'**
+  String get assignChildrenTitle;
+
+  /// No description provided for @nationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID Number'**
+  String get nationalId;
+
+  /// No description provided for @nationalIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter child\'s national ID'**
+  String get nationalIdHint;
+
+  /// No description provided for @diagnosisLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis'**
+  String get diagnosisLabel;
+
+  /// No description provided for @diagnosisHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select diagnosis'**
+  String get diagnosisHint;
+
+  /// No description provided for @birthDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date (Gregorian)'**
+  String get birthDateLabel;
+
+  /// No description provided for @ageFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get ageFieldLabel;
+
+  /// No description provided for @ageFieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter child\'s age'**
+  String get ageFieldHint;
+
+  /// No description provided for @assignChildFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Child Family'**
+  String get assignChildFamilyTitle;
+
+  /// No description provided for @nextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get nextButton;
+
+  /// No description provided for @documentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsTitle;
+
+  /// No description provided for @addDocumentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Add Document'**
+  String get addDocumentLabel;
+
+  /// No description provided for @documentNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Name'**
+  String get documentNameLabel;
+
+  /// No description provided for @documentNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter document name'**
+  String get documentNameHint;
+
+  /// No description provided for @uploadDocumentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Document'**
+  String get uploadDocumentLabel;
+
+  /// No description provided for @selectChildLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Child'**
+  String get selectChildLabel;
+
+  /// No description provided for @selectTherapistLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Therapist'**
+  String get selectTherapistLabel;
+
+  /// No description provided for @selectTherapistHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select therapist'**
+  String get selectTherapistHint;
+
+  /// No description provided for @appointmentTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment Type'**
+  String get appointmentTypeLabel;
+
+  /// No description provided for @appointmentTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select appointment type'**
+  String get appointmentTypeHint;
+
+  /// No description provided for @selectDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDateLabel;
+
+  /// No description provided for @selectTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Time'**
+  String get selectTimeLabel;
+
+  /// No description provided for @scheduleScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment Schedule'**
+  String get scheduleScreenTitle;
+
+  /// No description provided for @assignFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Family'**
+  String get assignFamily;
+
+  /// No description provided for @selectFamilyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select child\'s family'**
+  String get selectFamilyHint;
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPasswordLabel;
+
+  /// No description provided for @newPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get newPasswordHint;
+
+  /// No description provided for @confirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirmPasswordLabel;
+
+  /// No description provided for @confirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get confirmPasswordHint;
+
+  /// No description provided for @passwordsMustMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsMustMatch;
+
+  /// No description provided for @genderSelectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select child\'s gender'**
+  String get genderSelectHint;
+
+  /// No description provided for @childNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Child Name'**
+  String get childNameLabel;
+
+  /// No description provided for @childNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter child\'s name'**
+  String get childNameHint;
+
+  /// No description provided for @saveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved successfully'**
+  String get saveSuccess;
+
+  /// No description provided for @scheduleDateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage daily therapy sessions'**
+  String get scheduleDateSubtitle;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get searchHint;
+
+  /// No description provided for @selectGenderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get selectGenderLabel;
+
+  /// No description provided for @appointmentTypeSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Therapy Session'**
+  String get appointmentTypeSession;
+
+  /// No description provided for @appointmentTypeAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment'**
+  String get appointmentTypeAssessment;
+
+  /// No description provided for @appointmentTypeFollowUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up'**
+  String get appointmentTypeFollowUp;
+
+  /// No description provided for @selectChildHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select child'**
+  String get selectChildHint;
 }
 
 class _AppLocalizationsDelegate
