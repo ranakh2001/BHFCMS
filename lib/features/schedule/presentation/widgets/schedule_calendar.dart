@@ -333,6 +333,8 @@ class _SessionDots extends StatelessWidget {
         return AppColors.error;
       case SessionStatus.waiting:
         return AppColors.warning;
+      case SessionStatus.postponed:
+        return const Color(0xFFFF9800);
       case SessionStatus.holiday:
         return AppColors.textSecondary.withValues(alpha: 0.5);
     }

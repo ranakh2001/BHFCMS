@@ -680,6 +680,8 @@ class _TableShell extends StatelessWidget {
             ),
             child: Row(
               children: [
+                const Expanded(child: SizedBox()),
+                const SizedBox(width: 8),
                 SizedBox(
                   width: radioColWidth,
                   child: Row(
@@ -700,7 +702,6 @@ class _TableShell extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                const Expanded(child: SizedBox()),
               ],
             ),
           ),

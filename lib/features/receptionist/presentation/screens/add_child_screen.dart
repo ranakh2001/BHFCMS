@@ -5,7 +5,14 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
+import '../../../../core/utils/pdf_picker.dart';
 import '../../../../core/utils/responsive_helper.dart';
+
+// ── Document type ─────────────────────────────────────────────────────────────
+
+enum _DocType { image, pdf }
+
+// ── Screen ────────────────────────────────────────────────────────────────────
 
 class AddChildScreen extends ConsumerStatefulWidget {
   const AddChildScreen({super.key});
@@ -110,7 +117,9 @@ class _AddChildScreenState extends ConsumerState<AddChildScreen> {
 
   Future<void> _addDocument(AppLocalizations l10n) async {
     final nameCtrl = TextEditingController();
-    XFile? pickedFile;
+    String? pickedPath;
+    String? pickedFileName;
+    _DocType? pickedType;
 
     await showModalBottomSheet<void>(
       context: context,
@@ -119,13 +128,19 @@ class _AddChildScreenState extends ConsumerState<AddChildScreen> {
       builder: (ctx) => _AddDocumentSheet(
         l10n: l10n,
         nameCtrl: nameCtrl,
-        onFilePicked: (file) => pickedFile = file,
+        onFilePicked: (path, fileName, type) {
+          pickedPath = path;
+          pickedFileName = fileName;
+          pickedType = type;
+        },
         onConfirm: () {
-          if (nameCtrl.text.isNotEmpty && pickedFile != null) {
+          if (nameCtrl.text.isNotEmpty && pickedPath != null) {
             setState(() {
               _documents.add(_DocumentEntry(
                 name: nameCtrl.text,
-                file: pickedFile!,
+                filePath: pickedPath!,
+                fileName: pickedFileName!,
+                type: pickedType!,
               ));
             });
             Navigator.of(ctx).pop();
@@ -341,7 +356,6 @@ class _Page1PersonalInfo extends StatelessWidget {
                       (v == null || v.isEmpty) ? l10n.fieldRequired : null,
                 ),
                 SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-                // Gender dropdown
                 _DropdownField<String>(
                   res: res,
                   isDark: isDark,
@@ -363,7 +377,6 @@ class _Page1PersonalInfo extends StatelessWidget {
                       selectedGender == null ? l10n.fieldRequired : null,
                 ),
                 SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-                // Diagnosis dropdown
                 _DropdownField<String>(
                   res: res,
                   isDark: isDark,
@@ -454,7 +467,6 @@ class _Page1PersonalInfo extends StatelessWidget {
                   keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: res.scaleHeight(AppSpacing.p16)),
-                // Family dropdown
                 _DropdownField<String>(
                   res: res,
                   isDark: isDark,
@@ -640,6 +652,8 @@ class _DocumentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPdf = entry.type == _DocType.pdf;
+
     return Container(
       margin: EdgeInsets.only(bottom: res.scaleHeight(AppSpacing.p8)),
       padding: EdgeInsets.all(res.scaleSpacing(AppSpacing.p12)),
@@ -654,27 +668,51 @@ class _DocumentTile extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // Thumbnail / icon
           Container(
             width: res.scaleWidth(44),
             height: res.scaleWidth(44),
             decoration: BoxDecoration(
+              color: isPdf
+                  ? Colors.red.withValues(alpha: 0.1)
+                  : Colors.transparent,
               borderRadius:
                   BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
-              image: DecorationImage(
-                image: FileImage(File(entry.file.path)),
-                fit: BoxFit.cover,
-              ),
+              image: isPdf
+                  ? null
+                  : DecorationImage(
+                      image: FileImage(File(entry.filePath)),
+                      fit: BoxFit.cover,
+                    ),
             ),
+            child: isPdf
+                ? Icon(Icons.picture_as_pdf_rounded,
+                    color: Colors.red[700],
+                    size: res.scaleText(26))
+                : null,
           ),
           SizedBox(width: res.scaleWidth(AppSpacing.p12)),
           Expanded(
-            child: Text(
-              entry.name,
-              style: TextStyle(
-                  fontSize: res.scaleText(14),
-                  fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white : AppColors.textPrimary),
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.name,
+                  style: TextStyle(
+                      fontSize: res.scaleText(14),
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : AppColors.textPrimary),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: res.scaleHeight(2)),
+                Text(
+                  entry.fileName,
+                  style: TextStyle(
+                      fontSize: res.scaleText(11),
+                      color: AppColors.textSecondary),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
           IconButton(
@@ -695,10 +733,13 @@ class _DocumentTile extends StatelessWidget {
 
 // ── Add Document bottom sheet ─────────────────────────────────────────────────
 
+typedef _FilePickedCallback = void Function(
+    String path, String fileName, _DocType type);
+
 class _AddDocumentSheet extends StatefulWidget {
   final AppLocalizations l10n;
   final TextEditingController nameCtrl;
-  final ValueChanged<XFile> onFilePicked;
+  final _FilePickedCallback onFilePicked;
   final VoidCallback onConfirm;
 
   const _AddDocumentSheet({
@@ -713,14 +754,37 @@ class _AddDocumentSheet extends StatefulWidget {
 }
 
 class _AddDocumentSheetState extends State<_AddDocumentSheet> {
-  XFile? _pickedFile;
+  String? _pickedPath;
+  String? _pickedDisplayName;
+  _DocType? _pickedType;
+  bool _isPickingPdf = false;
+
   final _picker = ImagePicker();
 
-  Future<void> _pick(ImageSource source) async {
+  Future<void> _pickImage(ImageSource source) async {
     final file = await _picker.pickImage(source: source, imageQuality: 85);
-    if (file != null) {
-      setState(() => _pickedFile = file);
-      widget.onFilePicked(file);
+    if (file != null && mounted) {
+      setState(() {
+        _pickedPath = file.path;
+        _pickedDisplayName = file.name;
+        _pickedType = _DocType.image;
+      });
+      widget.onFilePicked(file.path, file.name, _DocType.image);
+    }
+  }
+
+  Future<void> _pickPdf() async {
+    setState(() => _isPickingPdf = true);
+    final result = await PdfPicker.pick();
+    if (!mounted) return;
+    setState(() => _isPickingPdf = false);
+    if (result != null) {
+      setState(() {
+        _pickedPath = result.path;
+        _pickedDisplayName = result.name;
+        _pickedType = _DocType.pdf;
+      });
+      widget.onFilePicked(result.path, result.name, _DocType.pdf);
     }
   }
 
@@ -747,6 +811,7 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Drag handle
           Center(
             child: Container(
               width: res.scaleWidth(40),
@@ -758,12 +823,16 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
             ),
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p20)),
+
+          // Sheet title
           Text(l10n.addDocumentLabel,
               style: TextStyle(
                   fontSize: res.scaleText(16),
                   fontWeight: FontWeight.w700,
                   color: isDark ? Colors.white : AppColors.textPrimary)),
           SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+
+          // Document name field
           Text(l10n.documentNameLabel,
               style: TextStyle(
                   fontSize: res.scaleText(13),
@@ -778,12 +847,16 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
             decoration: _inputDeco(res, isDark, l10n.documentNameHint),
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+
+          // Upload section label
           Text(l10n.uploadDocumentLabel,
               style: TextStyle(
                   fontSize: res.scaleText(13),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white70 : AppColors.textPrimary)),
           SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+
+          // Three picker buttons: Camera | Gallery | PDF
           Row(
             children: [
               Expanded(
@@ -791,42 +864,74 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
                   res: res,
                   isDark: isDark,
                   icon: Icons.camera_alt_outlined,
-                  label: 'Camera',
-                  onTap: () => _pick(ImageSource.camera),
+                  label: l10n.cameraButton,
+                  onTap: () => _pickImage(ImageSource.camera),
                 ),
               ),
-              SizedBox(width: res.scaleWidth(AppSpacing.p12)),
+              SizedBox(width: res.scaleWidth(AppSpacing.p8)),
               Expanded(
                 child: _PickerSourceButton(
                   res: res,
                   isDark: isDark,
                   icon: Icons.photo_library_outlined,
-                  label: 'Gallery',
-                  onTap: () => _pick(ImageSource.gallery),
+                  label: l10n.galleryButton,
+                  onTap: () => _pickImage(ImageSource.gallery),
+                ),
+              ),
+              SizedBox(width: res.scaleWidth(AppSpacing.p8)),
+              Expanded(
+                child: _PickerSourceButton(
+                  res: res,
+                  isDark: isDark,
+                  icon: Icons.picture_as_pdf_rounded,
+                  label: l10n.pickPdfFile,
+                  iconColor: Colors.red[700],
+                  isLoading: _isPickingPdf,
+                  onTap: _pickPdf,
                 ),
               ),
             ],
           ),
-          if (_pickedFile != null) ...[
+
+          // Picked file indicator
+          if (_pickedPath != null) ...[
             SizedBox(height: res.scaleHeight(AppSpacing.p12)),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
               padding: EdgeInsets.all(res.scaleSpacing(AppSpacing.p8)),
               decoration: BoxDecoration(
-                color: AppColors.success.withValues(alpha: 0.1),
-                borderRadius:
-                    BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
+                color: _pickedType == _DocType.pdf
+                    ? Colors.red.withValues(alpha: 0.08)
+                    : AppColors.success.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(
+                    res.scaleRadius(AppSpacing.radiusMd)),
+                border: Border.all(
+                  color: _pickedType == _DocType.pdf
+                      ? Colors.red.withValues(alpha: 0.3)
+                      : AppColors.success.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle_outline_rounded,
-                      color: AppColors.success, size: res.scaleText(18)),
+                  Icon(
+                    _pickedType == _DocType.pdf
+                        ? Icons.picture_as_pdf_rounded
+                        : Icons.check_circle_outline_rounded,
+                    color: _pickedType == _DocType.pdf
+                        ? Colors.red[700]
+                        : AppColors.success,
+                    size: res.scaleText(18),
+                  ),
                   SizedBox(width: res.scaleWidth(8)),
                   Expanded(
                     child: Text(
-                      _pickedFile!.name,
+                      _pickedDisplayName ?? '',
                       style: TextStyle(
                           fontSize: res.scaleText(13),
-                          color: AppColors.success),
+                          fontWeight: FontWeight.w500,
+                          color: _pickedType == _DocType.pdf
+                              ? Colors.red[700]
+                              : AppColors.success),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -834,12 +939,15 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
               ),
             ),
           ],
+
           SizedBox(height: res.scaleHeight(AppSpacing.p20)),
+
+          // Confirm button
           SizedBox(
             width: double.infinity,
             height: res.scaleHeight(50),
             child: ElevatedButton(
-              onPressed: (_pickedFile != null &&
+              onPressed: (_pickedPath != null &&
                       widget.nameCtrl.text.isNotEmpty)
                   ? widget.onConfirm
                   : null,
@@ -865,12 +973,16 @@ class _AddDocumentSheetState extends State<_AddDocumentSheet> {
   }
 }
 
+// ── Picker source button ──────────────────────────────────────────────────────
+
 class _PickerSourceButton extends StatelessWidget {
   final ResponsiveHelper res;
   final bool isDark;
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final Color? iconColor;
+  final bool isLoading;
 
   const _PickerSourceButton({
     required this.res,
@@ -878,12 +990,16 @@ class _PickerSourceButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.iconColor,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final effectiveIconColor = iconColor ?? AppColors.primary;
+
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       borderRadius:
           BorderRadius.circular(res.scaleRadius(AppSpacing.radiusLg)),
       child: Container(
@@ -898,13 +1014,22 @@ class _PickerSourceButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: AppColors.primary, size: res.scaleText(28)),
+            isLoading
+                ? SizedBox(
+                    width: res.scaleText(24),
+                    height: res.scaleText(24),
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: effectiveIconColor),
+                  )
+                : Icon(icon,
+                    color: effectiveIconColor, size: res.scaleText(28)),
             SizedBox(height: res.scaleHeight(6)),
             Text(label,
                 style: TextStyle(
-                    fontSize: res.scaleText(13),
+                    fontSize: res.scaleText(12),
                     fontWeight: FontWeight.w500,
-                    color: isDark ? Colors.white70 : AppColors.textSecondary)),
+                    color:
+                        isDark ? Colors.white70 : AppColors.textSecondary)),
           ],
         ),
       ),
@@ -912,12 +1037,20 @@ class _PickerSourceButton extends StatelessWidget {
   }
 }
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Data model ────────────────────────────────────────────────────────────────
 
 class _DocumentEntry {
   final String name;
-  final XFile file;
-  const _DocumentEntry({required this.name, required this.file});
+  final String filePath;
+  final String fileName;
+  final _DocType type;
+
+  const _DocumentEntry({
+    required this.name,
+    required this.filePath,
+    required this.fileName,
+    required this.type,
+  });
 }
 
 // ── Shared form widgets ───────────────────────────────────────────────────────

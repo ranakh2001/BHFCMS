@@ -877,5 +877,13 @@
   "appointmentTypeSession": "جلسة علاجية",
   "appointmentTypeAssessment": "تقييم",
   "appointmentTypeFollowUp": "متابعة",
-  "selectChildHint": "اختر الطفل"
+  "selectChildHint": "اختر الطفل",
+  "cameraButton": "كاميرا",
+  "galleryButton": "المعرض",
+  "pickPdfFile": "ملف PDF",
+  "statusPostponed": "مؤجل",
+  "appointmentDetails": "تفاصيل الموعد",
+  "changeStatus": "تغيير الحالة",
+  "notesOptionalHint": "ملاحظات (اختياري)...",
+  "addAppointment": "إضافة موعد"
 }

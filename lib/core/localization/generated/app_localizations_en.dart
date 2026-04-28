@@ -2709,4 +2709,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectChildHint => 'Select child';
+
+  @override
+  String get cameraButton => 'Camera';
+
+  @override
+  String get galleryButton => 'Gallery';
+
+  @override
+  String get pickPdfFile => 'PDF File';
+
+  @override
+  String get statusPostponed => 'Postponed';
+
+  @override
+  String get appointmentDetails => 'Appointment Details';
+
+  @override
+  String get changeStatus => 'Change Status';
+
+  @override
+  String get notesOptionalHint => 'Notes (optional)...';
+
+  @override
+  String get addAppointment => 'Add Appointment';
 }

@@ -5335,6 +5335,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select child'**
   String get selectChildHint;
+
+  /// No description provided for @cameraButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get cameraButton;
+
+  /// No description provided for @galleryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get galleryButton;
+
+  /// No description provided for @pickPdfFile.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF File'**
+  String get pickPdfFile;
+
+  /// No description provided for @statusPostponed.
+  ///
+  /// In en, this message translates to:
+  /// **'Postponed'**
+  String get statusPostponed;
+
+  /// No description provided for @appointmentDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment Details'**
+  String get appointmentDetails;
+
+  /// No description provided for @changeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Status'**
+  String get changeStatus;
+
+  /// No description provided for @notesOptionalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)...'**
+  String get notesOptionalHint;
+
+  /// No description provided for @addAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Appointment'**
+  String get addAppointment;
 }
 
 class _AppLocalizationsDelegate

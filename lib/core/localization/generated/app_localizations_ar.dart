@@ -2666,4 +2666,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectChildHint => 'اختر الطفل';
+
+  @override
+  String get cameraButton => 'كاميرا';
+
+  @override
+  String get galleryButton => 'المعرض';
+
+  @override
+  String get pickPdfFile => 'ملف PDF';
+
+  @override
+  String get statusPostponed => 'مؤجل';
+
+  @override
+  String get appointmentDetails => 'تفاصيل الموعد';
+
+  @override
+  String get changeStatus => 'تغيير الحالة';
+
+  @override
+  String get notesOptionalHint => 'ملاحظات (اختياري)...';
+
+  @override
+  String get addAppointment => 'إضافة موعد';
 }

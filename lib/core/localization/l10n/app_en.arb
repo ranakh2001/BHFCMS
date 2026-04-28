@@ -922,5 +922,13 @@
   "appointmentTypeSession": "Therapy Session",
   "appointmentTypeAssessment": "Assessment",
   "appointmentTypeFollowUp": "Follow-up",
-  "selectChildHint": "Select child"
+  "selectChildHint": "Select child",
+  "cameraButton": "Camera",
+  "galleryButton": "Gallery",
+  "pickPdfFile": "PDF File",
+  "statusPostponed": "Postponed",
+  "appointmentDetails": "Appointment Details",
+  "changeStatus": "Change Status",
+  "notesOptionalHint": "Notes (optional)...",
+  "addAppointment": "Add Appointment"
 }
