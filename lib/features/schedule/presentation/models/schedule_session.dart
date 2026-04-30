@@ -1,4 +1,4 @@
-enum SessionStatus { upcoming, completed, holiday, confirmed, cancelled, waiting, postponed }
+enum SessionStatus { upcoming, completed, holiday, confirmed, cancelled, waiting, postponed, deleted }
 
 class ScheduleSession {
   final String id;

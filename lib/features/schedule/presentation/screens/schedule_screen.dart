@@ -21,7 +21,7 @@ class ScheduleScreen extends ConsumerStatefulWidget {
 class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   int _selectedTherapistIndex = 0;
 
-  final List<_TherapistData> _therapists = [
+  final List<_TherapistData> _therapists = const [
     _TherapistData(
       name: 'د. سارة الأحمد',
       initials: 'د.أ',
@@ -48,8 +48,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     final notifier = ref.read(scheduleProvider.notifier);
     final user = ref.watch(currentUserProvider);
     final isReceptionist = user?.role == UserRole.receptionist;
+    final isSupervisor = user?.role == UserRole.supervisor;
 
-    if (!isReceptionist) {
+    if (!isReceptionist && !isSupervisor) {
       return _NonReceptionistSchedule(
         state: state,
         notifier: notifier,
@@ -68,6 +69,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
       therapists: _therapists,
       selectedTherapistIndex: _selectedTherapistIndex,
       onTherapistSelected: (i) => setState(() => _selectedTherapistIndex = i),
+      readOnly: isSupervisor,
     );
   }
 }
@@ -127,6 +129,13 @@ class _NonReceptionistSchedule extends StatelessWidget {
                 onNextMonth: notifier.nextMonth,
                 onDateSelected: notifier.selectDate,
               ),
+              SizedBox(height: res.scaleHeight(AppSpacing.p20)),
+              _SessionsSummaryCard(
+                sessions: state.sessions,
+                displayedMonth: state.displayedMonth,
+                res: res,
+                isDark: isDark,
+              ),
               SizedBox(height: res.scaleHeight(AppSpacing.p24)),
               if (state.selectedDate != null)
                 _SelectedDayPanel(
@@ -167,6 +176,7 @@ class _ReceptionistSchedule extends StatefulWidget {
   final List<_TherapistData> therapists;
   final int selectedTherapistIndex;
   final ValueChanged<int> onTherapistSelected;
+  final bool readOnly;
 
   const _ReceptionistSchedule({
     required this.state,
@@ -177,6 +187,7 @@ class _ReceptionistSchedule extends StatefulWidget {
     required this.therapists,
     required this.selectedTherapistIndex,
     required this.onTherapistSelected,
+    this.readOnly = false,
   });
 
   @override
@@ -195,11 +206,36 @@ class _ReceptionistScheduleState extends State<_ReceptionistSchedule> {
     _selectedDay = DateTime(now.year, now.month, now.day);
     _focusedWeekStart = _getWeekStart(_selectedDay);
     _sessions = [
-      const _TimelineSession(hour: 9, childName: 'ياسين محمد', status: SessionStatus.confirmed, therapistIndex: 0),
-      const _TimelineSession(hour: 10, childName: 'عمر فاروق', status: SessionStatus.confirmed, therapistIndex: 1),
-      const _TimelineSession(hour: 11, childName: 'فهد العتيبي', status: SessionStatus.cancelled, therapistIndex: 0),
-      const _TimelineSession(hour: 13, childName: 'زيد السلطان', status: SessionStatus.waiting, therapistIndex: 1),
-      const _TimelineSession(hour: 14, childName: 'ليلى إبراهيم', status: SessionStatus.upcoming, therapistIndex: 2),
+      const _TimelineSession(
+        hour: 9,
+        childName: 'ياسين محمد',
+        status: SessionStatus.confirmed,
+        therapistIndex: 0,
+      ),
+      const _TimelineSession(
+        hour: 10,
+        childName: 'عمر فاروق',
+        status: SessionStatus.confirmed,
+        therapistIndex: 1,
+      ),
+      const _TimelineSession(
+        hour: 11,
+        childName: 'فهد العتيبي',
+        status: SessionStatus.cancelled,
+        therapistIndex: 0,
+      ),
+      const _TimelineSession(
+        hour: 13,
+        childName: 'زيد السلطان',
+        status: SessionStatus.waiting,
+        therapistIndex: 1,
+      ),
+      const _TimelineSession(
+        hour: 14,
+        childName: 'ليلى إبراهيم',
+        status: SessionStatus.upcoming,
+        therapistIndex: 2,
+      ),
     ];
   }
 
@@ -224,13 +260,15 @@ class _ReceptionistScheduleState extends State<_ReceptionistSchedule> {
         isDark: widget.isDark,
         onConfirm: (childName, tIdx, notes) {
           setState(() {
-            _sessions.add(_TimelineSession(
-              hour: hour,
-              childName: childName,
-              status: SessionStatus.confirmed,
-              therapistIndex: tIdx,
-              notes: notes?.isNotEmpty == true ? notes : null,
-            ));
+            _sessions.add(
+              _TimelineSession(
+                hour: hour,
+                childName: childName,
+                status: SessionStatus.confirmed,
+                therapistIndex: tIdx,
+                notes: notes?.isNotEmpty == true ? notes : null,
+              ),
+            );
           });
         },
       ),
@@ -247,10 +285,13 @@ class _ReceptionistScheduleState extends State<_ReceptionistSchedule> {
         therapist: widget.therapists[session.therapistIndex],
         res: widget.res,
         isDark: widget.isDark,
+        readOnly: widget.readOnly,
         onStatusChanged: (newStatus) {
           setState(() {
             final idx = _sessions.indexWhere(
-              (s) => s.hour == session.hour && s.therapistIndex == session.therapistIndex,
+              (s) =>
+                  s.hour == session.hour &&
+                  s.therapistIndex == session.therapistIndex,
             );
             if (idx != -1) {
               _sessions[idx] = _sessions[idx].copyWith(status: newStatus);
@@ -352,7 +393,7 @@ class _ReceptionistScheduleState extends State<_ReceptionistSchedule> {
                   res: res,
                   isDark: isDark,
                   l10n: l10n,
-                  onEmptySlotTap: _onEmptySlotTap,
+                  onEmptySlotTap: widget.readOnly ? null : _onEmptySlotTap,
                   onSessionTap: _onSessionTap,
                 ),
               ),
@@ -665,6 +706,8 @@ class _TimelineView extends StatelessWidget {
         return AppColors.primary;
       case SessionStatus.completed:
         return AppColors.secondary;
+      case SessionStatus.deleted:
+        return const Color(0xFF607D8B);
       case SessionStatus.holiday:
         return AppColors.textSecondary;
     }
@@ -684,6 +727,8 @@ class _TimelineView extends StatelessWidget {
         return l10n.upcomingSessions;
       case SessionStatus.completed:
         return l10n.statusCompleted;
+      case SessionStatus.deleted:
+        return l10n.deletedSessions;
       case SessionStatus.holiday:
         return l10n.holidayLegend;
     }
@@ -730,7 +775,9 @@ class _TimelineView extends StatelessWidget {
                     final sessionsByTherapist = List.generate(
                       therapists.length,
                       (tIdx) => sessions
-                          .where((s) => s.hour == hour && s.therapistIndex == tIdx)
+                          .where(
+                            (s) => s.hour == hour && s.therapistIndex == tIdx,
+                          )
                           .firstOrNull,
                     );
 
@@ -948,8 +995,8 @@ class _SessionBlock extends StatelessWidget {
           decoration: BoxDecoration(
             color: onEmptyTap != null
                 ? (isDark
-                    ? Colors.white.withValues(alpha: 0.03)
-                    : Colors.grey.withValues(alpha: 0.04))
+                      ? Colors.white.withValues(alpha: 0.03)
+                      : Colors.grey.withValues(alpha: 0.04))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(
               res.scaleRadius(AppSpacing.radiusLg),
@@ -1051,7 +1098,8 @@ class _AddAppointmentSheet extends StatefulWidget {
   final int selectedTherapistIndex;
   final ResponsiveHelper res;
   final bool isDark;
-  final void Function(String childName, int therapistIndex, String? notes) onConfirm;
+  final void Function(String childName, int therapistIndex, String? notes)
+  onConfirm;
 
   const _AddAppointmentSheet({
     required this.therapists,
@@ -1215,8 +1263,7 @@ class _AddAppointmentSheetState extends State<_AddAppointmentSheet> {
                   ),
                 ),
                 isExpanded: true,
-                dropdownColor:
-                    isDark ? AppColors.surfaceDark : Colors.white,
+                dropdownColor: isDark ? AppColors.surfaceDark : Colors.white,
                 icon: Padding(
                   padding: EdgeInsets.only(right: res.scaleSpacing(8)),
                   child: Icon(
@@ -1310,8 +1357,9 @@ class _AddAppointmentSheetState extends State<_AddAppointmentSheet> {
                       children: [
                         CircleAvatar(
                           radius: res.scaleWidth(12),
-                          backgroundColor:
-                              t.color.withValues(alpha: selected ? 0.2 : 0.1),
+                          backgroundColor: t.color.withValues(
+                            alpha: selected ? 0.2 : 0.1,
+                          ),
                           child: Text(
                             t.initials,
                             style: TextStyle(
@@ -1332,9 +1380,7 @@ class _AddAppointmentSheetState extends State<_AddAppointmentSheet> {
                             fontWeight: selected
                                 ? FontWeight.w700
                                 : FontWeight.w500,
-                            color: selected
-                                ? t.color
-                                : AppColors.textSecondary,
+                            color: selected ? t.color : AppColors.textSecondary,
                           ),
                         ),
                       ],
@@ -1470,6 +1516,7 @@ class _AppointmentDetailSheet extends StatefulWidget {
   final _TherapistData therapist;
   final ResponsiveHelper res;
   final bool isDark;
+  final bool readOnly;
   final void Function(SessionStatus newStatus) onStatusChanged;
 
   const _AppointmentDetailSheet({
@@ -1478,6 +1525,7 @@ class _AppointmentDetailSheet extends StatefulWidget {
     required this.res,
     required this.isDark,
     required this.onStatusChanged,
+    this.readOnly = false,
   });
 
   @override
@@ -1508,6 +1556,8 @@ class _AppointmentDetailSheetState extends State<_AppointmentDetailSheet> {
         return AppColors.primary;
       case SessionStatus.completed:
         return AppColors.secondary;
+      case SessionStatus.deleted:
+        return const Color(0xFF607D8B);
       case SessionStatus.holiday:
         return AppColors.textSecondary;
     }
@@ -1527,6 +1577,8 @@ class _AppointmentDetailSheetState extends State<_AppointmentDetailSheet> {
         return l10n.upcomingSessions;
       case SessionStatus.completed:
         return l10n.statusCompleted;
+      case SessionStatus.deleted:
+        return l10n.deletedSessions;
       case SessionStatus.holiday:
         return l10n.holidayLegend;
     }
@@ -1563,7 +1615,8 @@ class _AppointmentDetailSheetState extends State<_AppointmentDetailSheet> {
         left: res.scaleSpacing(AppSpacing.p20),
         right: res.scaleSpacing(AppSpacing.p20),
         top: res.scaleHeight(AppSpacing.p16),
-        bottom: res.scaleHeight(AppSpacing.p24) +
+        bottom:
+            res.scaleHeight(AppSpacing.p24) +
             MediaQuery.of(context).padding.bottom,
       ),
       child: Column(
@@ -1643,61 +1696,59 @@ class _AppointmentDetailSheetState extends State<_AppointmentDetailSheet> {
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p20)),
 
-          // Change status label
-          Text(
-            l10n.changeStatus,
-            style: TextStyle(
-              fontSize: res.scaleText(12),
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+          // Change status — hidden for supervisor (read-only)
+          if (!widget.readOnly) ...[
+            Text(
+              l10n.changeStatus,
+              style: TextStyle(
+                fontSize: res.scaleText(12),
+                fontWeight: FontWeight.w600,
+                color: AppColors.textSecondary,
+              ),
             ),
-          ),
-          SizedBox(height: res.scaleHeight(AppSpacing.p8)),
-
-          // Status option chips
-          Wrap(
-            spacing: res.scaleSpacing(AppSpacing.p8),
-            runSpacing: res.scaleHeight(AppSpacing.p8),
-            children: statusOptions.map((s) {
-              final isSelected = _currentStatus == s;
-              final color = _statusColor(s);
-              return GestureDetector(
-                onTap: () {
-                  setState(() => _currentStatus = s);
-                  Navigator.pop(context);
-                  widget.onStatusChanged(s);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 160),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: res.scaleSpacing(AppSpacing.p16),
-                    vertical: res.scaleHeight(AppSpacing.p8),
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? color
-                        : color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(
-                      res.scaleRadius(AppSpacing.radiusLg),
+            SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+            Wrap(
+              spacing: res.scaleSpacing(AppSpacing.p8),
+              runSpacing: res.scaleHeight(AppSpacing.p8),
+              children: statusOptions.map((s) {
+                final isSelected = _currentStatus == s;
+                final color = _statusColor(s);
+                return GestureDetector(
+                  onTap: () {
+                    setState(() => _currentStatus = s);
+                    Navigator.pop(context);
+                    widget.onStatusChanged(s);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 160),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: res.scaleSpacing(AppSpacing.p16),
+                      vertical: res.scaleHeight(AppSpacing.p8),
                     ),
-                    border: Border.all(
-                      color: color,
-                      width: isSelected ? 0 : 1,
+                    decoration: BoxDecoration(
+                      color: isSelected ? color : color.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(
+                        res.scaleRadius(AppSpacing.radiusLg),
+                      ),
+                      border: Border.all(
+                        color: color,
+                        width: isSelected ? 0 : 1,
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    _statusLabel(s, l10n),
-                    style: TextStyle(
-                      fontSize: res.scaleText(13),
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : color,
+                    child: Text(
+                      _statusLabel(s, l10n),
+                      style: TextStyle(
+                        fontSize: res.scaleText(13),
+                        fontWeight: FontWeight.w600,
+                        color: isSelected ? Colors.white : color,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+          ],
         ],
       ),
     );
@@ -1725,11 +1776,7 @@ class _DetailRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: res.scaleWidth(16),
-          color: AppColors.textSecondary,
-        ),
+        Icon(icon, size: res.scaleWidth(16), color: AppColors.textSecondary),
         SizedBox(width: res.scaleSpacing(AppSpacing.p8)),
         Text(
           '$label:',
@@ -1748,8 +1795,8 @@ class _DetailRow extends StatelessWidget {
             style: TextStyle(
               fontSize: res.scaleText(13),
               fontWeight: FontWeight.w600,
-              color: valueColor ??
-                  (isDark ? Colors.white : AppColors.textPrimary),
+              color:
+                  valueColor ?? (isDark ? Colors.white : AppColors.textPrimary),
             ),
           ),
         ),
@@ -1795,7 +1842,7 @@ class _SelectedDayPanel extends StatelessWidget {
           ),
         ),
         SizedBox(height: res.scaleHeight(AppSpacing.p12)),
-        if (sessions.isEmpty)
+        if (sessions.where((s) => s.status != SessionStatus.holiday).isEmpty)
           _EmptyDay(res: res, l10n: l10n, isDark: isDark)
         else
           ...sessions
@@ -1813,8 +1860,6 @@ class _SelectedDayPanel extends StatelessWidget {
                   ),
                 ),
               ),
-        if (sessions.any((s) => s.status == SessionStatus.holiday))
-          _HolidayCard(res: res, l10n: l10n, isDark: isDark),
       ],
     );
   }
@@ -1923,6 +1968,8 @@ class _SessionCard extends StatelessWidget {
         return AppColors.warning;
       case SessionStatus.postponed:
         return const Color(0xFFFF9800);
+      case SessionStatus.deleted:
+        return const Color(0xFF607D8B);
       case SessionStatus.holiday:
         return AppColors.textSecondary;
     }
@@ -1942,6 +1989,8 @@ class _SessionCard extends StatelessWidget {
         return l10n.statusWaiting;
       case SessionStatus.postponed:
         return l10n.statusPostponed;
+      case SessionStatus.deleted:
+        return l10n.deletedSessions;
       case SessionStatus.holiday:
         return l10n.holidayLegend;
     }
@@ -2067,74 +2116,147 @@ class _SessionCard extends StatelessWidget {
   }
 }
 
-class _HolidayCard extends StatelessWidget {
+// ── Sessions Summary Card ─────────────────────────────────────────────────────
+
+class _SessionsSummaryCard extends StatelessWidget {
+  final SessionMap sessions;
+  final DateTime displayedMonth;
   final ResponsiveHelper res;
-  final AppLocalizations l10n;
   final bool isDark;
 
-  const _HolidayCard({
+  const _SessionsSummaryCard({
+    required this.sessions,
+    required this.displayedMonth,
     required this.res,
-    required this.l10n,
     required this.isDark,
+  });
+
+  int _countStatus(SessionStatus status) {
+    int count = 0;
+    for (final entry in sessions.entries) {
+      if (entry.key.year == displayedMonth.year &&
+          entry.key.month == displayedMonth.month) {
+        count += entry.value.where((s) => s.status == status).length;
+      }
+    }
+    return count;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final cancelled = _countStatus(SessionStatus.cancelled);
+    final incomplete =
+        _countStatus(SessionStatus.waiting) +
+        _countStatus(SessionStatus.postponed);
+    final completed = _countStatus(SessionStatus.completed);
+    final deleted = _countStatus(SessionStatus.deleted);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: res.scaleHeight(10),
+            right: res.scaleWidth(4),
+          ),
+          child: Text(
+            l10n.monthlySessionsTitle,
+            style: TextStyle(
+              fontSize: res.scaleText(15),
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white : AppColors.textPrimary,
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            _SummaryBox(
+              count: completed,
+              label: l10n.statusCompleted,
+              color: AppColors.success,
+              res: res,
+            ),
+            SizedBox(width: res.scaleWidth(8)),
+            _SummaryBox(
+              count: cancelled,
+              label: l10n.cancelledSessions,
+              color: AppColors.error,
+              res: res,
+            ),
+            SizedBox(width: res.scaleWidth(8)),
+            _SummaryBox(
+              count: incomplete,
+              label: l10n.incompleteSessions,
+              color: AppColors.warning,
+              res: res,
+            ),
+            SizedBox(width: res.scaleWidth(8)),
+            _SummaryBox(
+              count: deleted,
+              label: l10n.deletedSessions,
+              color: const Color(0xFF607D8B),
+              res: res,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _SummaryBox extends StatelessWidget {
+  final int count;
+  final String label;
+  final Color color;
+  final ResponsiveHelper res;
+
+  const _SummaryBox({
+    required this.count,
+    required this.label,
+    required this.color,
+    required this.res,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(
-          res.scaleRadius(AppSpacing.radiusXl),
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: res.scaleHeight(14),
+          horizontal: res.scaleSpacing(6),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(
+            res.scaleRadius(AppSpacing.radiusXl),
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: res.scaleWidth(4),
-            height: res.scaleHeight(56),
-            decoration: BoxDecoration(
-              color: AppColors.textSecondary.withValues(alpha: 0.4),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(res.scaleRadius(AppSpacing.radiusXl)),
-                bottomLeft: Radius.circular(
-                  res.scaleRadius(AppSpacing.radiusXl),
-                ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '$count',
+              style: TextStyle(
+                fontSize: res.scaleText(22),
+                fontWeight: FontWeight.w800,
+                color: color,
               ),
             ),
-          ),
-          SizedBox(width: res.scaleWidth(AppSpacing.p12)),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: res.scaleHeight(AppSpacing.p16),
+            SizedBox(height: res.scaleHeight(4)),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: res.scaleText(10),
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.beach_access_rounded,
-                  size: res.scaleWidth(18),
-                  color: AppColors.textSecondary,
-                ),
-                SizedBox(width: res.scaleWidth(AppSpacing.p8)),
-                Text(
-                  l10n.holidayLegend,
-                  style: TextStyle(
-                    fontSize: res.scaleText(14),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

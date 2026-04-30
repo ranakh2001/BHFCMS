@@ -29,6 +29,16 @@ class RolePermissions {
       AppPermission.manageAppointments,
       AppPermission.manageRegistrations,
     },
+    UserRole.supervisor: {
+      AppPermission.viewChildren,
+      AppPermission.manageChildren,
+      AppPermission.viewAiSuggestions,
+      AppPermission.viewSchedule,
+      AppPermission.sendMessages,
+      AppPermission.viewReports,
+      // No manageSchedule, manageAppointments, manageRegistrations
+      // Supervisor can view but not edit appointments
+    },
   };
 
   static Set<AppPermission> permissionsFor(UserRole role) =>

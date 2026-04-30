@@ -53,7 +53,11 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
     _PlanGoal(
       name: 'تحسين التواصل البصري',
       status: _GoalStatus.notStarted,
-      subGoals: ['التركيز على المتحدث', 'المحافظة على التواصل', 'التواصل في مجموعات'],
+      subGoals: [
+        'التركيز على المتحدث',
+        'المحافظة على التواصل',
+        'التواصل في مجموعات',
+      ],
     ),
   ];
 
@@ -77,7 +81,7 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
         res.scaleHeight(80),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Current plan card
           _buildPlanCard(context, l10n, res, isDark),
@@ -94,7 +98,10 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p12)),
           // Goals list
-          ...List.generate(_goals.length, (i) => _buildGoalItem(i, res, isDark, l10n, widget.canEdit)),
+          ...List.generate(
+            _goals.length,
+            (i) => _buildGoalItem(i, res, isDark, l10n, widget.canEdit),
+          ),
         ],
       ),
     );
@@ -110,8 +117,12 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
       padding: EdgeInsets.all(res.scaleSpacing(AppSpacing.p16)),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusLg)),
-        border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(
+          res.scaleRadius(AppSpacing.radiusLg),
+        ),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.04),
@@ -121,10 +132,9 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
                 l10n.currentTreatmentPlan,
@@ -134,15 +144,34 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
                 ),
               ),
               SizedBox(width: res.scaleWidth(6)),
-              Icon(Icons.calendar_today_outlined, color: AppColors.textSecondary, size: res.scaleText(14)),
+              Icon(
+                Icons.calendar_today_outlined,
+                color: AppColors.textSecondary,
+                size: res.scaleText(14),
+              ),
             ],
           ),
           SizedBox(height: res.scaleHeight(8)),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              Flexible(
+                child: Text(
+                  'خطة تحسين النطق و التواصل',
+                  style: TextStyle(
+                    fontSize: res.scaleText(16),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                  textAlign: TextAlign.end,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(width: res.scaleWidth(8)),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(8), vertical: res.scaleHeight(2)),
+                padding: EdgeInsets.symmetric(
+                  horizontal: res.scaleSpacing(8),
+                  vertical: res.scaleHeight(2),
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.success.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
@@ -156,19 +185,6 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
                   ),
                 ),
               ),
-              SizedBox(width: res.scaleWidth(8)),
-              Flexible(
-                child: Text(
-                  'خطة تحسين النطق و التواصل',
-                  style: TextStyle(
-                    fontSize: res.scaleText(16),
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
-                  textAlign: TextAlign.end,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
             ],
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p12)),
@@ -176,7 +192,9 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
           SizedBox(height: res.scaleHeight(AppSpacing.p8)),
           _infoRow(
             l10n.planDuration,
-            Localizations.localeOf(context).languageCode == 'ar' ? '8 أسابيع' : '8 weeks',
+            Localizations.localeOf(context).languageCode == 'ar'
+                ? '8 أسابيع'
+                : '8 weeks',
             res,
             isDark,
           ),
@@ -187,24 +205,29 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
     );
   }
 
-  Widget _infoRow(String label, String value, ResponsiveHelper res, bool isDark) {
+  Widget _infoRow(
+    String label,
+    String value,
+    ResponsiveHelper res,
+    bool isDark,
+  ) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        Text(
+          '$label:',
+          style: TextStyle(
+            fontSize: res.scaleText(13),
+            color: AppColors.textSecondary,
+          ),
+        ),
+
+        SizedBox(width: res.scaleWidth(8)),
         Text(
           value,
           style: TextStyle(
             fontSize: res.scaleText(13),
             color: isDark ? Colors.white : AppColors.textPrimary,
             fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(width: res.scaleWidth(8)),
-        Text(
-          '$label:',
-          style: TextStyle(
-            fontSize: res.scaleText(13),
-            color: AppColors.textSecondary,
           ),
         ),
       ],
@@ -225,10 +248,15 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
       margin: EdgeInsets.only(bottom: res.scaleHeight(AppSpacing.p8)),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
-        border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(
+          res.scaleRadius(AppSpacing.radiusMd),
+        ),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Goal header row
           GestureDetector(
@@ -241,20 +269,23 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AnimatedRotation(
-                    turns: goal.expanded ? 0.25 : 0,
-                    duration: const Duration(milliseconds: 200),
-                    child: Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      color: AppColors.textSecondary,
-                      size: res.scaleText(22),
-                    ),
-                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Text(
+                        goal.name,
+                        style: TextStyle(
+                          fontSize: res.scaleText(14),
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
+                      SizedBox(width: res.scaleWidth(8)),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(8), vertical: res.scaleHeight(2)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: res.scaleSpacing(8),
+                          vertical: res.scaleHeight(2),
+                        ),
                         decoration: BoxDecoration(
                           color: statusColor.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(20),
@@ -268,16 +299,16 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
                           ),
                         ),
                       ),
-                      SizedBox(width: res.scaleWidth(8)),
-                      Text(
-                        goal.name,
-                        style: TextStyle(
-                          fontSize: res.scaleText(14),
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : AppColors.textPrimary,
-                        ),
-                      ),
                     ],
+                  ),
+                  AnimatedRotation(
+                    turns: goal.expanded ? 0.25 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.keyboard_arrow_left_rounded,
+                      color: AppColors.textSecondary,
+                      size: res.scaleText(22),
+                    ),
                   ),
                 ],
               ),
@@ -285,11 +316,16 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
           ),
           // Sub-goals (expanded)
           if (goal.expanded) ...[
-            Divider(height: 1, color: isDark ? Colors.grey[700] : Colors.grey[200]),
+            Divider(
+              height: 1,
+              color: isDark ? Colors.grey[700] : Colors.grey[200],
+            ),
             ...List.generate(goal.subGoals.length, (si) {
               return GestureDetector(
                 onTap: canEdit
-                    ? () => setState(() => goal.subChecked[si] = !goal.subChecked[si])
+                    ? () => setState(
+                        () => goal.subChecked[si] = !goal.subChecked[si],
+                      )
                     : null,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -297,31 +333,37 @@ class _TreatmentPlanTabState extends State<TreatmentPlanTab> {
                     vertical: res.scaleHeight(AppSpacing.p8),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text(
+                        goal.subGoals[si],
+                        style: TextStyle(
+                          fontSize: res.scaleText(13),
+                          color: isDark
+                              ? Colors.white70
+                              : AppColors.textSecondary,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      SizedBox(width: res.scaleWidth(AppSpacing.p8)),
                       SizedBox(
                         width: res.scaleWidth(22),
                         height: res.scaleHeight(22),
                         child: Checkbox(
                           value: goal.subChecked[si],
                           onChanged: canEdit
-                              ? (v) => setState(() => goal.subChecked[si] = v ?? false)
+                              ? (v) => setState(
+                                  () => goal.subChecked[si] = v ?? false,
+                                )
                               : null,
                           activeColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(res.scaleRadius(4)),
+                            borderRadius: BorderRadius.circular(
+                              res.scaleRadius(4),
+                            ),
                           ),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                      ),
-                      SizedBox(width: res.scaleWidth(AppSpacing.p8)),
-                      Expanded(
-                        child: Text(
-                          goal.subGoals[si],
-                          style: TextStyle(
-                            fontSize: res.scaleText(13),
-                            color: isDark ? Colors.white70 : AppColors.textSecondary,
-                          ),
-                          textAlign: TextAlign.end,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                         ),
                       ),
                     ],

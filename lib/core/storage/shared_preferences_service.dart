@@ -20,7 +20,7 @@ class SharedPreferencesService {
   // App settings
   // -------------------------------------------------------------------------
 
-  String get language => _prefs.getString(_keyLanguage) ?? 'en';
+  String get language => _prefs.getString(_keyLanguage) ?? 'ar';
   Future<void> setLanguage(String langCode) =>
       _prefs.setString(_keyLanguage, langCode);
 

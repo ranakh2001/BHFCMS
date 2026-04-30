@@ -1,5 +1,6 @@
 import 'package:bhcfms_app/features/auth/domain/entities/user_role.dart';
 import 'package:bhcfms_app/features/children/presentation/screens/child_details_screen.dart';
+import 'package:bhcfms_app/features/supervisor/presentation/screens/supervisor_center_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/routes.dart';
@@ -61,13 +62,16 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
       return const SizedBox.shrink();
     }
     final user = ref.watch(currentUserProvider);
-    final List<NavDestination> _destinations = [
+    final isSupervisor = user?.role == UserRole.supervisor;
+    final destinations = [
       const NavDestination(iconPath: AppIcons.home, screen: HomeScreen()),
       NavDestination(
-        iconPath: AppIcons.children,
-        screen: user?.role == UserRole.parent
-            ? const ChildDetailsScreen()
-            : const ChildrenScreen(),
+        iconPath: isSupervisor ? AppIcons.center : AppIcons.children,
+        screen: isSupervisor
+            ? const SupervisorCenterScreen()
+            : (user?.role == UserRole.parent
+                ? const ChildDetailsScreen()
+                : const ChildrenScreen()),
       ),
       const NavDestination(
         iconPath: AppIcons.schedule,
@@ -80,11 +84,11 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
       extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
-        children: _destinations.map((d) => d.screen).toList(),
+        children: destinations.map((d) => d.screen).toList(),
       ),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _currentIndex,
-        iconPaths: _destinations.map((d) => d.iconPath).toList(),
+        iconPaths: destinations.map((d) => d.iconPath).toList(),
         onTap: (index) {
           if (_currentIndex != index) {
             setState(() => _currentIndex = index);

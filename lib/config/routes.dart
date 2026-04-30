@@ -12,6 +12,8 @@ import '../features/receptionist/presentation/screens/reset_password_screen.dart
 import '../features/receptionist/presentation/screens/add_family_screen.dart';
 import '../features/receptionist/presentation/screens/add_child_screen.dart';
 import '../features/receptionist/presentation/screens/new_appointment_screen.dart';
+import '../features/case_study_form/presentation/screens/pdf_preview_screen.dart';
+import '../features/supervisor/presentation/screens/supervisor_employee_profile_screen.dart';
 
 class AppRoutes {
   static const String initial = '/';
@@ -28,6 +30,8 @@ class AppRoutes {
   static const String addFamily = '/add-family';
   static const String addChild = '/add-child';
   static const String newAppointment = '/new-appointment';
+  static const String supervisorEmployeeProfile = '/supervisor-employee-profile';
+  static const String pdfPreview = '/pdf-preview';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -44,6 +48,9 @@ class AppRoutes {
       addFamily: (context) => const AddFamilyScreen(),
       addChild: (context) => const AddChildScreen(),
       newAppointment: (context) => const NewAppointmentScreen(),
+      supervisorEmployeeProfile: (context) =>
+          const SupervisorEmployeeProfileScreen(),
+      pdfPreview: (context) => const PdfPreviewScreen(),
     };
   }
 }

@@ -11,24 +11,29 @@ class CalendarLegend extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final res = ResponsiveHelper(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: res.scaleWidth(12),
+      runSpacing: res.scaleHeight(6),
       children: [
         _LegendItem(
           color: AppColors.primary,
           label: l10n.upcomingSessionLegend,
           res: res,
         ),
-        SizedBox(width: res.scaleWidth(12)),
         _LegendItem(
           color: AppColors.secondary,
           label: l10n.completedSessionLegend,
           res: res,
         ),
-        SizedBox(width: res.scaleWidth(12)),
         _LegendItem(
-          color: AppColors.textSecondary.withValues(alpha: 0.5),
-          label: l10n.holidayLegend,
+          color: AppColors.warning,
+          label: l10n.incompleteSessions,
+          res: res,
+        ),
+        _LegendItem(
+          color: const Color(0xFF607D8B),
+          label: l10n.deletedSessions,
           res: res,
         ),
       ],

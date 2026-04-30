@@ -1,6 +1,7 @@
 import 'package:bhcfms_app/features/auth/domain/entities/user_role.dart';
 import 'package:bhcfms_app/features/home/presentation/widgets/child_card.dart';
 import 'package:bhcfms_app/features/home/presentation/widgets/child_progress.dart';
+import 'package:bhcfms_app/features/home/presentation/widgets/supervisor_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/permissions/user_role_policy.dart';
@@ -43,6 +44,10 @@ class HomeScreen extends ConsumerWidget {
               WelcomeHeader(userName: userName),
               SizedBox(height: res.scaleHeight(24)),
               
+              // ── Supervisor Dashboard ────────────────────────────────
+              if (user?.role == UserRole.supervisor)
+                const SupervisorDashboard(),
+
               // ── Receptionist Dashboard ──────────────────────────────
               if (user?.role == UserRole.receptionist)
                 const ReceptionistDashboard(),
@@ -50,21 +55,24 @@ class HomeScreen extends ConsumerWidget {
               // ── Role Specific Content ──────────────────────────────
               if (user?.role == UserRole.therapist) const DateSelector(),
               if (user?.role == UserRole.parent) const ChildCard(),
-              
-              if (user?.role != UserRole.receptionist)
+
+              if (user?.role != UserRole.receptionist &&
+                  user?.role != UserRole.supervisor)
                 SizedBox(height: res.scaleHeight(32)),
-                
+
               if (user?.role == UserRole.parent) const ChildProgress(),
               if (user?.role == UserRole.therapist)
                 const UpcomingSessionsSection(),
-              
+
               if (user?.role == UserRole.parent)
                 SizedBox(height: res.scaleHeight(32)),
-              
-              if (user?.role != UserRole.receptionist)
+
+              if (user?.role != UserRole.receptionist &&
+                  user?.role != UserRole.supervisor)
                 DailyGoalsSection(canEdit: policy?.canManageSessions ?? false),
-              
-              if (user?.role != UserRole.receptionist)
+
+              if (user?.role != UserRole.receptionist &&
+                  user?.role != UserRole.supervisor)
                 SizedBox(height: res.scaleHeight(48)),
             ],
           ),

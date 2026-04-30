@@ -38,6 +38,17 @@ dependencies:
 
   # Image / File Picker
   image_picker: ^1.1.2
+  file_picker: ^8.1.2
+
+  # Media Playback
+  video_player: ^2.9.2
+  just_audio: ^0.9.40
+
+  # PDF Generation & Printing
+  pdf: ^3.11.0
+  printing: ^5.13.0
+  path_provider: ^2.1.0
+  share_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:
@@ -53,3 +64,12 @@ flutter:
     - assets/logos/
     - assets/images/splash/
     - assets/images/auth/
+    - assets/letterhead.pdf
+    - assets/fonts/
+
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700

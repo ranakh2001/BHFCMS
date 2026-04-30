@@ -5,12 +5,14 @@ import '../../../../core/permissions/user_role_policy.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../messages/presentation/screens/chat_detail_screen.dart';
+import '../providers/reports_provider.dart';
 import '../widgets/child_header_card.dart';
 import '../widgets/session_tab.dart';
 import '../widgets/session_goals_tab.dart';
 import '../widgets/treatment_plan_tab.dart';
 import '../widgets/overview_tab.dart';
-import '../widgets/session_notes_bottom_sheet.dart';
+import '../widgets/reports_tab.dart';
 
 class ChildDetailsScreen extends ConsumerStatefulWidget {
   const ChildDetailsScreen({super.key});
@@ -20,30 +22,42 @@ class ChildDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
-  // Tab order: Overview=0, TreatmentPlan=1, SessionGoals=2, Session=3
-  static const int _sessionGoalsIndex = 2;
-  bool _notesShownForCurrentVisit = false;
+  // Tracks whether the Reports tab is currently included
+  bool _reportsTabActive = false;
 
   @override
   void initState() {
     super.initState();
+    // Start with 4 tabs; _maybeRebuildTabs() refines this after first frame
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_onTabChanged);
   }
 
   void _onTabChanged() {
     if (!_tabController.indexIsChanging) return;
-    if (_tabController.index != _sessionGoalsIndex) return;
-    // _notesShownForCurrentVisit = false;
-    // if (!_notesShownForCurrentVisit) {
-    //   _notesShownForCurrentVisit = true;
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     if (mounted) SessionNotesBottomSheet.show(context);
-    //   });
-    // }
+  }
+
+  // Called from build() to sync TabController length with actual tab count.
+  void _maybeRebuildTabs(bool showReports) {
+    if (showReports == _reportsTabActive) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        final prevIndex = _tabController.index;
+        _tabController.removeListener(_onTabChanged);
+        _tabController.dispose();
+        _reportsTabActive = showReports;
+        _tabController = TabController(
+          length: showReports ? 5 : 4,
+          initialIndex: prevIndex.clamp(0, showReports ? 4 : 3),
+          vsync: this,
+        );
+        _tabController.addListener(_onTabChanged);
+      });
+    });
   }
 
   @override
@@ -59,8 +73,13 @@ class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
     final res = ResponsiveHelper(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final policy = ref.watch(currentPolicyProvider);
+
     final canManageSessions = policy?.canManageSessions ?? false;
     final canViewAiSuggestions = policy?.canViewAiSuggestions ?? false;
+    final isSupervisor = policy?.isSupervisor ?? false;
+    final isFamily = policy?.isFamily ?? false;
+    final canUploadMedia = policy?.canUploadMedia ?? false;
+    final canShareWithParent = policy?.canShareWithParent ?? false;
 
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
@@ -81,13 +100,32 @@ class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
         ? '${isArabic ? 'عائلة' : 'Family of'} ${nameParts.last}'
         : studentName;
 
-    // Tab order: Overview → Treatment Plan → Goals → Session
+    // Determine whether to show the Reports tab
+    bool showReportsTab = isSupervisor;
+    if (isFamily) {
+      final reportsState = ref.watch(reportsProvider);
+      final visibleReports = reportsState
+          .reportsForChild(studentName)
+          .where((r) => r.isVisibleToFamily)
+          .toList();
+      showReportsTab = visibleReports.isNotEmpty;
+    }
+
+    // Sync TabController length without triggering a mid-build setState
+    _maybeRebuildTabs(showReportsTab);
+
+    // Build the tab label list dynamically
     final tabs = [
       l10n.overviewTab,
       l10n.treatmentPlanTab,
       l10n.sessionGoalsTab,
       l10n.sessionTab,
+      if (showReportsTab) l10n.reportsTab,
     ];
+
+    // Guard: if TabController hasn't been rebuilt yet, render with current length
+    final effectiveTabs =
+        tabs.length == _tabController.length ? tabs : tabs.sublist(0, _tabController.length);
 
     return Scaffold(
       backgroundColor: isDark
@@ -107,14 +145,16 @@ class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
             fontSize: res.scaleText(18),
           ),
         ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : AppColors.textPrimary,
-            size: res.scaleText(20),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: isFamily
+            ? const SizedBox.shrink()
+            : IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: isDark ? Colors.white : AppColors.primary,
+                  size: res.scaleText(20),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
       ),
       body: Column(
         children: [
@@ -128,13 +168,18 @@ class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
             statusColor: statusColor,
             isDark: isDark,
             res: res,
+            onChatTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const ChatDetailScreen(conversationId: '1'),
+              ),
+            ),
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p12)),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: res.scaleSpacing(AppSpacing.p16),
             ),
-            child: _buildTabBar(tabs, res, isDark),
+            child: _buildTabBar(effectiveTabs, res, isDark),
           ),
           SizedBox(height: res.scaleHeight(AppSpacing.p8)),
           Expanded(
@@ -142,10 +187,39 @@ class _ChildDetailsScreenState extends ConsumerState<ChildDetailsScreen>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                OverviewTab(isDark: isDark, res: res, canViewAiSuggestions: canViewAiSuggestions),
-                TreatmentPlanTab(isDark: isDark, res: res, canEdit: canManageSessions),
-                SessionGoalsTab(isDark: isDark, res: res, canEdit: canManageSessions),
-                SessionTab(isDark: isDark, res: res, canManageSessions: canManageSessions),
+                OverviewTab(
+                  isDark: isDark,
+                  res: res,
+                  canViewAiSuggestions: canViewAiSuggestions,
+                  isSupervisor: isSupervisor,
+                  onViewTreatmentPlan: () => _tabController.animateTo(1),
+                ),
+                TreatmentPlanTab(
+                  isDark: isDark,
+                  res: res,
+                  canEdit: canManageSessions,
+                ),
+                SessionGoalsTab(
+                  isDark: isDark,
+                  res: res,
+                  canEdit: canManageSessions,
+                ),
+                SessionTab(
+                  isDark: isDark,
+                  res: res,
+                  canManageSessions: canManageSessions,
+                  canUploadMedia: canUploadMedia,
+                  canShareWithParent: canShareWithParent,
+                  isParent: isFamily,
+                ),
+                if (_reportsTabActive)
+                  ReportsTab(
+                    isDark: isDark,
+                    res: res,
+                    childId: studentName,
+                    isSupervisor: isSupervisor,
+                    isFamily: isFamily,
+                  ),
               ],
             ),
           ),

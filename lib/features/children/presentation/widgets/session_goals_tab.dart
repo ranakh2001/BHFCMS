@@ -61,7 +61,7 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
               res.scaleHeight(16),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Main goal dropdown
                 _buildDropdown(context, l10n, res, isDark, canEdit),
@@ -175,7 +175,9 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
             items: _mainGoals
                 .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                 .toList(),
-            onChanged: canEdit ? (v) => setState(() => _selectedMainGoal = v) : null,
+            onChanged: canEdit
+                ? (v) => setState(() => _selectedMainGoal = v)
+                : null,
           ),
         ),
       ),
@@ -211,16 +213,15 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Text(
-                _sessionGoals[index],
-                style: TextStyle(
-                  fontSize: res.scaleText(14),
-                  color: isDark ? Colors.white : AppColors.textPrimary,
-                ),
-                textAlign: TextAlign.end,
+            Text(
+              _sessionGoals[index],
+              style: TextStyle(
+                fontSize: res.scaleText(14),
+                color: isDark ? Colors.white : AppColors.textPrimary,
               ),
+              textAlign: TextAlign.end,
             ),
             SizedBox(width: res.scaleWidth(AppSpacing.p12)),
             SizedBox(
@@ -243,6 +244,4 @@ class _SessionGoalsTabState extends State<SessionGoalsTab> {
       ),
     );
   }
-
-  
 }

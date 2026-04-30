@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
+import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../../../../config/routes.dart';
@@ -39,8 +40,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
 
     if (success && mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.welcomeMessage)),
+        SnackBar(
+          content: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.welcomeMessage,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          elevation: 4,
+          duration: const Duration(seconds: 3),
+        ),
       );
       Navigator.of(context).pushReplacementNamed(AppRoutes.main);
     }
