@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
+import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import '../../../../config/routes.dart';
+
 import '../providers/auth_provider.dart';
 import '../widgets/language_switcher_button.dart';
 import '../widgets/login_form_card.dart';
@@ -32,14 +35,50 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final success = await ref.read(authNotifierProvider.notifier).login(
-          _emailController.text,
+          _emailController.text.trim(),
           _passwordController.text,
         );
 
     if (success && mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.welcomeMessage)),
+        SnackBar(
+          content: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.welcomeMessage,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          elevation: 4,
+          duration: const Duration(seconds: 3),
+        ),
       );
+      Navigator.of(context).pushReplacementNamed(AppRoutes.main);
     }
   }
 
@@ -55,12 +94,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           children: [
             Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(AppSpacing.p24)),
+                padding: EdgeInsets.symmetric(
+                  horizontal: res.scaleSpacing(AppSpacing.p24),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: res.scaleHeight(AppSpacing.p48)), // Spacing for top language button
+                    SizedBox(height: res.scaleHeight(AppSpacing.p48)),
                     const LoginHeaderSection(),
                     SizedBox(height: res.scaleHeight(AppSpacing.p32)),
                     LoginFormCard(
@@ -78,12 +118,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
             ),
-            
-            // Language Switcher Positioned at the Top (Stable)
             Positioned(
               top: res.scaleHeight(16),
-              right: Directionality.of(context) == TextDirection.ltr ? res.scaleWidth(16) : null,
-              left: Directionality.of(context) == TextDirection.rtl ? res.scaleWidth(16) : null,
+              right: Directionality.of(context) == TextDirection.ltr
+                  ? res.scaleWidth(16)
+                  : null,
+              left: Directionality.of(context) == TextDirection.rtl
+                  ? res.scaleWidth(16)
+                  : null,
               child: const LanguageSwitcherButton(),
             ),
           ],
