@@ -40,36 +40,6 @@ class LanguageRow extends StatelessWidget {
             // Current language + chevron
             Row(
               children: [
-                Icon(
-                  Icons.chevron_left_rounded,
-                  size: res.scaleWidth(18),
-                  color: AppColors.textSecondary,
-                ),
-                SizedBox(width: res.scaleSpacing(4)),
-                Text(
-                  displayLang,
-                  style: TextStyle(
-                    fontSize: res.scaleText(13),
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // Label + globe icon
-            Row(
-              children: [
-                Text(
-                  l10n.language,
-                  style: TextStyle(
-                    fontSize: res.scaleText(14),
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : AppColors.textPrimary,
-                  ),
-                ),
-                SizedBox(width: res.scaleSpacing(10)),
                 Container(
                   width: res.scaleWidth(34),
                   height: res.scaleWidth(34),
@@ -83,8 +53,38 @@ class LanguageRow extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
+                SizedBox(width: res.scaleSpacing(10)),
+                Text(
+                  l10n.language,
+                  style: TextStyle(
+                    fontSize: res.scaleText(14),
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : AppColors.textPrimary,
+                  ),
+                ),
               ],
             ),
+
+            const Spacer(),
+            Row(
+              children: [
+                Text(
+                  displayLang,
+                  style: TextStyle(
+                    fontSize: res.scaleText(13),
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                SizedBox(width: res.scaleSpacing(4)),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: res.scaleWidth(18),
+                  color: AppColors.textSecondary,
+                ),
+              ],
+            ),
+
+            // Label + globe icon
           ],
         ),
       ),

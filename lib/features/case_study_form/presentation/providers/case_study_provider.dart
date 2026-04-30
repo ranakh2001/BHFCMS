@@ -328,8 +328,11 @@ final parentNeedsFormProvider = Provider<bool>((ref) {
 });
 
 /// Access control for the case study form.
+/// Therapists, receptionists, and supervisors can fill/view the form.
 final caseStudyAccessProvider = Provider<bool>((ref) {
   final user = ref.watch(currentUserProvider);
   if (user == null) return false;
-  return user.role == UserRole.therapist || user.role == UserRole.receptionist;
+  return user.role == UserRole.therapist ||
+      user.role == UserRole.receptionist ||
+      user.role == UserRole.supervisor;
 });

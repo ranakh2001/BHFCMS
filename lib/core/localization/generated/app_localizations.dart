@@ -395,13 +395,13 @@ abstract class AppLocalizations {
   /// No description provided for @upcomingSessionLegend.
   ///
   /// In en, this message translates to:
-  /// **'Upcoming Session'**
+  /// **'Upcoming'**
   String get upcomingSessionLegend;
 
   /// No description provided for @completedSessionLegend.
   ///
   /// In en, this message translates to:
-  /// **'Completed Session'**
+  /// **'Completed'**
   String get completedSessionLegend;
 
   /// No description provided for @holidayLegend.
@@ -5383,6 +5383,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Appointment'**
   String get addAppointment;
+
+  /// No description provided for @supervisorRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Supervisor'**
+  String get supervisorRole;
+
+  /// No description provided for @supervisorWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Here is an overview of the therapeutic progress achieved at the center so far...'**
+  String get supervisorWelcome;
+
+  /// No description provided for @totalChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Children'**
+  String get totalChildren;
+
+  /// No description provided for @totalEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get totalEmployees;
+
+  /// No description provided for @inactiveChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive Children'**
+  String get inactiveChildren;
+
+  /// No description provided for @weeklySessionsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Progress This Week'**
+  String get weeklySessionsProgress;
+
+  /// No description provided for @beneficiariesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Beneficiaries'**
+  String get beneficiariesTab;
+
+  /// No description provided for @employeesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get employeesTab;
+
+  /// No description provided for @searchEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an employee...'**
+  String get searchEmployee;
+
+  /// No description provided for @scheduleViewOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'View Only'**
+  String get scheduleViewOnly;
+
+  /// No description provided for @employeeFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee File'**
+  String get employeeFile;
+
+  /// No description provided for @employeeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee Status'**
+  String get employeeStatus;
+
+  /// No description provided for @monthlySessionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get monthlySessionsTitle;
+
+  /// No description provided for @cancelledSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelledSessions;
+
+  /// No description provided for @incompleteSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get incompleteSessions;
+
+  /// No description provided for @deletedSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted Sessions'**
+  String get deletedSessions;
+
+  /// No description provided for @accompaniedCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Accompanied Cases'**
+  String get accompaniedCases;
+
+  /// No description provided for @noReceptionistCases.
+  ///
+  /// In en, this message translates to:
+  /// **'No cases assigned to the receptionist'**
+  String get noReceptionistCases;
+
+  /// No description provided for @familyProfileToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Profile to Family'**
+  String get familyProfileToggle;
+
+  /// No description provided for @speechDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech Difficulty'**
+  String get speechDifficulty;
+
+  /// No description provided for @treatmentPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech & Communication Improvement Plan'**
+  String get treatmentPlanName;
+
+  /// No description provided for @improvementSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Improvement in letter pronunciation'**
+  String get improvementSubtitle;
+
+  /// No description provided for @chatButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chatButton;
+
+  /// No description provided for @startChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Chat'**
+  String get startChat;
+
+  /// No description provided for @reportsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reportsTab;
+
+  /// No description provided for @visibleToFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible to Family'**
+  String get visibleToFamily;
+
+  /// No description provided for @uploadReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Report'**
+  String get uploadReport;
+
+  /// No description provided for @reportTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Title'**
+  String get reportTitleLabel;
+
+  /// No description provided for @reportTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter report title'**
+  String get reportTitleHint;
+
+  /// No description provided for @reportDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get reportDescriptionLabel;
+
+  /// No description provided for @reportDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter description (optional)'**
+  String get reportDescriptionHint;
+
+  /// No description provided for @selectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select File (PDF / Image)'**
+  String get selectFile;
+
+  /// No description provided for @fileSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'File Selected'**
+  String get fileSelected;
+
+  /// No description provided for @noFileSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No file selected'**
+  String get noFileSelected;
+
+  /// No description provided for @uploadedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded by'**
+  String get uploadedBy;
+
+  /// No description provided for @downloadReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get downloadReport;
+
+  /// No description provided for @viewReport.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get viewReport;
+
+  /// No description provided for @noReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports available'**
+  String get noReports;
+
+  /// No description provided for @noVisibleReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports available for viewing'**
+  String get noVisibleReports;
+
+  /// No description provided for @pdfType.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get pdfType;
+
+  /// No description provided for @imageType.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get imageType;
+
+  /// No description provided for @sessionMediaSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Media'**
+  String get sessionMediaSection;
+
+  /// No description provided for @noMediaAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No media available'**
+  String get noMediaAvailable;
+
+  /// No description provided for @videoType.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get videoType;
+
+  /// No description provided for @audioType.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio Recording'**
+  String get audioType;
+
+  /// No description provided for @assignmentsForParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignments'**
+  String get assignmentsForParent;
+
+  /// No description provided for @noAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'No assignments yet'**
+  String get noAssignments;
 }
 
 class _AppLocalizationsDelegate

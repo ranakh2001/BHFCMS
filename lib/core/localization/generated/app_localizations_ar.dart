@@ -162,10 +162,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get scheduleTitle => 'الجدول الزمني';
 
   @override
-  String get upcomingSessionLegend => 'جلسة قادمة';
+  String get upcomingSessionLegend => 'قادمة';
 
   @override
-  String get completedSessionLegend => 'جلسة مكتملة';
+  String get completedSessionLegend => 'مكتملة';
 
   @override
   String get holidayLegend => 'اجازة';
@@ -2690,4 +2690,146 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addAppointment => 'إضافة موعد';
+
+  @override
+  String get supervisorRole => 'مشرف';
+
+  @override
+  String get supervisorWelcome =>
+      'فيما يلي نظرة عامة على التقدم العلاجي الذي أحرزته العيادة حتى اليوم.....';
+
+  @override
+  String get totalChildren => 'اجمالي الاطفال';
+
+  @override
+  String get totalEmployees => 'الموظفين';
+
+  @override
+  String get inactiveChildren => 'الاطفال غير النشطين';
+
+  @override
+  String get weeklySessionsProgress => 'تقدم الجلسات خلال الاسبوع';
+
+  @override
+  String get beneficiariesTab => 'المستفيدون';
+
+  @override
+  String get employeesTab => 'الموظفين';
+
+  @override
+  String get searchEmployee => 'البحث عن موظف...';
+
+  @override
+  String get scheduleViewOnly => 'عرض فقط';
+
+  @override
+  String get employeeFile => 'ملف الموظف';
+
+  @override
+  String get employeeStatus => 'حالة الموظف';
+
+  @override
+  String get monthlySessionsTitle => 'جلسات';
+
+  @override
+  String get cancelledSessions => 'ملغية';
+
+  @override
+  String get incompleteSessions => 'غير مكتملة';
+
+  @override
+  String get deletedSessions => ' متأخرة';
+
+  @override
+  String get accompaniedCases => 'الحالات المرفقة';
+
+  @override
+  String get noReceptionistCases => 'لا يوجد حالات لدى موظف الاستقبال';
+
+  @override
+  String get familyProfileToggle => 'عرض الملف للاسرة';
+
+  @override
+  String get speechDifficulty => 'صعوبة في النطق';
+
+  @override
+  String get treatmentPlanName => 'خطة تحسين النطق و التواصل';
+
+  @override
+  String get improvementSubtitle => 'تحسين نطق الحروف الصغيرة';
+
+  @override
+  String get chatButton => 'محادثة';
+
+  @override
+  String get startChat => 'بدء محادثة';
+
+  @override
+  String get reportsTab => 'التقارير';
+
+  @override
+  String get visibleToFamily => 'مرئي للعائلة';
+
+  @override
+  String get uploadReport => 'رفع تقرير';
+
+  @override
+  String get reportTitleLabel => 'عنوان التقرير';
+
+  @override
+  String get reportTitleHint => 'أدخل عنوان التقرير';
+
+  @override
+  String get reportDescriptionLabel => 'الوصف';
+
+  @override
+  String get reportDescriptionHint => 'أدخل الوصف (اختياري)';
+
+  @override
+  String get selectFile => 'اختر ملف (PDF / صورة)';
+
+  @override
+  String get fileSelected => 'تم اختيار الملف';
+
+  @override
+  String get noFileSelected => 'لم يتم اختيار ملف';
+
+  @override
+  String get uploadedBy => 'تم الرفع بواسطة';
+
+  @override
+  String get downloadReport => 'تحميل';
+
+  @override
+  String get viewReport => 'عرض';
+
+  @override
+  String get noReports => 'لا توجد تقارير';
+
+  @override
+  String get noVisibleReports => 'لا توجد تقارير متاحة للعرض';
+
+  @override
+  String get pdfType => 'PDF';
+
+  @override
+  String get imageType => 'صورة';
+
+  @override
+  String get sessionMediaSection => 'وسائط الجلسة';
+
+  @override
+  String get noMediaAvailable => 'لا توجد وسائط متاحة';
+
+  @override
+  String get videoType => 'فيديو';
+
+  @override
+  String get audioType => 'تسجيل صوتي';
+
+  @override
+  String get assignmentsForParent => 'التكليفات';
+
+  @override
+  String get noAssignments => 'لا توجد تكليفات بعد';
 }

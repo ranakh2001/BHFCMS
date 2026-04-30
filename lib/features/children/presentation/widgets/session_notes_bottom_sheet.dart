@@ -18,7 +18,8 @@ class SessionNotesBottomSheet extends StatefulWidget {
   }
 
   @override
-  State<SessionNotesBottomSheet> createState() => _SessionNotesBottomSheetState();
+  State<SessionNotesBottomSheet> createState() =>
+      _SessionNotesBottomSheetState();
 }
 
 class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
@@ -113,7 +114,10 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                   ],
                 ),
               ),
-              Divider(height: 1, color: isDark ? Colors.grey[700] : Colors.grey[200]),
+              Divider(
+                height: 1,
+                color: isDark ? Colors.grey[700] : Colors.grey[200],
+              ),
               // Form content
               Expanded(
                 child: SingleChildScrollView(
@@ -125,22 +129,24 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                     res.scaleHeight(AppSpacing.p16),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ── Child rating ──
                       _sectionLabel(l10n.childSessionRating, res, isDark),
                       SizedBox(height: res.scaleHeight(AppSpacing.p8)),
                       Row(
                         children: [
-                          // Slider on the right (start in RTL)
                           Expanded(
                             child: SliderTheme(
                               data: SliderTheme.of(context).copyWith(
                                 activeTrackColor: AppColors.primary,
-                                inactiveTrackColor:
-                                    isDark ? Colors.grey[700] : Colors.grey[200],
+                                inactiveTrackColor: isDark
+                                    ? Colors.grey[700]
+                                    : Colors.grey[200],
                                 thumbColor: AppColors.primary,
-                                overlayColor: AppColors.primary.withValues(alpha: 0.1),
+                                overlayColor: AppColors.primary.withValues(
+                                  alpha: 0.1,
+                                ),
                                 trackHeight: res.scaleHeight(4),
                                 thumbShape: RoundSliderThumbShape(
                                   enabledThumbRadius: res.scaleWidth(8),
@@ -208,10 +214,13 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                           color: isDark
                               ? AppColors.backgroundDark
                               : AppColors.backgroundLight,
-                          borderRadius:
-                              BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
+                          borderRadius: BorderRadius.circular(
+                            res.scaleRadius(AppSpacing.radiusMd),
+                          ),
                           border: Border.all(
-                            color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+                            color: isDark
+                                ? Colors.grey[700]!
+                                : Colors.grey[200]!,
                           ),
                         ),
                         child: TextField(
@@ -220,14 +229,19 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             fontSize: res.scaleText(14),
-                            color: isDark ? Colors.white : AppColors.textPrimary,
+                            color: isDark
+                                ? Colors.white
+                                : AppColors.textPrimary,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            contentPadding:
-                                EdgeInsets.all(res.scaleSpacing(AppSpacing.p12)),
+                            contentPadding: EdgeInsets.all(
+                              res.scaleSpacing(AppSpacing.p12),
+                            ),
                             hintText: '...',
-                            hintStyle: TextStyle(color: AppColors.textSecondary),
+                            hintStyle: TextStyle(
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                         ),
                       ),
@@ -244,7 +258,8 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                  res.scaleRadius(AppSpacing.radiusMd)),
+                                res.scaleRadius(AppSpacing.radiusMd),
+                              ),
                             ),
                             elevation: 0,
                           ),
@@ -289,7 +304,9 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
         return GestureDetector(
           onTap: () => setState(() => _goalAchievement = value),
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: res.scaleSpacing(AppSpacing.p16)),
+            padding: EdgeInsetsDirectional.only(
+              start: res.scaleSpacing(AppSpacing.p16),
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -349,8 +366,12 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
       height: res.scaleHeight(48),
       decoration: BoxDecoration(
         color: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
-        borderRadius: BorderRadius.circular(res.scaleRadius(AppSpacing.radiusMd)),
-        border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(
+          res.scaleRadius(AppSpacing.radiusMd),
+        ),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
       ),
       child: DropdownButtonHideUnderline(
         child: ButtonTheme(
@@ -359,7 +380,10 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
             value: value,
             hint: Text(
               hint,
-              style: TextStyle(color: AppColors.textSecondary, fontSize: res.scaleText(14)),
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: res.scaleText(14),
+              ),
             ),
             isExpanded: true,
             icon: Icon(

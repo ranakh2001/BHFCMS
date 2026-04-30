@@ -43,7 +43,9 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   void _sendMessage() {
     final text = _inputController.text.trim();
     if (text.isEmpty) return;
-    ref.read(messagesProvider.notifier).sendMessage(widget.conversationId, text);
+    ref
+        .read(messagesProvider.notifier)
+        .sendMessage(widget.conversationId, text);
     _inputController.clear();
     _scrollToBottom();
   }
@@ -62,13 +64,21 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final messages = conversation.messages;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: isDark
+          ? AppColors.backgroundDark
+          : AppColors.backgroundLight,
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(context, res, l10n, isDark, conversation.guardianName,
-                conversation.childName, isParent),
+            _buildAppBar(
+              context,
+              res,
+              l10n,
+              isDark,
+              conversation.guardianName,
+              conversation.childName,
+              isParent,
+            ),
             Divider(
               height: 1,
               color: isDark
@@ -88,8 +98,9 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                     )
                   : ListView.builder(
                       controller: _scrollController,
-                      padding:
-                          EdgeInsets.symmetric(vertical: res.scaleSpacing(8)),
+                      padding: EdgeInsets.symmetric(
+                        vertical: res.scaleSpacing(8),
+                      ),
                       itemCount: messages.length,
                       itemBuilder: (_, i) =>
                           MessageBubble(message: messages[i]),
@@ -118,6 +129,19 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
       ),
       child: Row(
         children: [
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: res.scaleWidth(18),
+              color: AppColors.primary,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(
+              minWidth: res.scaleWidth(36),
+              minHeight: res.scaleWidth(36),
+            ),
+          ),
           GuardianAvatar(size: res.scaleWidth(40)),
           SizedBox(width: res.scaleSpacing(10)),
           Column(
@@ -141,20 +165,6 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                 ),
               ),
             ],
-          ),
-          const Spacer(),
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(
-              Icons.arrow_forward_ios,
-              size: res.scaleWidth(18),
-              color: AppColors.primary,
-            ),
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(
-              minWidth: res.scaleWidth(36),
-              minHeight: res.scaleWidth(36),
-            ),
           ),
         ],
       ),

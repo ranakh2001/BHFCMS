@@ -1,7 +1,8 @@
 enum UserRole {
   therapist,
   parent,
-  receptionist;
+  receptionist,
+  supervisor;
 
   String get displayName {
     switch (this) {
@@ -11,6 +12,8 @@ enum UserRole {
         return 'Parent';
       case UserRole.receptionist:
         return 'Receptionist';
+      case UserRole.supervisor:
+        return 'Supervisor';
     }
   }
 

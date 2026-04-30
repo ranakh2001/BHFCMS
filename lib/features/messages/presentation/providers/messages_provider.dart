@@ -103,6 +103,13 @@ class MessagesNotifier extends Notifier<MessagesState> {
           ),
         ],
       ),
+      const Conversation(
+        id: 'emp_1',
+        guardianName: 'محمد سمير',
+        childName: '',
+        avatarAsset: '',
+        messages: [],
+      ),
     ];
   }
 

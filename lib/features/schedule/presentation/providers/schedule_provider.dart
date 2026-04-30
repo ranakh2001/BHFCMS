@@ -35,10 +35,49 @@ SessionMap _buildMockSessions() {
     }
   }
 
-  // A holiday in the past
-  if (d - 8 > 0) {
-    add(y, m, d - 8, [
-      const ScheduleSession(id: 'h1', childName: '', sessionType: '', time: '', status: SessionStatus.holiday),
+  // Past days with incomplete (waiting) sessions — override d-1 and d-4
+  if (d - 1 > 0) {
+    add(y, m, d - 1, [
+      const ScheduleSession(id: 'p1a', childName: 'Omar Khalid', sessionType: 'Speech Session', time: '09:00', status: SessionStatus.completed),
+      const ScheduleSession(id: 'inc1', childName: 'Nour Ahmed', sessionType: 'Speech Session', time: '10:30', status: SessionStatus.waiting),
+    ]);
+  }
+  if (d - 4 > 0) {
+    add(y, m, d - 4, [
+      const ScheduleSession(id: 'p4a', childName: 'Omar Khalid', sessionType: 'Speech Session', time: '09:00', status: SessionStatus.completed),
+      const ScheduleSession(id: 'inc2', childName: 'Fatima Said', sessionType: 'Speech Session', time: '11:00', status: SessionStatus.waiting),
+    ]);
+  }
+
+  // Cancelled sessions
+  if (d - 2 > 0) {
+    add(y, m, d - 2, [
+      const ScheduleSession(id: 'c1', childName: 'Ali Hassan', sessionType: 'Speech Session', time: '10:00', status: SessionStatus.cancelled),
+      const ScheduleSession(id: 'c2', childName: 'Fatima Nour', sessionType: 'Speech Session', time: '11:30', status: SessionStatus.cancelled),
+    ]);
+  }
+  if (d - 3 > 0) {
+    add(y, m, d - 3, [
+      const ScheduleSession(id: 'c3', childName: 'Zaid Omar', sessionType: 'Speech Session', time: '09:00', status: SessionStatus.cancelled),
+    ]);
+  }
+
+  // Waiting / postponed sessions
+  add(y, m, d + 2, [
+    const ScheduleSession(id: 'w1', childName: 'Sara Mahmoud', sessionType: 'Speech Session', time: '10:00', status: SessionStatus.waiting),
+    const ScheduleSession(id: 'w2', childName: 'Omar Faris', sessionType: 'Speech Session', time: '11:00', status: SessionStatus.postponed),
+  ]);
+
+  // Deleted sessions
+  if (d - 5 > 0) {
+    add(y, m, d - 5, [
+      const ScheduleSession(id: 'del1', childName: 'Layla Ahmed', sessionType: 'Speech Session', time: '09:00', status: SessionStatus.deleted),
+      const ScheduleSession(id: 'del2', childName: 'Yusuf Ali', sessionType: 'Speech Session', time: '10:30', status: SessionStatus.deleted),
+    ]);
+  }
+  if (d - 9 > 0) {
+    add(y, m, d - 9, [
+      const ScheduleSession(id: 'del3', childName: 'Nour Hassan', sessionType: 'Speech Session', time: '09:00', status: SessionStatus.deleted),
     ]);
   }
 
@@ -50,11 +89,6 @@ SessionMap _buildMockSessions() {
         ScheduleSession(id: 'f${i}b', childName: 'Yusuf Naser', sessionType: 'Speech Session', time: '11:00', status: SessionStatus.upcoming),
     ]);
   }
-
-  // A future holiday
-  add(y, m, d + 6, [
-    const ScheduleSession(id: 'h2', childName: '', sessionType: '', time: '', status: SessionStatus.holiday),
-  ]);
 
   // Previous month - some completed sessions
   for (int i = 1; i <= 5; i++) {

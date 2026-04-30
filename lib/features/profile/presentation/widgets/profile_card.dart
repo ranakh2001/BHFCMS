@@ -28,6 +28,8 @@ class ProfileCard extends StatelessWidget {
         return l10n.parentRole;
       case UserRole.receptionist:
         return l10n.receptionistRole;
+      case UserRole.supervisor:
+        return l10n.supervisorRole;
     }
   }
 

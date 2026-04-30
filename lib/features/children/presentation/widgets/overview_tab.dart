@@ -10,20 +10,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/routes.dart';
 import '../../../case_study_form/presentation/providers/case_study_provider.dart';
 
-class OverviewTab extends ConsumerWidget {
+class OverviewTab extends ConsumerStatefulWidget {
   final bool isDark;
   final ResponsiveHelper res;
   final bool canViewAiSuggestions;
+  final bool isSupervisor;
+  final VoidCallback? onViewTreatmentPlan;
 
   const OverviewTab({
     super.key,
     required this.isDark,
     required this.res,
     this.canViewAiSuggestions = true,
+    this.isSupervisor = false,
+    this.onViewTreatmentPlan,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OverviewTab> createState() => _OverviewTabState();
+}
+
+class _OverviewTabState extends ConsumerState<OverviewTab> {
+  bool _familyCanSee = true;
+
+  bool get isDark => widget.isDark;
+  ResponsiveHelper get res => widget.res;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final canAccessCaseStudy = ref.watch(caseStudyAccessProvider);
     final isCaseStudyCompleted = ref.watch(caseStudyFormProvider).isCompleted;
@@ -43,14 +57,63 @@ class OverviewTab extends ConsumerWidget {
           _buildProgressCard(context, l10n),
           SizedBox(height: res.scaleHeight(AppSpacing.p16)),
           _buildStatsRow(context, l10n),
+          if (widget.isSupervisor) ...[
+            SizedBox(height: res.scaleHeight(AppSpacing.p16)),
+            _buildFamilyVisibilityToggle(l10n),
+          ],
           if (canAccessCaseStudy) ...[
             SizedBox(height: res.scaleHeight(AppSpacing.p16)),
             _buildCaseStudySection(context, isCaseStudyCompleted, l10n),
           ],
-          if (canViewAiSuggestions) ...[
+          if (widget.canViewAiSuggestions) ...[
             SizedBox(height: res.scaleHeight(AppSpacing.p16)),
             buildAiBanner(context, l10n, res),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFamilyVisibilityToggle(AppLocalizations l10n) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: res.scaleSpacing(AppSpacing.p16),
+        vertical: res.scaleHeight(AppSpacing.p12),
+      ),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.surfaceDark : Colors.white,
+        borderRadius:
+            BorderRadius.circular(res.scaleRadius(AppSpacing.radiusLg)),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Switch(
+            value: _familyCanSee,
+            onChanged: (val) => setState(() => _familyCanSee = val),
+            activeThumbColor: Colors.white,
+            activeTrackColor: AppColors.primary,
+          ),
+          SizedBox(width: res.scaleWidth(AppSpacing.p8)),
+          Expanded(
+            child: Text(
+              l10n.familyProfileToggle,
+              style: TextStyle(
+                fontSize: res.scaleText(14),
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.white : AppColors.textPrimary,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -169,7 +232,7 @@ class OverviewTab extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton(
-                onPressed: () {},
+                onPressed: widget.onViewTreatmentPlan,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primary,
                   side: const BorderSide(color: AppColors.primary),

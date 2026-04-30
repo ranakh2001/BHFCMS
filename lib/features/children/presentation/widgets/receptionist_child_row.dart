@@ -4,6 +4,7 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
+import 'upload_report_bottom_sheet.dart';
 
 class ReceptionistChildRow extends StatelessWidget {
   final String name;
@@ -90,6 +91,7 @@ class ReceptionistChildRow extends StatelessWidget {
                     isDark: isDark,
                   )),
                   SizedBox(height: res.scaleHeight(AppSpacing.p12)),
+                  // Start Case Study Form button
                   SizedBox(
                     width: double.infinity,
                     height: res.scaleHeight(48),
@@ -110,6 +112,39 @@ class ReceptionistChildRow extends StatelessWidget {
                           fontSize: res.scaleText(15),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: res.scaleHeight(AppSpacing.p8)),
+                  // Upload Report button
+                  SizedBox(
+                    width: double.infinity,
+                    height: res.scaleHeight(48),
+                    child: OutlinedButton.icon(
+                      onPressed: () => UploadReportBottomSheet.show(
+                        context,
+                        childId: name,
+                        uploadedBy: l10n.receptionistRole,
+                      ),
+                      icon: Icon(
+                        Icons.upload_file_rounded,
+                        size: res.scaleText(18),
+                        color: AppColors.primary,
+                      ),
+                      label: Text(
+                        l10n.uploadReport,
+                        style: TextStyle(
+                          fontSize: res.scaleText(15),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: AppColors.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              res.scaleRadius(AppSpacing.radiusXl)),
                         ),
                       ),
                     ),

@@ -28,33 +28,8 @@ class NotificationsRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Toggle switch
-          Transform.scale(
-            scale: res.scaleWidth(1.0).clamp(0.85, 1.1),
-            child: Switch(
-              value: enabled,
-              onChanged: onToggle,
-              activeThumbColor: Colors.white,
-              activeTrackColor: AppColors.primary,
-              inactiveThumbColor: Colors.white,
-              inactiveTrackColor: Colors.grey.shade300,
-            ),
-          ),
-
-          const Spacer(),
-
-          // Label + bell icon
           Row(
             children: [
-              Text(
-                l10n.notificationsLabel,
-                style: TextStyle(
-                  fontSize: res.scaleText(14),
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : AppColors.textPrimary,
-                ),
-              ),
-              SizedBox(width: res.scaleSpacing(10)),
               Container(
                 width: res.scaleWidth(34),
                 height: res.scaleWidth(34),
@@ -68,7 +43,29 @@ class NotificationsRow extends StatelessWidget {
                   color: AppColors.secondary,
                 ),
               ),
+              SizedBox(width: res.scaleSpacing(10)),
+              Text(
+                l10n.notificationsLabel,
+                style: TextStyle(
+                  fontSize: res.scaleText(14),
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : AppColors.textPrimary,
+                ),
+              ),
             ],
+          ),
+
+          const Spacer(),
+          Transform.scale(
+            scale: res.scaleWidth(1.0).clamp(0.85, 1.1),
+            child: Switch(
+              value: enabled,
+              onChanged: onToggle,
+              activeThumbColor: Colors.white,
+              activeTrackColor: AppColors.primary,
+              inactiveThumbColor: Colors.white,
+              inactiveTrackColor: Colors.grey.shade300,
+            ),
           ),
         ],
       ),

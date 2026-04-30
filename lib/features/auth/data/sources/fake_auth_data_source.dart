@@ -26,6 +26,12 @@ class FakeAuthDataSource implements AuthRemoteDataSource {
       'role': 'receptionist',
       'password': '123456',
     },
+    'supervisor@test.com': {
+      'id': 'u-004',
+      'name': 'Sara Al-Ahmad',
+      'role': 'supervisor',
+      'password': '123456',
+    },
   };
 
   @override

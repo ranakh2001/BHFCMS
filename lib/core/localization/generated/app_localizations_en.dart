@@ -165,10 +165,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scheduleTitle => 'Schedule';
 
   @override
-  String get upcomingSessionLegend => 'Upcoming Session';
+  String get upcomingSessionLegend => 'Upcoming';
 
   @override
-  String get completedSessionLegend => 'Completed Session';
+  String get completedSessionLegend => 'Completed';
 
   @override
   String get holidayLegend => 'Holiday';
@@ -2733,4 +2733,146 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addAppointment => 'Add Appointment';
+
+  @override
+  String get supervisorRole => 'Supervisor';
+
+  @override
+  String get supervisorWelcome =>
+      'Here is an overview of the therapeutic progress achieved at the center so far...';
+
+  @override
+  String get totalChildren => 'Total Children';
+
+  @override
+  String get totalEmployees => 'Employees';
+
+  @override
+  String get inactiveChildren => 'Inactive Children';
+
+  @override
+  String get weeklySessionsProgress => 'Session Progress This Week';
+
+  @override
+  String get beneficiariesTab => 'Beneficiaries';
+
+  @override
+  String get employeesTab => 'Employees';
+
+  @override
+  String get searchEmployee => 'Search for an employee...';
+
+  @override
+  String get scheduleViewOnly => 'View Only';
+
+  @override
+  String get employeeFile => 'Employee File';
+
+  @override
+  String get employeeStatus => 'Employee Status';
+
+  @override
+  String get monthlySessionsTitle => 'Sessions';
+
+  @override
+  String get cancelledSessions => 'Cancelled';
+
+  @override
+  String get incompleteSessions => 'Incomplete';
+
+  @override
+  String get deletedSessions => 'Deleted Sessions';
+
+  @override
+  String get accompaniedCases => 'Accompanied Cases';
+
+  @override
+  String get noReceptionistCases => 'No cases assigned to the receptionist';
+
+  @override
+  String get familyProfileToggle => 'Show Profile to Family';
+
+  @override
+  String get speechDifficulty => 'Speech Difficulty';
+
+  @override
+  String get treatmentPlanName => 'Speech & Communication Improvement Plan';
+
+  @override
+  String get improvementSubtitle => 'Improvement in letter pronunciation';
+
+  @override
+  String get chatButton => 'Chat';
+
+  @override
+  String get startChat => 'Start Chat';
+
+  @override
+  String get reportsTab => 'Reports';
+
+  @override
+  String get visibleToFamily => 'Visible to Family';
+
+  @override
+  String get uploadReport => 'Upload Report';
+
+  @override
+  String get reportTitleLabel => 'Report Title';
+
+  @override
+  String get reportTitleHint => 'Enter report title';
+
+  @override
+  String get reportDescriptionLabel => 'Description';
+
+  @override
+  String get reportDescriptionHint => 'Enter description (optional)';
+
+  @override
+  String get selectFile => 'Select File (PDF / Image)';
+
+  @override
+  String get fileSelected => 'File Selected';
+
+  @override
+  String get noFileSelected => 'No file selected';
+
+  @override
+  String get uploadedBy => 'Uploaded by';
+
+  @override
+  String get downloadReport => 'Download';
+
+  @override
+  String get viewReport => 'View';
+
+  @override
+  String get noReports => 'No reports available';
+
+  @override
+  String get noVisibleReports => 'No reports available for viewing';
+
+  @override
+  String get pdfType => 'PDF';
+
+  @override
+  String get imageType => 'Image';
+
+  @override
+  String get sessionMediaSection => 'Session Media';
+
+  @override
+  String get noMediaAvailable => 'No media available';
+
+  @override
+  String get videoType => 'Video';
+
+  @override
+  String get audioType => 'Audio Recording';
+
+  @override
+  String get assignmentsForParent => 'Assignments';
+
+  @override
+  String get noAssignments => 'No assignments yet';
 }

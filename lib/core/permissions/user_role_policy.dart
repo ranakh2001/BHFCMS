@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/domain/entities/user.dart';
+import '../../features/auth/domain/entities/user_role.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import 'app_permission.dart';
 import 'permission_checker.dart';
@@ -21,13 +22,28 @@ class UserRolePolicy {
 
   // ─── Sessions ────────────────────────────────────────────────────────────
   /// Start/end sessions, upload media, run assessments — therapist-only.
-  bool get canManageSessions => canManageChildren;
+  bool get canManageSessions => canManageChildren && user.role == UserRole.therapist;
 
   // ─── Reports ─────────────────────────────────────────────────────────────
   bool get canViewReports => user.can(AppPermission.viewReports);
 
   // ─── Messaging ───────────────────────────────────────────────────────────
   bool get canSendMessages => user.can(AppPermission.sendMessages);
+
+  // ─── Supervisor ──────────────────────────────────────────────────────────
+  bool get isSupervisor => user.role == UserRole.supervisor;
+  bool get canViewEmployees => user.role == UserRole.supervisor;
+  bool get canEditCaseStudy => user.can(AppPermission.manageChildren);
+
+  // ─── Media ───────────────────────────────────────────────────────────────
+  bool get canUploadMedia => isSupervisor || canManageSessions;
+  bool get canShareWithParent => isSupervisor;
+
+  // ─── Family ──────────────────────────────────────────────────────────────
+  bool get isFamily => user.role == UserRole.parent;
+
+  // ─── Reception ───────────────────────────────────────────────────────────
+  bool get isReceptionist => user.role == UserRole.receptionist;
 }
 
 /// Non-null only when a user is authenticated.
