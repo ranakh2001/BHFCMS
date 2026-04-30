@@ -60,8 +60,6 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
 
-  # Responsiveness testing — overlay device frames & resize at runtime
-  device_preview: ^1.2.0
 
 flutter:
   uses-material-design: true

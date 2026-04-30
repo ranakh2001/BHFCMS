@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/responsive_helper.dart';
 import '../models/chat_message.dart';
+import 'file_message_widget.dart';
+import 'image_message_widget.dart';
 
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
@@ -27,14 +29,9 @@ class MessageBubble extends StatelessWidget {
       child: Align(
         alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: res.screenWidth * 0.72,
-          ),
+          constraints: BoxConstraints(maxWidth: res.screenWidth * 0.72),
           child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: res.scaleSpacing(14),
-              vertical: res.scaleSpacing(10),
-            ),
+            padding: _bubblePadding(res),
             decoration: BoxDecoration(
               color: isMe ? AppColors.primary : Colors.white,
               borderRadius: BorderRadius.only(
@@ -60,38 +57,70 @@ class MessageBubble extends StatelessWidget {
                   isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  message.text,
-                  style: TextStyle(
-                    fontSize: res.scaleText(14),
-                    color: isMe ? Colors.white : AppColors.textPrimary,
-                    height: 1.4,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
+                _buildContent(res, isMe),
                 SizedBox(height: res.scaleHeight(4)),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (isMe) ...[
-                      _StatusIcon(status: message.status, res: res),
-                      SizedBox(width: res.scaleSpacing(4)),
-                    ],
-                    Text(
-                      _formatTime(message.timestamp),
-                      style: TextStyle(
-                        fontSize: res.scaleText(10),
-                        color: isMe
-                            ? Colors.white.withValues(alpha: 0.75)
-                            : AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
+                _buildFooter(res, isMe),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  EdgeInsets _bubblePadding(ResponsiveHelper res) {
+    if (message.type == MessageType.image) {
+      return EdgeInsets.all(res.scaleSpacing(4));
+    }
+    return EdgeInsets.symmetric(
+      horizontal: res.scaleSpacing(14),
+      vertical: res.scaleSpacing(10),
+    );
+  }
+
+  Widget _buildContent(ResponsiveHelper res, bool isMe) {
+    switch (message.type) {
+      case MessageType.image:
+        return ImageMessageWidget(message: message, isMe: isMe);
+      case MessageType.file:
+        return FileMessageWidget(message: message, isMe: isMe);
+      case MessageType.text:
+        return Text(
+          message.text,
+          style: TextStyle(
+            fontSize: res.scaleText(14),
+            color: isMe ? Colors.white : AppColors.textPrimary,
+            height: 1.4,
+          ),
+          textDirection: TextDirection.rtl,
+        );
+    }
+  }
+
+  Widget _buildFooter(ResponsiveHelper res, bool isMe) {
+    final footerPadding = message.type == MessageType.image
+        ? EdgeInsets.symmetric(horizontal: res.scaleSpacing(10))
+        : EdgeInsets.zero;
+
+    return Padding(
+      padding: footerPadding,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isMe) ...[
+            _StatusIcon(status: message.status, res: res),
+            SizedBox(width: res.scaleSpacing(4)),
+          ],
+          Text(
+            _formatTime(message.timestamp),
+            style: TextStyle(
+              fontSize: res.scaleText(10),
+              color: isMe
+                  ? Colors.white.withValues(alpha: 0.75)
+                  : AppColors.textSecondary,
+            ),
+          ),
+        ],
       ),
     );
   }

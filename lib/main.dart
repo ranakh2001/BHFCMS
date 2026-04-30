@@ -1,7 +1,5 @@
 import 'package:bhcfms_app/core/localization/generated/app_localizations.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,15 +26,11 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(
-    DevicePreview(
-      // Only active in debug builds — zero impact on release
-      enabled: kDebugMode,
-      builder: (context) => ProviderScope(
-        overrides: [
-          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-        ],
-        child: const MainApp(),
-      ),
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const MainApp(),
     ),
   );
 }
@@ -60,8 +54,7 @@ class MainApp extends ConsumerWidget {
       themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      builder: DevicePreview.appBuilder,
-      locale: DevicePreview.locale(context) ?? locale,
+      locale: locale,
       supportedLocales: const [Locale('en'), Locale('ar')],
       localizationsDelegates: const [
         AppLocalizations.delegate,

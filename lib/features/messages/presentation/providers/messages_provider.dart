@@ -126,9 +126,35 @@ class MessagesNotifier extends Notifier<MessagesState> {
       isFromMe: true,
       status: MessageStatus.sent,
     );
+    _appendMessage(conversationId, newMessage);
+  }
+
+  void sendAttachmentMessage({
+    required String conversationId,
+    required MessageType type,
+    required String fileUrl,
+    String text = '',
+    String? fileName,
+    String? localPath,
+  }) {
+    final newMessage = ChatMessage(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      text: text,
+      timestamp: DateTime.now(),
+      isFromMe: true,
+      status: MessageStatus.sent,
+      type: type,
+      fileUrl: fileUrl,
+      fileName: fileName,
+      localPath: localPath,
+    );
+    _appendMessage(conversationId, newMessage);
+  }
+
+  void _appendMessage(String conversationId, ChatMessage message) {
     final updated = state.conversations.map((conv) {
       if (conv.id != conversationId) return conv;
-      return conv.copyWith(messages: [...conv.messages, newMessage]);
+      return conv.copyWith(messages: [...conv.messages, message]);
     }).toList();
     state = state.copyWith(conversations: updated);
   }
