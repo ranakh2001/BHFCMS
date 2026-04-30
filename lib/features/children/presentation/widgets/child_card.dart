@@ -156,13 +156,14 @@ class ChildCard extends StatelessWidget {
                       // View Details button
                       SizedBox(
                         width: double.infinity,
-                        height: res.scaleHeight(42),
                         child: ElevatedButton(
                           onPressed: onViewDetails,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: Colors.white,
                             elevation: 0,
+                            minimumSize: Size(double.infinity, res.scaleHeight(42)),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                 res.scaleRadius(AppSpacing.radiusXl),

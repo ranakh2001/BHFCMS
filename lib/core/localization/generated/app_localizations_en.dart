@@ -2781,7 +2781,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get incompleteSessions => 'Incomplete';
 
   @override
-  String get deletedSessions => 'Deleted Sessions';
+  String get deletedSessions => 'Deleted';
 
   @override
   String get accompaniedCases => 'Accompanied Cases';

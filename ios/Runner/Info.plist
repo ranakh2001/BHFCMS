@@ -51,5 +51,12 @@
 	<string>This app needs camera access to capture and upload documents.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app needs access to save photos to your library.</string>
+
+	<!-- FCM: enable background fetch and remote-notification background modes -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

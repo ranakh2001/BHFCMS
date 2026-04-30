@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439061677704",
+    "project_id": "bhcfms-1d07e",
+    "storage_bucket": "bhcfms-1d07e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439061677704:android:590534f6fa013a6663413d",
+        "android_client_info": {
+          "package_name": "sa.brighthorizon.bhcfms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA351jZhciirkPl3MHbsMkBFIdijAeed-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

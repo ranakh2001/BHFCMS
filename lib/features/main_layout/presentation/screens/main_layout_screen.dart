@@ -9,6 +9,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../children/presentation/screens/children_screen.dart';
 import '../../../home/presentation/screens/home_screen.dart';
 import '../../../messages/presentation/screens/messages_screen.dart';
+import '../../../notifications/presentation/providers/notification_permission_provider.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../schedule/presentation/screens/schedule_screen.dart';
 import '../../domain/nav_destination.dart';
@@ -44,6 +45,19 @@ class MainLayoutScreen extends ConsumerStatefulWidget {
 
 class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Request notification permission after the first frame so the OS dialog
+    // appears after navigation is fully complete. The controller is a no-op on
+    // subsequent launches (flag is persisted in SharedPreferences).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(notificationPermissionControllerProvider.notifier)
+          .requestPermissionIfNeeded();
+    });
+  }
 
   // Fixed destinations — same order and screens for every role.
   // To show/hide a tab per role later, add an `if (user.can(...))` guard

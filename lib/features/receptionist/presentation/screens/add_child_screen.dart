@@ -120,33 +120,46 @@ class _AddChildScreenState extends ConsumerState<AddChildScreen> {
     String? pickedPath;
     String? pickedFileName;
     _DocType? pickedType;
+    final isTablet = MediaQuery.of(context).size.width >= 600;
 
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => _AddDocumentSheet(
-        l10n: l10n,
-        nameCtrl: nameCtrl,
-        onFilePicked: (path, fileName, type) {
-          pickedPath = path;
-          pickedFileName = fileName;
-          pickedType = type;
-        },
-        onConfirm: () {
-          if (nameCtrl.text.isNotEmpty && pickedPath != null) {
-            setState(() {
-              _documents.add(_DocumentEntry(
-                name: nameCtrl.text,
-                filePath: pickedPath!,
-                fileName: pickedFileName!,
-                type: pickedType!,
-              ));
-            });
-            Navigator.of(ctx).pop();
-          }
-        },
-      ),
+      builder: (ctx) {
+        final sheet = _AddDocumentSheet(
+          l10n: l10n,
+          nameCtrl: nameCtrl,
+          onFilePicked: (path, fileName, type) {
+            pickedPath = path;
+            pickedFileName = fileName;
+            pickedType = type;
+          },
+          onConfirm: () {
+            if (nameCtrl.text.isNotEmpty && pickedPath != null) {
+              setState(() {
+                _documents.add(_DocumentEntry(
+                  name: nameCtrl.text,
+                  filePath: pickedPath!,
+                  fileName: pickedFileName!,
+                  type: pickedType!,
+                ));
+              });
+              Navigator.of(ctx).pop();
+            }
+          },
+        );
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 
@@ -1162,7 +1175,7 @@ class _DropdownField<T> extends StatelessWidget {
                 color: isDark ? Colors.white70 : AppColors.textPrimary)),
         SizedBox(height: res.scaleHeight(6)),
         DropdownButtonFormField<T>(
-          value: value,
+          initialValue: value,
           decoration: _inputDeco(res, isDark, hint),
           hint: Text(hint,
               style: TextStyle(

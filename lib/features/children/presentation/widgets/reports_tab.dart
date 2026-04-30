@@ -278,11 +278,24 @@ class _ReportManagementSheet extends ConsumerWidget {
   const _ReportManagementSheet({required this.reportId, required this.childId});
 
   static void show(BuildContext context, WidgetRef ref, String reportId, String childId) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _ReportManagementSheet(reportId: reportId, childId: childId),
+      builder: (context) {
+        final sheet = _ReportManagementSheet(reportId: reportId, childId: childId);
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 
@@ -388,7 +401,8 @@ class _ReportManagementSheet extends ConsumerWidget {
                 ),
                 Switch.adaptive(
                   value: report.isVisibleToFamily,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
+                  activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
                   onChanged: (val) => ref.read(reportsProvider.notifier).toggleVisibility(report.id, childId, val),
                 ),
               ],

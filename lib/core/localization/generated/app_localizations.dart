@@ -5477,7 +5477,7 @@ abstract class AppLocalizations {
   /// No description provided for @deletedSessions.
   ///
   /// In en, this message translates to:
-  /// **'Deleted Sessions'**
+  /// **'Deleted'**
   String get deletedSessions;
 
   /// No description provided for @accompaniedCases.

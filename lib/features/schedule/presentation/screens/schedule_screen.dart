@@ -248,57 +248,83 @@ class _ReceptionistScheduleState extends State<_ReceptionistSchedule> {
   }
 
   void _onEmptySlotTap(int therapistIndex, int hour) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddAppointmentSheet(
-        therapists: widget.therapists,
-        selectedHour: hour,
-        selectedTherapistIndex: therapistIndex,
-        res: widget.res,
-        isDark: widget.isDark,
-        onConfirm: (childName, tIdx, notes) {
-          setState(() {
-            _sessions.add(
-              _TimelineSession(
-                hour: hour,
-                childName: childName,
-                status: SessionStatus.confirmed,
-                therapistIndex: tIdx,
-                notes: notes?.isNotEmpty == true ? notes : null,
-              ),
-            );
-          });
-        },
-      ),
+      builder: (_) {
+        final sheet = _AddAppointmentSheet(
+          therapists: widget.therapists,
+          selectedHour: hour,
+          selectedTherapistIndex: therapistIndex,
+          res: widget.res,
+          isDark: widget.isDark,
+          onConfirm: (childName, tIdx, notes) {
+            setState(() {
+              _sessions.add(
+                _TimelineSession(
+                  hour: hour,
+                  childName: childName,
+                  status: SessionStatus.confirmed,
+                  therapistIndex: tIdx,
+                  notes: notes?.isNotEmpty == true ? notes : null,
+                ),
+              );
+            });
+          },
+        );
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 
   void _onSessionTap(_TimelineSession session) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AppointmentDetailSheet(
-        session: session,
-        therapist: widget.therapists[session.therapistIndex],
-        res: widget.res,
-        isDark: widget.isDark,
-        readOnly: widget.readOnly,
-        onStatusChanged: (newStatus) {
-          setState(() {
-            final idx = _sessions.indexWhere(
-              (s) =>
-                  s.hour == session.hour &&
-                  s.therapistIndex == session.therapistIndex,
-            );
-            if (idx != -1) {
-              _sessions[idx] = _sessions[idx].copyWith(status: newStatus);
-            }
-          });
-        },
-      ),
+      builder: (_) {
+        final sheet = _AppointmentDetailSheet(
+          session: session,
+          therapist: widget.therapists[session.therapistIndex],
+          res: widget.res,
+          isDark: widget.isDark,
+          readOnly: widget.readOnly,
+          onStatusChanged: (newStatus) {
+            setState(() {
+              final idx = _sessions.indexWhere(
+                (s) =>
+                    s.hour == session.hour &&
+                    s.therapistIndex == session.therapistIndex,
+              );
+              if (idx != -1) {
+                _sessions[idx] = _sessions[idx].copyWith(status: newStatus);
+              }
+            });
+          },
+        );
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 

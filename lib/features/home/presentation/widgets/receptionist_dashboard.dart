@@ -15,46 +15,89 @@ class ReceptionistDashboard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final isTablet = res.screenWidth >= 600;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: res.scaleSpacing(AppSpacing.p16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Stat Cards ──────────────────────────────────────────
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
+          if (isTablet)
+            Row(
               children: [
-                _StatCard(
-                  res: res,
-                  icon: Icons.people_outline_rounded,
-                  count: '150',
-                  label: l10n.totalFamilies,
-                  color: const Color(0xFF42A5F5), // Blue
-                  isDark: isDark,
+                Expanded(
+                  child: _StatCard(
+                    res: res,
+                    icon: Icons.people_outline_rounded,
+                    count: '150',
+                    label: l10n.totalFamilies,
+                    color: const Color(0xFF42A5F5),
+                    isDark: isDark,
+                    expanded: true,
+                  ),
                 ),
                 SizedBox(width: res.scaleWidth(12)),
-                _StatCard(
-                  res: res,
-                  icon: Icons.child_care_rounded,
-                  count: '84',
-                  label: l10n.activeChildren,
-                  color: const Color(0xFF66BB6A), // Green
-                  isDark: isDark,
+                Expanded(
+                  child: _StatCard(
+                    res: res,
+                    icon: Icons.child_care_rounded,
+                    count: '84',
+                    label: l10n.activeChildren,
+                    color: const Color(0xFF66BB6A),
+                    isDark: isDark,
+                    expanded: true,
+                  ),
                 ),
                 SizedBox(width: res.scaleWidth(12)),
-                _StatCard(
-                  res: res,
-                  icon: Icons.event_available_rounded,
-                  count: '12',
-                  label: l10n.todayAppointments,
-                  color: const Color(0xFFFFA726), // Orange/Yellow
-                  isDark: isDark,
+                Expanded(
+                  child: _StatCard(
+                    res: res,
+                    icon: Icons.event_available_rounded,
+                    count: '12',
+                    label: l10n.todayAppointments,
+                    color: const Color(0xFFFFA726),
+                    isDark: isDark,
+                    expanded: true,
+                  ),
                 ),
               ],
+            )
+          else
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: [
+                  _StatCard(
+                    res: res,
+                    icon: Icons.people_outline_rounded,
+                    count: '150',
+                    label: l10n.totalFamilies,
+                    color: const Color(0xFF42A5F5),
+                    isDark: isDark,
+                  ),
+                  SizedBox(width: res.scaleWidth(12)),
+                  _StatCard(
+                    res: res,
+                    icon: Icons.child_care_rounded,
+                    count: '84',
+                    label: l10n.activeChildren,
+                    color: const Color(0xFF66BB6A),
+                    isDark: isDark,
+                  ),
+                  SizedBox(width: res.scaleWidth(12)),
+                  _StatCard(
+                    res: res,
+                    icon: Icons.event_available_rounded,
+                    count: '12',
+                    label: l10n.todayAppointments,
+                    color: const Color(0xFFFFA726),
+                    isDark: isDark,
+                  ),
+                ],
+              ),
             ),
-          ),
 
           SizedBox(height: res.scaleHeight(AppSpacing.p32)),
 
@@ -71,10 +114,10 @@ class ReceptionistDashboard extends StatelessWidget {
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
+            crossAxisCount: isTablet ? 4 : 2,
             mainAxisSpacing: res.scaleSpacing(12),
             crossAxisSpacing: res.scaleSpacing(12),
-            childAspectRatio: 1.6,
+            childAspectRatio: isTablet ? 1.4 : 1.6,
             children: [
               _QuickActionCard(
                 res: res,
@@ -169,6 +212,7 @@ class _StatCard extends StatelessWidget {
   final String label;
   final Color color;
   final bool isDark;
+  final bool expanded;
 
   const _StatCard({
     required this.res,
@@ -177,12 +221,13 @@ class _StatCard extends StatelessWidget {
     required this.label,
     required this.color,
     required this.isDark,
+    this.expanded = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: res.scaleWidth(140),
+      width: expanded ? null : res.scaleWidth(140),
       padding: EdgeInsets.all(res.scaleSpacing(AppSpacing.p16)),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,

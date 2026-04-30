@@ -1,10 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../core/storage/shared_preferences_service.dart';
-import '../core/storage/secure_storage_service.dart';
 import '../core/network/auth_interceptor.dart';
 import '../core/network/dio_client.dart';
+import '../core/services/notification/notification_service.dart';
+import '../core/storage/secure_storage_service.dart';
+import '../core/storage/shared_preferences_service.dart';
 
 // --- Storage Providers ---
 
@@ -68,3 +69,16 @@ class LocaleNotifier extends Notifier<String> {
 }
 
 final localeProvider = NotifierProvider<LocaleNotifier, String>(LocaleNotifier.new);
+
+// --- Notification Providers ---
+
+/// Provides the singleton [NotificationService] instance.
+final notificationServiceProvider = Provider<NotificationService>((ref) {
+  return NotificationService.instance;
+});
+
+/// Resolves the current FCM device token asynchronously.
+/// Use in UI with [ref.watch] to display or copy the token.
+final fcmTokenProvider = FutureProvider<String?>((ref) async {
+  return ref.watch(notificationServiceProvider).getToken();
+});

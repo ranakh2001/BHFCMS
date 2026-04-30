@@ -8,12 +8,25 @@ class SessionNotesBottomSheet extends StatefulWidget {
   const SessionNotesBottomSheet({super.key});
 
   static Future<void> show(BuildContext context) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       useSafeArea: true,
-      builder: (_) => const SessionNotesBottomSheet(),
+      builder: (_) {
+        const sheet = SessionNotesBottomSheet();
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 
@@ -48,11 +61,12 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
     final res = ResponsiveHelper(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? AppColors.surfaceDark : Colors.white;
+    final isTablet = res.screenWidth >= 600;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.82,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
+      initialChildSize: isTablet ? 0.55 : 0.82,
+      minChildSize: isTablet ? 0.4 : 0.5,
+      maxChildSize: isTablet ? 0.75 : 0.95,
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -239,7 +253,7 @@ class _SessionNotesBottomSheetState extends State<SessionNotesBottomSheet> {
                               res.scaleSpacing(AppSpacing.p12),
                             ),
                             hintText: '...',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               color: AppColors.textSecondary,
                             ),
                           ),

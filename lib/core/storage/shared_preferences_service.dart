@@ -50,6 +50,15 @@ class SharedPreferencesService {
   // Parent first-login & case-study form persistence
   // -------------------------------------------------------------------------
 
+  static const _keyNotificationPermissionRequested =
+      'notification_permission_requested';
+
+  bool get hasRequestedNotificationPermission =>
+      _prefs.getBool(_keyNotificationPermissionRequested) ?? false;
+
+  Future<void> setNotificationPermissionRequested() =>
+      _prefs.setBool(_keyNotificationPermissionRequested, true);
+
   static const _keyParentFirstLoginPrefix = 'parent_first_login_';
   static const _keyCaseStudyFormPrefix = 'case_study_form_';
 

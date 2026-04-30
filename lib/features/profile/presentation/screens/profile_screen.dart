@@ -127,9 +127,17 @@ class ProfileScreen extends ConsumerWidget {
     WidgetRef ref,
     AppLocalizations l10n,
   ) async {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= 600;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
+        insetPadding: isTablet
+            ? EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.3,
+                vertical: 24,
+              )
+            : const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           l10n.logoutConfirmTitle,

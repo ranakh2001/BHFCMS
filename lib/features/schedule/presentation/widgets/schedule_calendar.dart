@@ -281,9 +281,10 @@ class _DayCell extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        height: res.scaleHeight(48),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: res.scaleHeight(48)),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedContainer(

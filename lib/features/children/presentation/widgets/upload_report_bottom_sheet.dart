@@ -21,15 +21,28 @@ class UploadReportBottomSheet extends ConsumerStatefulWidget {
     required String childId,
     String? uploadedBy,
   }) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       useSafeArea: true,
-      builder: (_) => UploadReportBottomSheet(
-        childId: childId,
-        uploadedBy: uploadedBy,
-      ),
+      builder: (_) {
+        final sheet = UploadReportBottomSheet(
+          childId: childId,
+          uploadedBy: uploadedBy,
+        );
+        if (isTablet) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: sheet,
+            ),
+          );
+        }
+        return sheet;
+      },
     );
   }
 
@@ -108,10 +121,11 @@ class _UploadReportBottomSheetState
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? AppColors.surfaceDark : Colors.white;
 
+    final isTablet = res.screenWidth >= 600;
     return DraggableScrollableSheet(
-      initialChildSize: 0.75,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
+      initialChildSize: isTablet ? 0.55 : 0.75,
+      minChildSize: isTablet ? 0.4 : 0.5,
+      maxChildSize: isTablet ? 0.75 : 0.95,
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
