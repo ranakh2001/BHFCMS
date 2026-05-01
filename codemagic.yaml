@@ -4,25 +4,39 @@ workflows:
 
     environment:
       flutter: stable
+      xcode: latest
 
     cache:
       cache_paths:
         - ~/.pub-cache
+        - ~/Library/Caches/CocoaPods
 
     scripts:
       - name: Clean project
-        script: flutter clean
+        script: |
+          flutter clean
 
       - name: Get Flutter dependencies
-        script: flutter pub get
+        script: |
+          flutter pub get
 
-      - name: Set build number
+      - name: Generate unique build number
         script: |
           BUILD_NUMBER=$(date +%Y%m%d%H%M)
-          sed -i '' "s/^version:.*/version: 1.0.0+$BUILD_NUMBER/" pubspec.yaml
+          echo "Using build number: $BUILD_NUMBER"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $CM_ENV
+
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+          cd ..
 
       - name: Build iOS IPA
-        script: flutter build ipa --release
+        script: |
+          flutter build ipa \
+            --release \
+            --build-number=$BUILD_NUMBER
 
     artifacts:
       - build/ios/ipa/*.ipa
