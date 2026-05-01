@@ -68,8 +68,6 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/logos/
-    - assets/images/splash/
-    - assets/images/auth/
     - assets/letterhead.pdf
     - assets/fonts/
 
