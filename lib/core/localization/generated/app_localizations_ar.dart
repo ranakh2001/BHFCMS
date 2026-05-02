@@ -2735,10 +2735,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancelledSessions => 'ملغية';
 
   @override
-  String get incompleteSessions => 'غير مكتملة';
+  String get incompleteSessions => 'استشارة وتقييم';
 
   @override
-  String get deletedSessions => ' متأخرة';
+  String get deletedSessions => 'إلغاء متأخر';
 
   @override
   String get accompaniedCases => 'الحالات المرفقة';
