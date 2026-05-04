@@ -1,47 +1,42 @@
-import 'package:dio/dio.dart';
-import '../../../../core/network/dio_client.dart';
-import '../../../../core/error/exceptions.dart';
-
+import '../../../../core/network/dio_manager.dart';
+import '../../../../core/network/network_constants.dart';
+import '../models/login_request_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Map<String, dynamic>> login(String email, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final DioClient dioClient;
+  final DioManager _dioManager;
 
-  AuthRemoteDataSourceImpl(this.dioClient);
+  AuthRemoteDataSourceImpl(this._dioManager);
 
   @override
   Future<Map<String, dynamic>> login(String email, String password) async {
-    try {
-      // Simulate network request
-      // final response = await dioClient.dio.post('/auth/login', data: {
-      //   'email': email,
-      //   'password': password,
-      // });
-      // return response.data;
-      
-      // Delay to simulate network
-      await Future.delayed(const Duration(seconds: 1));
-      
-      // Fake successful response
-      return {
-        'access_token': 'fake_access_token_123',
-        'refresh_token': 'fake_refresh_token_123',
-        'user': {
-          'id': '1',
-          'name': 'Admin User',
-          'email': email,
-        }
-      };
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw UnauthorizedException();
-      }
-      throw ServerException(e.message ?? 'Unknown server error');
-    } catch (e) {
-      throw ServerException(e.toString());
-    }
+    final response = await _dioManager.post<Map<String, dynamic>>(
+      NetworkConstants.login,
+      data: LoginRequestModel(email: email, password: password).toJson(),
+    );
+
+    final body = response.data!;
+
+    // Normalize to the internal contract that AuthRepositoryImpl reads:
+    // { access_token, account_type, user: { id, name, email, role } }
+    final userData = body['data'] as Map<String, dynamic>;
+    final accountType = body['account_type'] as String? ?? 'therapist';
+
+    return {
+      'access_token': body['token'] as String,
+      'account_type': accountType,
+      'user': {
+        'id': userData['id'].toString(),
+        'name': [
+          userData['first_name'] as String? ?? '',
+          userData['last_name'] as String? ?? '',
+        ].join(' ').trim(),
+        'email': userData['email'] as String,
+        'role': accountType,
+      },
+    };
   }
 }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/network/api_exception.dart';
+import '../../../../core/network/network_constants.dart';
 import '../../../../core/storage/secure_storage_service.dart';
 import '../../../../core/storage/shared_preferences_service.dart';
 import '../../domain/entities/user.dart';
@@ -25,25 +27,27 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await remoteDataSource.login(email, password);
 
-      await secureStorage.saveTokens(
-        accessToken: response['access_token'] as String,
-        refreshToken: response['refresh_token'] as String,
-      );
+      await secureStorage.saveToken(response['access_token'] as String);
+      await secureStorage.saveAccountType(response['account_type'] as String);
 
       final user = UserModel.fromJson(
         response['user'] as Map<String, dynamic>,
       );
 
-      // Persist user so the session survives app restarts.
       await sharedPrefs.saveSessionUser(jsonEncode(user.toJson()));
 
       return user;
+    } on ApiException catch (e) {
+      if (e.statusCode == NetworkConstants.statusUnauthorized) {
+        throw UnauthorizedFailure(e.message);
+      }
+      throw ServerFailure(e.message);
     } on UnauthorizedException {
-      throw const UnauthorizedFailure('Invalid email or password');
+      throw const UnauthorizedFailure('بيانات اعتماد غير صحيحة');
     } on ServerException catch (e) {
       throw ServerFailure(e.message);
     } catch (e) {
-      throw ServerFailure('Unexpected error: $e');
+      throw const ServerFailure('حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
     }
   }
 
@@ -55,8 +59,6 @@ class AuthRepositoryImpl implements AuthRepository {
     ]);
   }
 
-  /// Restores the previously logged-in user from SharedPreferences.
-  /// Returns null if no session exists or if the stored data is corrupt.
   @override
   Future<User?> checkAuthStatus() async {
     final json = sharedPrefs.sessionUserJson;

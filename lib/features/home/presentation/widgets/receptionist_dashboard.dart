@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../config/routes.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/spacing.dart';
 import '../../../../core/utils/responsive_helper.dart';
-import '../../../../config/routes.dart';
+import '../../../main_layout/presentation/providers/main_nav_provider.dart';
 import 'session_card.dart';
 
-class ReceptionistDashboard extends StatelessWidget {
+class ReceptionistDashboard extends ConsumerWidget {
   const ReceptionistDashboard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final res = ResponsiveHelper(context);
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -137,7 +139,8 @@ class ReceptionistDashboard extends StatelessWidget {
                 res: res,
                 icon: Icons.add_task_rounded,
                 label: l10n.newAppointment,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.newAppointment),
+                onTap: () =>
+                    ref.read(mainNavIndexProvider.notifier).state = 2,
                 isDark: isDark,
               ),
               _QuickActionCard(

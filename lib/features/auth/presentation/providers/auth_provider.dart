@@ -1,19 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/providers.dart';
+import '../../../../core/network/dio_manager.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
-import '../../data/sources/fake_auth_data_source.dart';
+import '../../data/sources/auth_remote_data_source.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 
 // ---------------------------------------------------------------------------
 // Infrastructure providers
 // ---------------------------------------------------------------------------
 
-/// Swap [FakeAuthDataSource] for [AuthRemoteDataSourceImpl] when the real API
-/// is ready — nothing else in the graph changes.
-final authDataSourceProvider = Provider<FakeAuthDataSource>(
-  (_) => FakeAuthDataSource(),
+final authDataSourceProvider = Provider<AuthRemoteDataSource>(
+  (_) => AuthRemoteDataSourceImpl(DioManager.instance),
 );
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

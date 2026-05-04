@@ -243,7 +243,14 @@ class _WeeklyProgressChart extends StatelessWidget {
   });
 
   static const _mockData = [3.0, 5.0, 4.0, 7.0, 6.0, 5.5];
-  static const _dayLabels = ['س', 'ح', 'ن', 'ث', 'ع', 'خ'];
+  static const _dayLabels = [
+    'السبت',
+    'الأحد',
+    'الإثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -299,20 +306,23 @@ class _WeeklyProgressChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 28,
+                      reservedSize: 56,
                       getTitlesWidget: (value, meta) {
                         final idx = value.toInt();
                         if (idx < 0 || idx >= _dayLabels.length) {
                           return const SizedBox.shrink();
                         }
                         return Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: Text(
-                            _dayLabels[idx],
-                            style: TextStyle(
-                              fontSize: res.scaleText(11),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textSecondary,
+                          padding: const EdgeInsets.only(top: 4),
+                          child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Text(
+                              _dayLabels[idx],
+                              style: TextStyle(
+                                fontSize: res.scaleText(10),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                           ),
                         );

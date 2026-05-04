@@ -1,10 +1,11 @@
 class AppConstants {
   static const String appName = 'BHCFMS';
   
-  // API URLs
-  static const String baseUrl = 'https://api.example.com/v1'; // Replace with real URL later
-  
-  // Timeouts
-  static const int connectionTimeout = 15000; // ms
-  static const int receiveTimeout = 15000; // ms
+  // API URLs — canonical value lives in NetworkConstants; kept here for
+  // legacy references that haven't been migrated yet.
+  static const String baseUrl = 'https://bhcfms.net/api/v2/';
+
+  // Timeouts (milliseconds)
+  static const int connectionTimeout = 30000;
+  static const int receiveTimeout = 30000;
 }

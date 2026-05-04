@@ -13,6 +13,7 @@ import '../../../notifications/presentation/providers/notification_permission_pr
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../schedule/presentation/screens/schedule_screen.dart';
 import '../../domain/nav_destination.dart';
+import '../providers/main_nav_provider.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 
 /// Shared shell for ALL roles.
@@ -44,14 +45,9 @@ class MainLayoutScreen extends ConsumerStatefulWidget {
 }
 
 class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
-  int _currentIndex = 0;
-
   @override
   void initState() {
     super.initState();
-    // Request notification permission after the first frame so the OS dialog
-    // appears after navigation is fully complete. The controller is a no-op on
-    // subsequent launches (flag is persisted in SharedPreferences).
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(notificationPermissionControllerProvider.notifier)
@@ -59,24 +55,21 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
     });
   }
 
-  // Fixed destinations — same order and screens for every role.
-  // To show/hide a tab per role later, add an `if (user.can(...))` guard
-  // here and rebuild the list inside `build()` instead of keeping it static.
-
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
 
-    // Safety guard — redirect to login if the session was cleared mid-session
-    // (e.g. token expired, forced logout from another device).
     if (!authState.isAuthenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(AppRoutes.login);
       });
       return const SizedBox.shrink();
     }
+
+    final currentIndex = ref.watch(mainNavIndexProvider);
     final user = ref.watch(currentUserProvider);
     final isSupervisor = user?.role == UserRole.supervisor;
+
     final destinations = [
       const NavDestination(iconPath: AppIcons.home, screen: HomeScreen()),
       NavDestination(
@@ -94,20 +87,18 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
       const NavDestination(iconPath: AppIcons.chat, screen: MessagesScreen()),
       const NavDestination(iconPath: AppIcons.profile, screen: ProfileScreen()),
     ];
+
     return Scaffold(
       extendBody: true,
       body: IndexedStack(
-        index: _currentIndex,
+        index: currentIndex,
         children: destinations.map((d) => d.screen).toList(),
       ),
       bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         iconPaths: destinations.map((d) => d.iconPath).toList(),
-        onTap: (index) {
-          if (_currentIndex != index) {
-            setState(() => _currentIndex = index);
-          }
-        },
+        onTap: (index) =>
+            ref.read(mainNavIndexProvider.notifier).state = index,
       ),
     );
   }
