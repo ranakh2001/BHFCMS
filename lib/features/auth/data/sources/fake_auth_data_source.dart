@@ -35,6 +35,26 @@ class FakeAuthDataSource implements AuthRemoteDataSource {
   };
 
   @override
+  Future<Map<String, dynamic>> getAuthUser() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    // Return a minimal response matching the real /auth-user shape.
+    return {
+      'success': true,
+      'account_type': 'therapist',
+      'data': {
+        'id': 'u-001',
+        'first_name': 'Dr. Sarah',
+        'last_name': 'Johnson',
+        'username': 'sarah.johnson',
+        'email': 'therapist@test.com',
+        'is_active': 1,
+        'created_at': null,
+        'updated_at': null,
+      },
+    };
+  }
+
+  @override
   Future<Map<String, dynamic>> login(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 900));
 

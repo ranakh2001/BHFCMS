@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -53,10 +54,17 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    await Future.wait([
-      secureStorage.clearAll(),
-      sharedPrefs.clearSessionUser(),
-    ]);
+    try {
+      await secureStorage.clearAll();
+    } catch (e) {
+      dev.log('SecureStorage clearAll failed: $e', name: 'AuthRepository');
+    }
+    try {
+      await sharedPrefs.clearSessionUser();
+    } catch (e) {
+      dev.log('SharedPreferences clearSessionUser failed: $e',
+          name: 'AuthRepository');
+    }
   }
 
   @override
@@ -70,6 +78,33 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (_) {
       await sharedPrefs.clearSessionUser();
       return null;
+    }
+  }
+
+  @override
+  Future<User> getAuthUser() async {
+    try {
+      final body = await remoteDataSource.getAuthUser();
+
+      final data = body['data'] as Map<String, dynamic>;
+      final accountType = body['account_type'] as String?;
+
+      final user = UserModel.fromJson(data, accountType: accountType);
+
+      // Persist refreshed data so checkAuthStatus stays up-to-date.
+      await sharedPrefs.saveSessionUser(jsonEncode(user.toJson()));
+      if (accountType != null) {
+        await secureStorage.saveAccountType(accountType);
+      }
+
+      return user;
+    } on ApiException catch (e) {
+      if (e.statusCode == NetworkConstants.statusUnauthorized) {
+        throw UnauthorizedFailure(e.message);
+      }
+      throw ServerFailure(e.message);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 }

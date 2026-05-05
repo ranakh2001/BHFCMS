@@ -322,7 +322,7 @@ final caseStudyFormProvider =
 /// Convenience: whether the currently-logged parent still needs to fill the form.
 final parentNeedsFormProvider = Provider<bool>((ref) {
   final user = ref.watch(currentUserProvider);
-  if (user == null || user.role != UserRole.parent) return false;
+  if (user == null || user.accountType != AccountType.parent) return false;
   final repo = ref.watch(caseStudyRepositoryProvider);
   return repo.isParentFirstLogin(user.id);
 });
@@ -332,7 +332,7 @@ final parentNeedsFormProvider = Provider<bool>((ref) {
 final caseStudyAccessProvider = Provider<bool>((ref) {
   final user = ref.watch(currentUserProvider);
   if (user == null) return false;
-  return user.role == UserRole.therapist ||
-      user.role == UserRole.receptionist ||
-      user.role == UserRole.supervisor;
+  return user.accountType == AccountType.therapist ||
+      user.accountType == AccountType.receptionist ||
+      user.accountType == AccountType.supervisor;
 });

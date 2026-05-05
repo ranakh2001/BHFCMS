@@ -1,13 +1,13 @@
 import '../../features/auth/domain/entities/user_role.dart';
 import 'app_permission.dart';
 
-/// Single source of truth: which permissions each role holds.
+/// Single source of truth: which permissions each account type holds.
 /// To grant/revoke a capability for a role, change it here only.
 class RolePermissions {
   RolePermissions._();
 
-  static const Map<UserRole, Set<AppPermission>> _map = {
-    UserRole.therapist: {
+  static const Map<AccountType, Set<AppPermission>> _map = {
+    AccountType.therapist: {
       AppPermission.viewChildren,
       AppPermission.manageChildren,
       AppPermission.viewAiSuggestions,
@@ -16,20 +16,20 @@ class RolePermissions {
       AppPermission.sendMessages,
       AppPermission.viewReports,
     },
-    UserRole.parent: {
+    AccountType.parent: {
       AppPermission.viewChildren,
       AppPermission.viewSchedule,
       AppPermission.sendMessages,
       AppPermission.viewReports,
     },
-    UserRole.receptionist: {
+    AccountType.receptionist: {
       AppPermission.viewChildren,
       AppPermission.viewSchedule,
       AppPermission.manageSchedule,
       AppPermission.manageAppointments,
       AppPermission.manageRegistrations,
     },
-    UserRole.supervisor: {
+    AccountType.supervisor: {
       AppPermission.viewChildren,
       AppPermission.manageChildren,
       AppPermission.viewAiSuggestions,
@@ -41,6 +41,6 @@ class RolePermissions {
     },
   };
 
-  static Set<AppPermission> permissionsFor(UserRole role) =>
-      _map[role] ?? const {};
+  static Set<AppPermission> permissionsFor(AccountType accountType) =>
+      _map[accountType] ?? const {};
 }

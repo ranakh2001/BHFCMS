@@ -22,7 +22,8 @@ class UserRolePolicy {
 
   // ─── Sessions ────────────────────────────────────────────────────────────
   /// Start/end sessions, upload media, run assessments — therapist-only.
-  bool get canManageSessions => canManageChildren && user.role == UserRole.therapist;
+  bool get canManageSessions =>
+      canManageChildren && user.accountType == AccountType.therapist;
 
   // ─── Reports ─────────────────────────────────────────────────────────────
   bool get canViewReports => user.can(AppPermission.viewReports);
@@ -31,8 +32,8 @@ class UserRolePolicy {
   bool get canSendMessages => user.can(AppPermission.sendMessages);
 
   // ─── Supervisor ──────────────────────────────────────────────────────────
-  bool get isSupervisor => user.role == UserRole.supervisor;
-  bool get canViewEmployees => user.role == UserRole.supervisor;
+  bool get isSupervisor => user.accountType == AccountType.supervisor;
+  bool get canViewEmployees => user.accountType == AccountType.supervisor;
   bool get canEditCaseStudy => user.can(AppPermission.manageChildren);
 
   // ─── Media ───────────────────────────────────────────────────────────────
@@ -40,10 +41,10 @@ class UserRolePolicy {
   bool get canShareWithParent => isSupervisor;
 
   // ─── Family ──────────────────────────────────────────────────────────────
-  bool get isFamily => user.role == UserRole.parent;
+  bool get isFamily => user.accountType == AccountType.parent;
 
   // ─── Reception ───────────────────────────────────────────────────────────
-  bool get isReceptionist => user.role == UserRole.receptionist;
+  bool get isReceptionist => user.accountType == AccountType.receptionist;
 }
 
 /// Non-null only when a user is authenticated.

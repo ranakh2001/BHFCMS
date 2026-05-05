@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/providers.dart';
 import '../../../../core/network/dio_manager.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/entities/user_role.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../data/sources/auth_remote_data_source.dart';
@@ -72,6 +73,10 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> _restoreSession() async {
     final user = await ref.read(authRepositoryProvider).checkAuthStatus();
     state = AuthState(isLoading: false, user: user);
+    // Trigger a background refresh from the API when a cached session exists.
+    if (user != null) {
+      ref.invalidate(authUserProvider);
+    }
   }
 
   Future<bool> login(String email, String password) async {
@@ -81,6 +86,8 @@ class AuthNotifier extends Notifier<AuthState> {
           .read(loginUseCaseProvider)
           .execute(email, password);
       state = state.copyWith(isLoading: false, user: user);
+      // Refresh full user profile from /auth-user now that a token exists.
+      ref.invalidate(authUserProvider);
       return true;
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -90,7 +97,12 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> logout() async {
     state = state.copyWith(isLoading: true);
-    await ref.read(authRepositoryProvider).logout();
+    try {
+      await ref.read(authRepositoryProvider).logout();
+    } catch (_) {
+      // Storage clear failed — still force logout by resetting state.
+    }
+    ref.invalidate(authUserProvider);
     state = const AuthState(isLoading: false);
   }
 }
@@ -101,4 +113,25 @@ final authNotifierProvider =
 /// Convenience: non-null only when authenticated.
 final currentUserProvider = Provider<User?>((ref) {
   return ref.watch(authNotifierProvider).user;
+});
+
+// ---------------------------------------------------------------------------
+// Auth-user API providers
+// ---------------------------------------------------------------------------
+
+/// Fetches the current user's full profile from GET /auth-user.
+///
+/// Invalidated after login, logout, and session restore so callers always
+/// get up-to-date data. Use `.when()` in widgets to handle loading/error.
+final authUserProvider = FutureProvider<User>((ref) async {
+  return ref.read(authRepositoryProvider).getAuthUser();
+});
+
+/// Convenience selector: the current [AccountType] from the API response.
+///
+/// Falls back to the cached auth state while [authUserProvider] is loading,
+/// so role-based UI is available immediately without waiting for the network.
+final accountTypeProvider = Provider<AccountType?>((ref) {
+  return ref.watch(authUserProvider).valueOrNull?.accountType ??
+      ref.watch(currentUserProvider)?.accountType;
 });

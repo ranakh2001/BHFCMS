@@ -5,7 +5,7 @@ import 'role_permissions.dart';
 /// Usage: `user.can(AppPermission.viewChildren)`
 extension UserPermissions on User {
   bool can(AppPermission permission) =>
-      RolePermissions.permissionsFor(role).contains(permission);
+      RolePermissions.permissionsFor(accountType).contains(permission);
 
   bool canAny(Iterable<AppPermission> permissions) =>
       permissions.any(can);

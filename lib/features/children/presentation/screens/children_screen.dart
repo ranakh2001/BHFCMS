@@ -98,7 +98,7 @@ class _ChildrenScreenState extends ConsumerState<ChildrenScreen> {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(currentUserProvider);
-    final isReceptionist = user?.role == UserRole.receptionist;
+    final isReceptionist = user?.accountType == AccountType.receptionist;
 
     return Scaffold(
       backgroundColor:

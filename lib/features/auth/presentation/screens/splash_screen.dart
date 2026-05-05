@@ -24,7 +24,7 @@ class SplashScreen extends ConsumerWidget {
         }
 
         final user = next.user!;
-        if (user.role == UserRole.parent) {
+        if (user.accountType == AccountType.parent) {
           final prefs = ref.read(sharedPrefServiceProvider);
           if (prefs.isParentFirstLogin(user.id)) {
             Navigator.of(context)

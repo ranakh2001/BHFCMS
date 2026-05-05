@@ -47,8 +47,8 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     final state = ref.watch(scheduleProvider);
     final notifier = ref.read(scheduleProvider.notifier);
     final user = ref.watch(currentUserProvider);
-    final isReceptionist = user?.role == UserRole.receptionist;
-    final isSupervisor = user?.role == UserRole.supervisor;
+    final isReceptionist = user?.accountType == AccountType.receptionist;
+    final isSupervisor = user?.accountType == AccountType.supervisor;
 
     if (!isReceptionist && !isSupervisor) {
       return _NonReceptionistSchedule(

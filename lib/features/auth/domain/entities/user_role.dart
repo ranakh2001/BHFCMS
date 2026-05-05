@@ -1,4 +1,4 @@
-enum UserRole {
+enum AccountType {
   therapist,
   parent,
   receptionist,
@@ -6,21 +6,23 @@ enum UserRole {
 
   String get displayName {
     switch (this) {
-      case UserRole.therapist:
+      case AccountType.therapist:
         return 'Therapist';
-      case UserRole.parent:
+      case AccountType.parent:
         return 'Parent';
-      case UserRole.receptionist:
+      case AccountType.receptionist:
         return 'Receptionist';
-      case UserRole.supervisor:
+      case AccountType.supervisor:
         return 'Supervisor';
     }
   }
 
-  static UserRole fromString(String value) {
-    return UserRole.values.firstWhere(
-      (r) => r.name == value,
-      orElse: () => UserRole.therapist,
+  static AccountType fromString(String value) {
+    // Map API alias "reception" to the internal "receptionist" value.
+    final normalised = value == 'reception' ? 'receptionist' : value;
+    return AccountType.values.firstWhere(
+      (r) => r.name == normalised,
+      orElse: () => AccountType.therapist,
     );
   }
 }

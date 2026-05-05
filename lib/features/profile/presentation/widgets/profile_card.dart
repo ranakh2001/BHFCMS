@@ -21,14 +21,14 @@ class ProfileCard extends StatelessWidget {
   });
 
   String _roleLabel() {
-    switch (user.role) {
-      case UserRole.therapist:
+    switch (user.accountType) {
+      case AccountType.therapist:
         return l10n.speechTherapist;
-      case UserRole.parent:
+      case AccountType.parent:
         return l10n.parentRole;
-      case UserRole.receptionist:
+      case AccountType.receptionist:
         return l10n.receptionistRole;
-      case UserRole.supervisor:
+      case AccountType.supervisor:
         return l10n.supervisorRole;
     }
   }

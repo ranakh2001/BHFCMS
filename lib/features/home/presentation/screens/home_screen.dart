@@ -23,9 +23,6 @@ class HomeScreen extends ConsumerWidget {
     final res = ResponsiveHelper(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Real user name from the authenticated session.
-    // Use user?.role or user?.can(AppPermission.x) here to add
-    // role-based sections without duplicating this screen.
     final user = ref.watch(currentUserProvider);
     final userName = user?.name ?? '';
     final policy = ref.watch(currentPolicyProvider);
@@ -43,36 +40,36 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(height: res.scaleHeight(16)),
               WelcomeHeader(userName: userName),
               SizedBox(height: res.scaleHeight(24)),
-              
+
               // ── Supervisor Dashboard ────────────────────────────────
-              if (user?.role == UserRole.supervisor)
+              if (user?.accountType == AccountType.supervisor)
                 const SupervisorDashboard(),
 
               // ── Receptionist Dashboard ──────────────────────────────
-              if (user?.role == UserRole.receptionist)
+              if (user?.accountType == AccountType.receptionist)
                 const ReceptionistDashboard(),
 
               // ── Role Specific Content ──────────────────────────────
-              if (user?.role == UserRole.therapist) const DateSelector(),
-              if (user?.role == UserRole.parent) const ChildCard(),
+              if (user?.accountType == AccountType.therapist) const DateSelector(),
+              if (user?.accountType == AccountType.parent) const ChildCard(),
 
-              if (user?.role != UserRole.receptionist &&
-                  user?.role != UserRole.supervisor)
+              if (user?.accountType != AccountType.receptionist &&
+                  user?.accountType != AccountType.supervisor)
                 SizedBox(height: res.scaleHeight(32)),
 
-              if (user?.role == UserRole.parent) const ChildProgress(),
-              if (user?.role == UserRole.therapist)
+              if (user?.accountType == AccountType.parent) const ChildProgress(),
+              if (user?.accountType == AccountType.therapist)
                 const UpcomingSessionsSection(),
 
-              if (user?.role == UserRole.parent)
+              if (user?.accountType == AccountType.parent)
                 SizedBox(height: res.scaleHeight(32)),
 
-              if (user?.role != UserRole.receptionist &&
-                  user?.role != UserRole.supervisor)
+              if (user?.accountType != AccountType.receptionist &&
+                  user?.accountType != AccountType.supervisor)
                 DailyGoalsSection(canEdit: policy?.canManageSessions ?? false),
 
-              if (user?.role != UserRole.receptionist &&
-                  user?.role != UserRole.supervisor)
+              if (user?.accountType != AccountType.receptionist &&
+                  user?.accountType != AccountType.supervisor)
                 SizedBox(height: res.scaleHeight(48)),
             ],
           ),

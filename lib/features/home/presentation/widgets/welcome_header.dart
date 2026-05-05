@@ -38,7 +38,7 @@ class WelcomeHeader extends ConsumerWidget {
           ),
           SizedBox(height: res.scaleHeight(6)),
           Text(
-            user?.role == UserRole.parent
+            user?.accountType == AccountType.parent
                 ? l10n.parentsWelocome
                 : l10n.todayTasks,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

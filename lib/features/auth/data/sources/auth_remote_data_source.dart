@@ -4,6 +4,7 @@ import '../models/login_request_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Map<String, dynamic>> login(String email, String password);
+  Future<Map<String, dynamic>> getAuthUser();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -38,5 +39,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'role': accountType,
       },
     };
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAuthUser() async {
+    // Uses baseUrlWithoutV2 because the endpoint is /api/auth-user, not /api/v2/auth-user.
+    // Dio treats an absolute path (starts with https://) as the full URL, overriding baseUrl.
+    final response = await _dioManager.get<Map<String, dynamic>>(
+      NetworkConstants.baseUrlWithoutV2 + NetworkConstants.authUser,
+    );
+
+    return response.data!;
   }
 }

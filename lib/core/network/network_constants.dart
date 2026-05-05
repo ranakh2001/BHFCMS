@@ -11,6 +11,7 @@ class NetworkConstants {
 
   /// Root URL for every API call.
   static const String baseUrl = 'https://bhcfms.net/api/v2/';
+  static const String baseUrlWithoutV2 = "https://bhcfms.net/api/";
 
   // ---------------------------------------------------------------------------
   // Timeouts
@@ -35,6 +36,7 @@ class NetworkConstants {
 
   static const String login = 'login';
   static const String logout = 'auth/logout';
+  static const String authUser = 'auth-user';
 
   // ---------------------------------------------------------------------------
   // HTTP status codes

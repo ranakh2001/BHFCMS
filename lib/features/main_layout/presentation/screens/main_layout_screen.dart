@@ -28,8 +28,8 @@ import '../widgets/custom_bottom_nav_bar.dart';
 ///   // 2. Read the current user:
 ///   //       final user = ref.watch(currentUserProvider);
 ///   //
-///   // 3. Gate content with role:
-///   //       if (user?.role == UserRole.therapist) { ... }
+///   // 3. Gate content with accountType:
+///   //       if (user?.accountType == AccountType.therapist) { ... }
 ///   //
 ///   // 4. Or gate with a permission (preferred — keeps role logic centralised):
 ///   //       if (user?.can(AppPermission.manageChildren) == true) { ... }
@@ -68,7 +68,7 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
 
     final currentIndex = ref.watch(mainNavIndexProvider);
     final user = ref.watch(currentUserProvider);
-    final isSupervisor = user?.role == UserRole.supervisor;
+    final isSupervisor = user?.accountType == AccountType.supervisor;
 
     final destinations = [
       const NavDestination(iconPath: AppIcons.home, screen: HomeScreen()),
@@ -76,7 +76,7 @@ class _MainLayoutScreenState extends ConsumerState<MainLayoutScreen> {
         iconPath: isSupervisor ? AppIcons.center : AppIcons.children,
         screen: isSupervisor
             ? const SupervisorCenterScreen()
-            : (user?.role == UserRole.parent
+            : (user?.accountType == AccountType.parent
                 ? const ChildDetailsScreen()
                 : const ChildrenScreen()),
       ),
